@@ -232,6 +232,7 @@ section#blog-entry .entry-header {
 
 section#blog-entry .entry-header h2 {
 	text-transform: none;
+	margin-bottom: 0.4rem;
 }
 
 
