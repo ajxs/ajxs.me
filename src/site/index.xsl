@@ -26,7 +26,7 @@
 								<img 
 									alt="email icon"
 									class="icon"
-									src="./static/img/contact_email.png"
+									src="./static/img/contact/email.png"
 								/>
 								<span>ajxs [at] panoptic.online</span>
 							</li>
@@ -34,7 +34,7 @@
 								<img
 									alt="github icon"
 									class="icon"
-									src="./static/img/contact_github.png"
+									src="./static/img/contact/github.png"
 								/>
 								<a href="https://github.com/ajxs">github.com/ajxs</a>
 							</li>
