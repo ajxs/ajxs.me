@@ -148,7 +148,7 @@ section#contact-info #contact-info-list li {
 section#contact-info #contact-info-list li .icon {
 	display: inline-block;
 	height: 24px;
-	margin-right: 0.25rem;
+	margin-right: 0.5rem;
 	width: 24px;
 	vertical-align: middle;
 }
@@ -205,7 +205,7 @@ section#blog ul#blog-entries>li .tags ul {
 
 
 section#blog ul#blog-entries>li .tags ul>li::after {
-	content: ',';
+	content: ', ';
 }
 
 

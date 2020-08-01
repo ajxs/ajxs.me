@@ -1,0 +1,369 @@
+#!/usr/bin/env python3
+
+"""
+Generates all of the static content for the site, as part of the full deployment artefact.
+This script generates all of the page content from the blog SQLite database.
+"""
+
+from datetime import datetime
+from string import Template
+import xml.etree.cElementTree as ET
+import os
+import sqlite3
+
+__author__ = "AJXS"
+__copyright__ = "Copyright 2020, AJXS"
+__credits__ = ["AJXS"]
+__license__ = "GPL"
+__version__ = "1.0"
+__maintainer__ = "AJXS"
+__email__ = "ajxs at panoptic.online"
+__status__ = "Production"
+
+
+# The destination folder for the distributable artifacts.
+DIST_FOLDER = f"{os.getcwd()}/dist"
+# The destination folder for generated blog entries.
+DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
+# The main database file.
+DATABASE_FILE = f"{os.getcwd()}/blog.sqlite3"
+
+# The database query to load all blog entries.
+LOAD_ENTRIES_QUERY = """
+SELECT * from entry e
+ORDER BY e.date_created DESC;
+"""
+
+# Database query used to load the tags for an individual entry.
+LOAD_ENTRY_TAGS_QUERY = """
+SELECT t.* FROM tagged_entry k
+LEFT JOIN tag t ON t.tag_id = k.tag_id
+WHERE k.entry_id = ?
+"""
+
+# Database query used to load the tags.
+LOAD_TAGS_QUERY = """
+SELECT t.*
+FROM tag t
+"""
+
+# Database query used to load the entries associated with a tag.
+LOAD_TAGGED_ENTRIES_QUERY = """
+SELECT e.*
+FROM tagged_entry k
+LEFT JOIN entry e ON e.entry_id = k.entry_id
+WHERE k.tag_id = ?
+ORDER BY e.date_created DESC;
+"""
+
+
+def _create_tag_filename(tag_name):
+    """
+    Creates a filename from a tag name.
+    """
+
+    filename = tag_name.replace(" ", "_")
+    filename = filename.replace("?", "")
+    filename = filename.replace(".", "")
+    filename = filename.replace(",", "")
+
+    return filename
+
+
+def __create_blog_entry_filename(entry_title):
+    """
+    Creates a filename from a blog entry title.
+    """
+
+    filename = entry_title.replace(" ", "_")
+    filename = filename.replace("?", "")
+    filename = filename.replace(".", "")
+    filename = filename.replace(",", "")
+
+    return filename
+
+
+def _parse_entry_row(entry_row):
+    """
+    Parses an individual entry row into the correct format.
+    """
+
+    # The parsed creation and modification dates.
+    date_created = datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S")
+    date_modified = datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S")
+
+    # The final filename for the entry.
+    entry_filename = __create_blog_entry_filename(entry_row[1])
+
+    return {
+        "entry_id": entry_row[0],
+        "title": entry_row[1],
+        "description": entry_row[2],
+        "body": entry_row[3],
+        "date_created": date_created.strftime("%Y.%m.%d"),
+        "date_modified": date_modified.strftime("%Y.%m.%d"),
+        "filename": entry_filename,
+        "tags": []
+    }
+
+
+def _parse_tag_row(tag_row):
+    """
+    Parses an individual tag row into the correct format.
+    """
+
+    # The normalised filename for the tag.
+    tag_filename = _create_tag_filename(tag_row[1])
+
+    return {
+        "tag_id": tag_row[0],
+        "name": tag_row[1],
+        "filename": tag_filename
+    }
+
+
+def _load_blog_entries():
+    """
+    Loads all of the entries from the database.
+    Returns an array of blog entries.
+    """
+
+    # The full array of blog entries which will be returned.
+    blog_entries = []
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        # The cursor used to fetch entries.
+        entry_cursor = conn.cursor()
+
+        # The cursor used to fetch the entries.
+        entry_cursor.execute(LOAD_ENTRIES_QUERY)
+
+        # Fetch all entry rows.
+        while True:
+            entry_rows = entry_cursor.fetchmany()
+            # Break if all rows read.
+            if not entry_rows:
+                break
+
+            for entry_row in entry_rows:
+                # List of tags applied to this entry.
+                entry_tags = []
+
+                # Cursor used to fetch tags.
+                tag_cursor = conn.cursor()
+
+                # Fetch all post tags applied to this post.
+                tag_cursor.execute(LOAD_ENTRY_TAGS_QUERY, (entry_row[0], ))
+
+                # Iterate through all tag rows.
+                while True:
+                    tag_rows = tag_cursor.fetchmany()
+                    # Break if all rows read.
+                    if not tag_rows:
+                        break
+
+                    for tag_row in tag_rows:
+                        entry_tags.append(_parse_tag_row(tag_row))
+
+                # Parse the entry row.
+                parsed_entry_row = _parse_entry_row(entry_row)
+                parsed_entry_row["tags"] = entry_tags
+
+                blog_entries.append(parsed_entry_row)
+
+    return blog_entries
+
+
+def _load_tags():
+    """
+    Loads all tags from the database.
+    """
+
+    tags = []
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        # The cursor used to fetch tags.
+        tag_cursor = conn.cursor()
+
+        tag_cursor.execute(LOAD_TAGS_QUERY)
+
+        # Fetch all entry rows.
+        while True:
+            tag_rows = tag_cursor.fetchmany()
+            # Break if all rows read.
+            if not tag_rows:
+                break
+
+            for tag_row in tag_rows:
+                tags.append({
+                    "tag_id": tag_row[0],
+                    "name": tag_row[1]
+                })
+
+    return tags
+
+
+def _create_blog_entry_file(entry):
+    """
+    Creates an individual blog entry XML file from a parsed blog entry.
+    """
+
+    # Index XML root element.
+    root = ET.Element("entry")
+    title_el = ET.SubElement(root, "title")
+    title_el.text = entry["title"]
+
+    entry_date = ET.SubElement(root, "date")
+    entry_date.text = entry["date_created"]
+
+    entry_desc = ET.SubElement(root, "description")
+    entry_desc.text = entry["description"]
+
+    # If there are tags in this entry, create the tag HTML.
+    if entry["tags"]:
+        entry_tags_el = ET.SubElement(root, "tags")
+
+        for tag in entry["tags"]:
+            # The URL for this tag item.
+            tag_url = f"/blog/tag/{tag['filename']}"
+
+            tag_el = ET.SubElement(entry_tags_el, "tag")
+            tag_el.set("url", tag_url)
+            tag_el.text = str(tag["name"])
+
+
+    entry_body = ET.SubElement(root, "body")
+    entry_body.text = entry["body"]
+
+    # The filename for this blog entry.
+    blog_entry_filename = f"{DIST_BLOG_ENTRIES_FOLDER}/{entry['filename']}.xml"
+
+    with open(blog_entry_filename, mode="w") as index_file:
+        index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
+        index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+        index_file.write(ET.tostring(root, encoding="unicode"))
+
+    print(f"Wrote blog entry file: {blog_entry_filename}")
+
+
+def _create_tag_pages():
+    """
+    Creates all of the individual tag index pages.
+    """
+
+    # All of the tags used in the blog.
+    tags = _load_tags()
+
+    # Index XML root element.
+    root = ET.Element("index")
+    entries_el = ET.SubElement(root, "entries")
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        # The cursor used to fetch entries.
+        entry_cursor = conn.cursor()
+
+        for tag in tags:
+            # All of the entries tagged with this specific tag.
+            tagged_entries = []
+            # The filename for this tag.
+            tag_filename = _create_tag_filename(tag["name"])
+
+            entry_cursor.execute(LOAD_TAGGED_ENTRIES_QUERY, (tag["tag_id"],))
+
+            # Iterate through all tag rows.
+            while True:
+                entry_rows = entry_cursor.fetchmany()
+                # Break if all rows read.
+                if not entry_rows:
+                    break
+
+                for entry_row in entry_rows:
+                    parsed_entry_row = _parse_entry_row(entry_row)
+                    tagged_entries.append(parsed_entry_row)
+
+            for entry in tagged_entries:
+                _create_entry_xml_element(entry, entries_el)
+
+            # The final filename of the tag index HTML file.
+            tag_index_filename = f"{DIST_FOLDER}/blog/tag/{tag_filename}.xml"
+            with open(tag_index_filename, 'x') as index_file:
+                index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
+                index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+                index_file.write(ET.tostring(root, encoding="unicode"))
+
+            print("Wrote tag index file: {}".format(tag_index_filename))
+
+
+def _create_entry_xml_element(entry, parent_el):
+    """
+    Creates an entry XML element and attaches it to a parent XML element.
+    """
+
+    # The link to the blog entry.
+    entry_url = f"/blog/{entry['filename']}"
+
+    # The entry root element.
+    entry_el = ET.SubElement(parent_el, "entry")
+    entry_el.set("url", entry_url)
+
+    entry_title = ET.SubElement(entry_el, "title")
+    entry_title.text = entry["title"]
+
+    entry_date = ET.SubElement(entry_el, "date")
+    entry_date.text = entry["date_created"]
+
+    entry_desc = ET.SubElement(entry_el, "description")
+    entry_desc.text = entry["description"]
+
+    # If there are tags in this entry, create the tag HTML.
+    if entry["tags"]:
+        entry_tags_el = ET.SubElement(entry_el, "tags")
+
+        for tag in entry["tags"]:
+            # The URL for this tag item.
+            tag_url = f"/blog/tag/{tag['filename']}"
+
+            tag_el = ET.SubElement(entry_tags_el, "tag")
+            tag_el.set("url", tag_url)
+            tag_el.text = str(tag["name"])
+
+
+def _create_index(entries):
+    """
+    Creates the site index XML file.
+    """
+
+    # Index XML root element.
+    root = ET.Element("index")
+    entries_el = ET.SubElement(root, "entries")
+
+    for entry in entries:
+        _create_entry_xml_element(entry, entries_el)
+
+    with open(f"{DIST_FOLDER}/index.xml", mode="w") as index_file:
+        index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
+        index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+        index_file.write(ET.tostring(root, encoding="unicode"))
+
+
+def main():
+    """
+    Main program.
+    """
+
+    # Load all of the individual blog entries from the database.
+    blog_entries = _load_blog_entries()
+
+    # Create all of the individual blog entry files.
+    for entry in blog_entries:
+        _create_blog_entry_file(entry)
+
+    # Creates the tag index pages.
+    _create_tag_pages()
+
+    # Creates the site index.
+    _create_index(blog_entries)
+
+
+if __name__ == "__main__":
+    main()
