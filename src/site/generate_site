@@ -240,7 +240,7 @@ def _create_blog_entry_file(entry):
 
     with open(blog_entry_filename, mode="w") as index_file:
         index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
-        index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+        index_file.write("""<?xml-stylesheet type="text/xsl" href="/index.xsl"?>""")
         index_file.write(ET.tostring(root, encoding="unicode"))
 
     print(f"Wrote blog entry file: {blog_entry_filename}")
@@ -253,10 +253,6 @@ def _create_tag_pages():
 
     # All of the tags used in the blog.
     tags = _load_tags()
-
-    # Index XML root element.
-    root = ET.Element("index")
-    entries_el = ET.SubElement(root, "entries")
 
     with sqlite3.connect(DATABASE_FILE) as conn:
         # The cursor used to fetch entries.
@@ -281,6 +277,18 @@ def _create_tag_pages():
                     parsed_entry_row = _parse_entry_row(entry_row)
                     tagged_entries.append(parsed_entry_row)
 
+            # If there are no entries in this tag, skip it.
+            if not len(tagged_entries):
+                continue
+
+            # Index XML root element.
+            root = ET.Element("tag_index")
+
+            name_el = ET.SubElement(root, "name")
+            name_el.text = tag["name"]
+
+            entries_el = ET.SubElement(root, "entries")
+
             for entry in tagged_entries:
                 _create_entry_xml_element(entry, entries_el)
 
@@ -288,7 +296,7 @@ def _create_tag_pages():
             tag_index_filename = f"{DIST_FOLDER}/blog/tag/{tag_filename}.xml"
             with open(tag_index_filename, 'x') as index_file:
                 index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
-                index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+                index_file.write("""<?xml-stylesheet type="text/xsl" href="/index.xsl"?>""")
                 index_file.write(ET.tostring(root, encoding="unicode"))
 
             print("Wrote tag index file: {}".format(tag_index_filename))
@@ -342,7 +350,7 @@ def _create_index(entries):
 
     with open(f"{DIST_FOLDER}/index.xml", mode="w") as index_file:
         index_file.write("""<?xml version="1.0" encoding="utf-8"?>""")
-        index_file.write("""<?xml-stylesheet type="text/xsl" href="./index.xsl"?>""")
+        index_file.write("""<?xml-stylesheet type="text/xsl" href="/index.xsl"?>""")
         index_file.write(ET.tostring(root, encoding="unicode"))
 
 
