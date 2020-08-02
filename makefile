@@ -14,7 +14,7 @@
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-.PHONY: all clean
+.PHONY: all clean site emu
 
 SRC_FOLDER          := ./src
 
@@ -33,6 +33,9 @@ clean:
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
 	${DIST_STATIC_CONTENT} ${DIST_HTACCESS} ${DIST_STYLESHEET}
 	${SRC_FOLDER}/site/generate_site
+
+emu: site
+	cd ${DIST_FOLDER} && python -m SimpleHTTPServer
 
 ${DIST_FOLDER}:
 	mkdir -p ${DIST_FOLDER}
