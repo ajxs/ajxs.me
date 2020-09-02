@@ -31,7 +31,9 @@ DATABASE_FILE = "{}/blog.sqlite3".format(os.getcwd())
 
 # The database query to load all blog entries.
 LOAD_ENTRIES_QUERY = """
-SELECT * from entry e
+SELECT *
+FROM entry e
+WHERE e.date_deleted IS NULL
 ORDER BY e.date_created DESC;
 """
 
@@ -39,13 +41,14 @@ ORDER BY e.date_created DESC;
 LOAD_ENTRY_TAGS_QUERY = """
 SELECT t.* FROM tagged_entry k
 LEFT JOIN tag t ON t.tag_id = k.tag_id
-WHERE k.entry_id = ?
+WHERE k.entry_id = ?;
 """
 
 # Database query used to load the tags.
 LOAD_TAGS_QUERY = """
 SELECT t.*
 FROM tag t
+WHERE t.date_deleted IS NULL;
 """
 
 # Database query used to load the entries associated with a tag.
@@ -54,6 +57,7 @@ SELECT e.*
 FROM tagged_entry k
 LEFT JOIN entry e ON e.entry_id = k.entry_id
 WHERE k.tag_id = ?
+AND e.date_deleted IS NULL
 ORDER BY e.date_created DESC;
 """
 
