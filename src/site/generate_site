@@ -22,6 +22,8 @@ __status__ = "Production"
 
 # The destination folder for the distributable artifacts.
 DIST_FOLDER = "{}/dist".format(os.getcwd())
+# The base template folder.
+TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.
 DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
 # The main database file.
@@ -71,25 +73,25 @@ MAIN_PAGE_TEMPLATE = None
 TAG_INDEX_TEMPLATE = None
 
 # Open and parse each of the template HTML files.
-with open("{}/template/entry.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/entry.html", mode='r') as template_file:
     BLOG_ENTRY_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/entry_tags.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/entry_tags.html", mode='r') as template_file:
     BLOG_ENTRY_TAGS_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/index.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/index.html", mode='r') as template_file:
     INDEX_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/index_entry.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/index_entry.html", mode='r') as template_file:
     BLOG_ENTRY_INDEX_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/index_entry_tags.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/index_entry_tags.html", mode='r') as template_file:
     BLOG_ENTRY_INDEX_TAGS_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/main_page.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/main_page.html", mode='r') as template_file:
     MAIN_PAGE_TEMPLATE = Template(template_file.read())
 
-with open("{}/template/tag_index.html".format(os.getcwd()), 'r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/tag_index.html", mode='r') as template_file:
     TAG_INDEX_TEMPLATE = Template(template_file.read())
 
 
@@ -154,19 +156,25 @@ def parse_entry_row(entry_row):
     """
 
     # The parsed creation and modification dates.
-    date_created = datetime.strptime(entry_row[1], "%Y-%m-%d %H:%M:%S")
-    date_modified = datetime.strptime(entry_row[2], "%Y-%m-%d %H:%M:%S")
+    date_created = datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
+    date_modified = datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
+
+    # The date the entry was deleted, if present.
+    date_deleted = None
+    if entry_row[6] is not None:
+        date_deleted = datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
 
     # The final filename for the entry.
-    entry_filename = create_blog_entry_filename(entry_row[3])
+    entry_filename = create_blog_entry_filename(entry_row[1])
 
     return {
         "entry_id": entry_row[0],
-        "date_created": date_created.strftime("%Y.%m.%d"),
-        "date_modified": date_modified.strftime("%Y.%m.%d"),
-        "title": entry_row[3],
-        "short": entry_row[4],
-        "body": entry_row[5],
+        "title": entry_row[1],
+        "short": entry_row[2],
+        "body": entry_row[3],
+        "date_created": date_created,
+        "date_modified": date_modified,
+        "date_deleted": date_deleted,
         "filename": entry_filename,
         "tags": []
     }
