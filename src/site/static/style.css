@@ -60,7 +60,7 @@
 
 
 body {
-	background-color: black;
+	background-color: #050505;
 	margin: 0;
 	padding: 0;
 	color: white;
@@ -82,7 +82,7 @@ main {
 	box-sizing: border-box;
 	margin: 0 auto;
 	padding: 0.4rem;
-	width: 640px;
+	width: 800px;
 }
 
 
@@ -194,7 +194,7 @@ section#blog ul#blog-entries>li .short {
 
 section#blog ul#blog-entries>li .tags {
 	font-size: 0.75rem;
-	margin-top: 0.6rem;
+	padding: 0 0.4rem 0.4rem 0.4rem;
 }
 
 

@@ -384,7 +384,13 @@ def create_index(entries):
         # If there are tags in this entry, create the tag HTML.
         if entry["tags"]:
             for tag in entry["tags"]:
-                entry_tag_list_html += "<li>{}</li>".format(tag["name"])
+                # The filename for this tag.
+                tag_filename = create_tag_filename(tag["name"])
+
+                entry_tag_list_html += "<li><a href=\"{}\">{}</a></li>".format(
+                    "tag/{}".format(tag_filename),
+                    tag["name"]
+                )
 
             entry_tags_html = BLOG_ENTRY_INDEX_TAGS_TEMPLATE.substitute(
                 entry_tag_list=entry_tag_list_html
