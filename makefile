@@ -46,3 +46,6 @@ ${DIST_TAGS_FOLDER}:
 
 ${DIST_HTACCESS}:
 	cp "${SRC_FOLDER}/site/.htaccess" ${DIST_HTACCESS}
+
+emu: site
+	cd "${DIST_FOLDER}" && python -m SimpleHTTPServer
