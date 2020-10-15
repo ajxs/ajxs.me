@@ -99,25 +99,12 @@ with open(f"{TEMPLATE_FOLDER}/tag_index.html", mode='r') as template_file:
     TAG_INDEX_TEMPLATE = Template(template_file.read())
 
 
-def create_tag_filename(tag_name):
+def normalise_entry_name(tag_name):
     """
-    Creates a filename from a tag name.
+    Creates a filename from an entry or tag name.
     """
 
     filename = tag_name.replace(" ", "_")
-    filename = filename.replace("?", "")
-    filename = filename.replace(".", "")
-    filename = filename.replace(",", "")
-
-    return filename
-
-
-def create_blog_entry_filename(entry_title):
-    """
-    Creates a filename from a blog entry title.
-    """
-
-    filename = entry_title.replace(" ", "_")
     filename = filename.replace("?", "")
     filename = filename.replace(".", "")
     filename = filename.replace(",", "")
@@ -169,7 +156,7 @@ def parse_entry_row(entry_row):
         date_deleted = datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
 
     # The final filename for the entry.
-    entry_filename = create_blog_entry_filename(entry_row[1])
+    entry_filename = normalise_entry_name(entry_row[1])
 
     return {
         "entry_id": entry_row[0],
@@ -257,10 +244,10 @@ def create_blog_entry_file(entry):
     # If there are tags in this entry, create the tag HTML.
     if entry["tags"]:
         for tag in entry["tags"]:
-            tag_filename = create_tag_filename(tag["name"])
+            tag_filename = normalise_entry_name(tag["name"])
 
             entry_tag_list_html += "<li><a href=\"{}\">{}</a></li>".format(
-                "tag/{}".format(tag_filename),
+                "/blog/tag/{}".format(tag_filename),
                 tag["name"]
             )
 
@@ -311,7 +298,7 @@ def create_tag_pages():
             # All of the entries tagged with this specific tag.
             tagged_entries = []
             # The filename for this tag.
-            tag_filename = create_tag_filename(tag["name"])
+            tag_filename = normalise_entry_name(tag["name"])
             # The HTML for the blog entries in the index.
             index_entries_html = ""
 
@@ -385,10 +372,10 @@ def create_index(entries):
         if entry["tags"]:
             for tag in entry["tags"]:
                 # The filename for this tag.
-                tag_filename = create_tag_filename(tag["name"])
+                tag_filename = normalise_entry_name(tag["name"])
 
                 entry_tag_list_html += "<li><a href=\"{}\">{}</a></li>".format(
-                    "tag/{}".format(tag_filename),
+                    "/blog/tag/{}".format(tag_filename),
                     tag["name"]
                 )
 
