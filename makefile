@@ -23,13 +23,14 @@ DIST_BLOG_FOLDER    := ${DIST_FOLDER}/blog
 DIST_TAGS_FOLDER    := ${DIST_FOLDER}/blog/tag
 DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_HTACCESS       := ${DIST_FOLDER}/.htaccess
+DIST_RSS            := ${DIST_FOLDER}/site.rss
 
 all: site
 
 clean:
 	rm -rf ${DIST_FOLDER}
 
-site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} ${DIST_STATIC_CONTENT} ${DIST_HTACCESS}
+site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} ${DIST_STATIC_CONTENT} ${DIST_HTACCESS} ${DIST_RSS}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -46,6 +47,9 @@ ${DIST_TAGS_FOLDER}:
 
 ${DIST_HTACCESS}:
 	cp "${SRC_FOLDER}/site/.htaccess" ${DIST_HTACCESS}
+
+${DIST_RSS}:
+	${SRC_FOLDER}/site/generate_rss
 
 emu: site
 	cd "${DIST_FOLDER}" && python -m SimpleHTTPServer
