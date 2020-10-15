@@ -130,13 +130,13 @@ def parse_entry_row(entry_row):
     """
 
     # The parsed creation and modification dates.
-    date_created = datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
-    date_modified = datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
+    date_created = datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S")
+    date_modified = datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S")
 
     # The date the entry was deleted, if present.
     date_deleted = None
     if entry_row[6] is not None:
-        date_deleted = datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S").strftime("%Y.%m.%d")
+        date_deleted = datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S")
 
     # The final filename for the entry.
     entry_filename = normalise_entry_name(entry_row[1])

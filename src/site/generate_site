@@ -8,6 +8,7 @@ This script generates all of the page content from the blog SQLite database.
 from string import Template
 import os
 from blog import load_blog_entries, load_tags, load_tagged_entries
+from datetime import datetime
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -91,10 +92,13 @@ def create_blog_entry_file(entry):
             entry_tag_list=entry_tag_list_html
         )
 
+    # The formatted creation date.
+    date_created = entry["date_created"].strftime("%Y.%m.%d")
+
     # The final resulting entry HTML.
     entry_html = BLOG_ENTRY_TEMPLATE.substitute(
         title=entry["title"],
-        date=entry["date_created"],
+        date=date_created,
         short=entry["short"],
         entry_body=entry["body"],
         entry_tags=entry_tags_html
@@ -150,11 +154,14 @@ def create_tag_pages():
             index_file.write(full_file_html)
 
         for entry in tagged_entries:
+            # The formatted creation date.
+            date_created = entry["date_created"].strftime("%Y.%m.%d")
+
             # For each entry generate the blog entry HTML and add this to the index
             # entries HTML string.
             index_entries_html += BLOG_ENTRY_INDEX_TEMPLATE.substitute(
                 entry_link="/blog/{}".format(entry["filename"]),
-                date=entry["date_created"],
+                date=date_created,
                 title=entry["title"],
                 short=entry["short"],
                 entry_tags=""
@@ -197,11 +204,14 @@ def create_index(entries):
                 entry_tag_list=entry_tag_list_html
             )
 
+        # The formatted creation date.
+        date_created = entry["date_created"].strftime("%Y.%m.%d")
+
         # For each entry generate the blog entry HTML and add this to the index entries
         # HTML string.
         index_entries_html += BLOG_ENTRY_INDEX_TEMPLATE.substitute(
             entry_link=entry_link,
-            date=entry["date_created"],
+            date=date_created,
             title=entry["title"],
             short=entry["short"],
             entry_tags=entry_tags_html
