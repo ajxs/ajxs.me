@@ -136,6 +136,20 @@ def create_tag_pages():
         # The HTML for the blog entries in the index.
         index_entries_html = ""
 
+        for entry in tagged_entries:
+            # The formatted creation date.
+            date_created = entry["date_created"].strftime("%Y.%m.%d")
+
+            # For each entry generate the blog entry HTML and add this to the index
+            # entries HTML string.
+            index_entries_html += BLOG_ENTRY_INDEX_TEMPLATE.substitute(
+                entry_link="/blog/{}".format(entry["filename"]),
+                date=date_created,
+                title=entry["title"],
+                short=entry["short"],
+                entry_tags=""
+            )
+
         # Create the index HTML.
         index_html = TAG_INDEX_TEMPLATE.substitute(
             tag_name=tag["name"],
@@ -152,20 +166,6 @@ def create_tag_pages():
         tag_index_filename = "{}/blog/tag/{}.html".format(DIST_FOLDER, tag["filename"])
         with open(tag_index_filename, 'x') as index_file:
             index_file.write(full_file_html)
-
-        for entry in tagged_entries:
-            # The formatted creation date.
-            date_created = entry["date_created"].strftime("%Y.%m.%d")
-
-            # For each entry generate the blog entry HTML and add this to the index
-            # entries HTML string.
-            index_entries_html += BLOG_ENTRY_INDEX_TEMPLATE.substitute(
-                entry_link="/blog/{}".format(entry["filename"]),
-                date=date_created,
-                title=entry["title"],
-                short=entry["short"],
-                entry_tags=""
-            )
 
         print("Wrote tag index file: {}".format(tag_index_filename))
 
