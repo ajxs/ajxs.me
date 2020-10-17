@@ -226,6 +226,7 @@ section#blog #tag-heading {
 
 
 section#blog-entry .entry-header {
+	font-family: Arial, sans-serif;
 	margin-bottom: 0.8rem;
 	padding: 0.8rem 0.4rem 0.8rem 0.4rem;
 }
