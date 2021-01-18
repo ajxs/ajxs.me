@@ -334,6 +334,7 @@ footer {
 	text-align: center;
 }
 
+
 .code-block { 
 	background: #f0f3f3; 
 	border: solid grey; 
@@ -341,6 +342,8 @@ footer {
 	padding: .2em .6em; 
 	color: black;
 }
+
+
 .code-block pre { margin: 0; }
 .code-block .hll { background-color: #ffffcc; }
 .code-block .c { color: #0099FF; font-style: italic } /* Comment */
