@@ -20,15 +20,15 @@ __email__ = "ajxs at panoptic.online"
 __status__ = "Production"
 
 # The RSS channel title.
-CHANNEL_TITLE = "panoptic.online"
+CHANNEL_TITLE = "~ajxs"
 # The RSS channel link.
-CHANNEL_LINK = "https://panoptic.online"
+CHANNEL_LINK = "https://ajxs.me"
 # The RSS channel description.
 CHANNEL_DESC = "Ajxs blog"
 # The channel webmaster email.
 CHANNEL_WEBMASTER = "ajxs@panoptic.online"
 # The destination folder for the distributable artifacts.
-DIST_FOLDER = "{}/dist".format(os.getcwd())
+DIST_FOLDER = f"{os.getcwd()}/dist"
 # The path to save the resulting RSS feed file in.
 RSS_FILE_PATH = f"{DIST_FOLDER}/site.rss"
 
@@ -45,7 +45,7 @@ def generate_entry_item(entry):
     item_title_el = etree.SubElement(item_root, "title")
     item_title_el.text = entry["title"]
     item_link_el = etree.SubElement(item_root, "link")
-    item_link_el.text = f"{CHANNEL_LINK}/blog/{entry['filename']}"
+    item_link_el.text = f"{CHANNEL_LINK}/blog/{entry['filename']}.html"
     item_desc_el = etree.SubElement(item_root, "description")
     item_desc_el.text = entry["short"]
     item_desc_el = etree.SubElement(item_root, "pubDate")
