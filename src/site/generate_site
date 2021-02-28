@@ -6,6 +6,7 @@ This script generates all of the page content from the blog SQLite database.
 """
 
 from string import Template
+from datetime import datetime
 import os
 from blog import load_blog_entries, load_tags, load_tagged_entries
 
@@ -27,6 +28,8 @@ DIST_FOLDER = f"{os.getcwd()}/dist"
 TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.
 DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
+# The copyright text displayed in the page footer.
+COPYRIGHT_TEXT = f"© {datetime.today().year} AJXS"
 
 # The blog entry template.
 BLOG_ENTRY_TEMPLATE = None
@@ -107,7 +110,8 @@ def create_blog_entry_file(entry):
     # Create the full page HTML.
     full_file_html = MAIN_PAGE_TEMPLATE.substitute(
         page_title=f"{MAIN_PAGE_TITLE}/{entry['title']}",
-        page_html=entry_html
+        page_html=entry_html,
+        copyright_text=COPYRIGHT_TEXT
     )
 
     # The final filename for the blog entry HTML.
@@ -159,7 +163,8 @@ def create_tag_pages():
         # The full page HTML. This is the Index HTML baked in to the main page template.
         full_file_html = MAIN_PAGE_TEMPLATE.substitute(
             page_title=f"{MAIN_PAGE_TITLE}/{tag['name']}",
-            page_html=index_html
+            page_html=index_html,
+            copyright_text=COPYRIGHT_TEXT
         )
 
         # The final filename of the tag index HTML file.
@@ -221,7 +226,8 @@ def create_index(entries):
     # The full page HTML. This is the Index HTML baked in to the main page template.
     full_file_html = MAIN_PAGE_TEMPLATE.substitute(
         page_title=MAIN_PAGE_TITLE,
-        page_html=index_html
+        page_html=index_html,
+        copyright_text=COPYRIGHT_TEXT
     )
 
     with open(f"{DIST_FOLDER}/index.html", 'x') as index_file:
