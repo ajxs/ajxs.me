@@ -1,0 +1,2 @@
+# Redirect http://panoptic.online to https://ajxs.me
+RedirectMatch 301 / https://ajxs.me/
