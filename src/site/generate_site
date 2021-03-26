@@ -22,6 +22,13 @@ __status__ = "Production"
 # The main title for the blog. This is used to create all of the
 # <title>$page_title</title> elements.
 MAIN_PAGE_TITLE = "~ajxs"
+
+# Page meta tag contents.
+PAGE_META_DEFAULT_DESCRIPTION = "ajxs personal site"
+PAGE_META_DEFAULT_KEYWORDS = "ajxs, synthesisers, programming, dsp"
+PAGE_META_AUTHOR = "ajxs"
+PAGE_META_EMAIL = "ajxs@panoptic.online"
+
 # The destination folder for the distributable artifacts.
 DIST_FOLDER = f"{os.getcwd()}/dist"
 # The base template folder.
@@ -98,6 +105,11 @@ def create_blog_entry_file(entry):
     # The formatted creation date.
     date_created = entry["date_created"].strftime("%Y.%m.%d")
 
+    # An array of tag names.
+    tag_names = list(map(lambda tag : tag['name'], entry['tags']))
+    # The meta keywords string.
+    page_keywords_string = ", ".join(tag_names)
+
     # The final resulting entry HTML.
     entry_html = BLOG_ENTRY_TEMPLATE.substitute(
         title=entry["title"],
@@ -111,7 +123,11 @@ def create_blog_entry_file(entry):
     full_file_html = MAIN_PAGE_TEMPLATE.substitute(
         page_title=f"{MAIN_PAGE_TITLE}/{entry['title']}",
         page_html=entry_html,
-        copyright_text=COPYRIGHT_TEXT
+        copyright_text=COPYRIGHT_TEXT,
+        page_meta_description=entry["short"],
+        page_meta_author=PAGE_META_AUTHOR,
+        page_meta_email=PAGE_META_EMAIL,
+        page_meta_keywords=page_keywords_string
     )
 
     # The final filename for the blog entry HTML.
@@ -160,11 +176,18 @@ def create_tag_pages():
             tagged_entries=index_entries_html
         )
 
+        # The page meta description.
+        tag_page_description = f"Blog entries marked {tag['name']}"
+
         # The full page HTML. This is the Index HTML baked in to the main page template.
         full_file_html = MAIN_PAGE_TEMPLATE.substitute(
             page_title=f"{MAIN_PAGE_TITLE}/{tag['name']}",
             page_html=index_html,
-            copyright_text=COPYRIGHT_TEXT
+            copyright_text=COPYRIGHT_TEXT,
+            page_meta_description=tag_page_description,
+            page_meta_author=PAGE_META_AUTHOR,
+            page_meta_email=PAGE_META_EMAIL,
+            page_meta_keywords=tag['name']
         )
 
         # The final filename of the tag index HTML file.
@@ -227,7 +250,11 @@ def create_index(entries):
     full_file_html = MAIN_PAGE_TEMPLATE.substitute(
         page_title=MAIN_PAGE_TITLE,
         page_html=index_html,
-        copyright_text=COPYRIGHT_TEXT
+        copyright_text=COPYRIGHT_TEXT,
+        page_meta_description=PAGE_META_DEFAULT_DESCRIPTION,
+        page_meta_author=PAGE_META_AUTHOR,
+        page_meta_email=PAGE_META_EMAIL,
+        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
     )
 
     with open(f"{DIST_FOLDER}/index.html", 'x') as index_file:
