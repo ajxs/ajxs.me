@@ -379,14 +379,20 @@ article.blog-entry .entry-body figure figcaption {
 }
 
 
-.table-of-contents ol>li {
+.table-of-contents ol > li {
 	margin: 0 0 0.15rem 0;
 }
 
 
-.table-of-contents ol>li::before { 
+.table-of-contents ol > li::before { 
 	content: counters(heading, ".") ". ";
 	counter-increment: heading;
+}
+
+
+/** Sub-list. **/
+.table-of-contents ol > li > ol {
+	margin: 0.25rem 0;
 }
 
 
@@ -423,6 +429,12 @@ ul#references-list {
 
 ul#references-list > li {
 	margin-bottom: 0.8rem;
+}
+
+
+.formula {
+	margin: 0.6rem 0;
+	font-family: monospace;
 }
 
 
