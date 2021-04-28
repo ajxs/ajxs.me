@@ -498,3 +498,45 @@ ul#references-list > li {
 .code-block .vi { color: #003333 } /* Name.Variable.Instance */
 .code-block .vm { color: #003333 } /* Name.Variable.Magic */
 .code-block .il { color: #FF6600 } /* Literal.Number.Integer.Long */
+
+
+@media screen and (max-width: 640px) {
+	body {
+		width: unset;
+		margin: 0;
+	}
+
+
+	body > header {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+		letter-spacing: 0.25rem;
+		padding: 0.5rem 0 0;
+	}
+
+
+	article.blog-entry header {
+		padding: 0.4rem;
+	}
+
+
+	article.blog-entry header h1 {
+		font-size: 1.5rem;
+	}
+
+
+	.table-of-contents {
+		width: unset;
+	}
+
+
+	ol.footnotes {
+		padding-left: 1rem;
+		font-size: 0.8rem;
+	}
+
+	
+	section#blog #tag-heading {
+		font-size: 1.1rem;
+	}
+}
