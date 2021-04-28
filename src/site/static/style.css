@@ -128,16 +128,6 @@ h1, h2, h3, h4 {
 
 
 h1 {
-	font-size: 2.4rem;
-	font-weight: 700;
-	margin-top: 0rem;
-	margin-bottom: 1rem;
-	letter-spacing: 0.25rem;
-	text-transform: none;
-}
-
-
-h2 {
 	font-size: 1.25rem;
 	font-weight: 700;
 	margin: 0.8rem 0 0.8rem;
@@ -146,18 +136,10 @@ h2 {
 }
 
 
-h3 {
-	font-size: 1.1rem;
-	font-weight: 700;
-	margin: 0.8rem 0 0.8rem;
-	text-transform: uppercase;
-}
-
-
-h4 {
+h2 {
 	font-size: 1rem;
 	font-weight: 700;
-	margin: 0.8rem 0 0.8rem;
+	margin: 0 0 0.4rem;
 	text-transform: none;
 }
 
@@ -220,13 +202,6 @@ section#blog ul#blog-entries>li a.entry-link {
 }
 
 
-section#blog ul#blog-entries>li h3 {
-	font-size: 1rem;
-	margin: 0 0 0.4rem;
-	text-transform: none;
-}
-
-
 section#blog ul#blog-entries>li .date {
 	font-size: 0.8rem;
 	margin: 0 0 0.4rem;
@@ -280,7 +255,7 @@ article.blog-entry header {
 
 article.blog-entry header h1 {
 	font-size: 2rem;
-	margin-bottom: 0.6rem;
+	margin: 0 0 0.6rem;
 	letter-spacing: initial;
 	text-transform: none;
 }
@@ -313,13 +288,14 @@ article.blog-entry .entry-body {
 article.blog-entry .entry-body h1 {
 	font-size: 1.5rem;
 	letter-spacing: initial;
-	margin: 1.25rem 0 1.25rem;
+	margin: 1.25rem 0;
 	text-transform: none;
 }
 
 
 article.blog-entry .entry-body h2 {
 	font-size: 1.25rem;
+	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0 0.85rem;
 	text-transform: none;
@@ -328,8 +304,18 @@ article.blog-entry .entry-body h2 {
 
 article.blog-entry .entry-body h3 {
 	font-size: 1.1rem;
+	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1rem 0 0.85rem;
+	text-transform: none;
+}
+
+
+article.blog-entry .entry-body h4 {
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 0.8rem 0;
 	text-transform: none;
 }
 
