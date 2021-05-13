@@ -104,7 +104,7 @@ body {
 body > header {
 	text-align: center;
 	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
-	font-size: 2.4rem;
+	font-size: 2.643rem;
 	font-weight: 700;
 	margin-bottom: 1rem;
 	padding: 1rem 0 0 0;
@@ -128,7 +128,7 @@ h1, h2, h3, h4 {
 
 
 h1 {
-	font-size: 1.25rem;
+	font-size: 1.478rem;
 	font-weight: 700;
 	margin: 0.8rem 0 0.8rem;
 	letter-spacing: 0.2rem;
@@ -137,7 +137,7 @@ h1 {
 
 
 h2 {
-	font-size: 1rem;
+	font-size: 1.157rem;
 	font-weight: 700;
 	margin: 0 0 0.4rem;
 	text-transform: none;
@@ -262,7 +262,7 @@ article.blog-entry header h1 {
 
 
 article.blog-entry header .date {
-	font-size: 0.8rem;
+	font-size: 1rem;
 	margin: 0 0 0.4rem;
 }
 
@@ -286,7 +286,7 @@ article.blog-entry .entry-body {
 
 
 article.blog-entry .entry-body h1 {
-	font-size: 1.5rem;
+	font-size: 2.37rem;
 	letter-spacing: initial;
 	margin: 1.25rem 0;
 	text-transform: none;
@@ -294,7 +294,7 @@ article.blog-entry .entry-body h1 {
 
 
 article.blog-entry .entry-body h2 {
-	font-size: 1.25rem;
+	font-size: 1.863rem;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0 0.85rem;
@@ -303,7 +303,7 @@ article.blog-entry .entry-body h2 {
 
 
 article.blog-entry .entry-body h3 {
-	font-size: 1.1rem;
+	font-size: 1.47rem;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1rem 0 0.85rem;
@@ -312,7 +312,7 @@ article.blog-entry .entry-body h3 {
 
 
 article.blog-entry .entry-body h4 {
-	font-size: 1rem;
+	font-size: 1.15rem;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 0.8rem 0;
@@ -339,7 +339,7 @@ article.blog-entry .entry-body figure figcaption {
 
 
 .table-of-contents {
-	margin: 1rem 0;
+	margin: 1.25rem 0;
 	padding: 0.8rem 0.4rem;
 	width: 50%;
 	outline: 2px solid #242414;
@@ -349,7 +349,7 @@ article.blog-entry .entry-body figure figcaption {
 
 .table-of-contents .table-of-contents-title {
 	font-weight: bold;
-	font-size: 1.1rem;
+	font-size: 1.157rem;
 	margin-bottom: 0.6rem;
 }
 
