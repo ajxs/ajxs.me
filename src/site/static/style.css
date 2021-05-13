@@ -103,7 +103,7 @@ body {
 
 body > header {
 	text-align: center;
-	font-family: "Lucida Console", monospace;
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 	font-size: 2.4rem;
 	font-weight: 700;
 	margin-bottom: 1rem;
@@ -123,7 +123,7 @@ body > header a:hover {
 
 
 h1, h2, h3, h4 {
-	font-family: "Lucida Sans Typewriter", "DejaVu Sans Mono", monospace;
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 }
 
 
@@ -163,7 +163,7 @@ section#contact-info {
 
 
 section#contact-info #contact-info-list {
-	font-family: "Lucida Console", monospace;
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 	list-style: none;
 	margin: 0 0 0 0.4rem;
 	padding: 0;
