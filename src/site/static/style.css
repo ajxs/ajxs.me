@@ -94,7 +94,7 @@ body {
 	background-color: #0d0d0a;
 	color: white;
 	box-sizing: border-box;
-	font-family: Arial, sans-serif;
+	font-family: Arial, "Liberation sans", sans-serif;
 	margin: 0 auto;
 	padding: 0.4rem;
 	width: 800px;
@@ -123,7 +123,7 @@ body > header a:hover {
 
 
 h1, h2, h3, h4 {
-	font-family: "Lucida Console", monospace;
+	font-family: "Lucida Sans Typewriter", "DejaVu Sans Mono", monospace;
 }
 
 
