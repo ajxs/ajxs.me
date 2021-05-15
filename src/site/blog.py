@@ -8,6 +8,7 @@ Contains all of the functionality necessary for loading data from the blog datab
 from datetime import datetime
 import os
 import sqlite3
+import pytz
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -129,14 +130,17 @@ def parse_entry_row(entry_row):
     Parses an individual entry row into the correct format.
     """
 
+    # The local timezone. Used to make the 'created/modified/deleted' dates 'timezone aware'.
+    local_timezone = pytz.timezone('Australia/Sydney')
+
     # The parsed creation and modification dates.
-    date_created = datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S")
-    date_modified = datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S")
+    date_created = local_timezone.localize(datetime.strptime(entry_row[4], "%Y-%m-%d %H:%M:%S"))
+    date_modified = local_timezone.localize(datetime.strptime(entry_row[5], "%Y-%m-%d %H:%M:%S"))
 
     # The date the entry was deleted, if present.
     date_deleted = None
     if entry_row[6] is not None:
-        date_deleted = datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S")
+        date_deleted = local_timezone.localize(datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S"))
 
     # The final filename for the entry.
     entry_filename = normalise_entry_name(entry_row[1])
