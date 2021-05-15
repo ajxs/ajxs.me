@@ -8,6 +8,7 @@ from datetime import datetime
 import os
 import email.utils
 from lxml import etree
+import pytz
 from blog import load_blog_entries
 
 __author__ = "AJXS"
@@ -25,12 +26,15 @@ CHANNEL_TITLE = "~ajxs"
 CHANNEL_LINK = "https://ajxs.me"
 # The RSS channel description.
 CHANNEL_DESC = "Ajxs blog"
-# The channel webmaster email.
-CHANNEL_WEBMASTER = "ajxs@panoptic.online"
+# The channel webmaster email string.
+# Re: format, refer to: https://www.rssboard.org/rss-profile#data-types-email
+CHANNEL_WEBMASTER = "ajxs@panoptic.online (Anthony)"
 # The destination folder for the distributable artifacts.
 DIST_FOLDER = f"{os.getcwd()}/dist"
 # The path to save the resulting RSS feed file in.
 RSS_FILE_PATH = f"{DIST_FOLDER}/site.rss"
+# The W3C Atom namespace URI.
+ATOM_NAMESPACE_URI = "http://www.w3.org/2005/Atom"
 
 
 def generate_entry_item(entry):
@@ -40,16 +44,22 @@ def generate_entry_item(entry):
 
     # The article publish date.
     publish_date = email.utils.format_datetime(entry["date_created"])
+    # The link to the individual article.
+    article_link = f"{CHANNEL_LINK}/blog/{entry['filename']}.html"
 
     item_root = etree.Element("item")
     item_title_el = etree.SubElement(item_root, "title")
     item_title_el.text = entry["title"]
     item_link_el = etree.SubElement(item_root, "link")
-    item_link_el.text = f"{CHANNEL_LINK}/blog/{entry['filename']}.html"
+    item_link_el.text = article_link
     item_desc_el = etree.SubElement(item_root, "description")
     item_desc_el.text = entry["short"]
-    item_desc_el = etree.SubElement(item_root, "pubDate")
-    item_desc_el.text = publish_date
+    item_pub_date_el = etree.SubElement(item_root, "pubDate")
+    item_pub_date_el.text = publish_date
+    # Refer to: https://validator.w3.org/feed/docs/warning/MissingGuid.html
+    # https://cyber.harvard.edu/rss/rss.html#ltguidgtSubelementOfLtitemgt
+    item_guid_el = etree.SubElement(item_root, "guid")
+    item_guid_el.text = article_link
 
     for tag in entry["tags"]:
         category_el = etree.SubElement(item_root, "category")
@@ -69,9 +79,10 @@ def main():
     # The latest article publish date.
     publish_date = email.utils.format_datetime(blog_entries[0]["date_created"])
     # The last build date, typically 'now'.
-    last_build_date = email.utils.format_datetime(datetime.now())
+    last_build_date = email.utils.format_datetime(datetime.now(pytz.timezone('Australia/Sydney')))
 
-    rss_root = etree.Element("rss", version="2.0")
+    # Attach the 'atom' namespace to the root element.
+    rss_root = etree.Element("rss", version="2.0", nsmap={"atom": ATOM_NAMESPACE_URI})
     rss_tree = etree.ElementTree(rss_root)
 
     channel_el = etree.SubElement(rss_root, "channel")
@@ -90,6 +101,16 @@ def main():
     channel_build_date_el.text = last_build_date
     channel_webmaster_el = etree.SubElement(channel_el, "webMaster")
     channel_webmaster_el.text = CHANNEL_WEBMASTER
+
+    # Create the self-referential link.
+    # Refer to: https://validator.w3.org/feed/docs/warning/MissingAtomSelfLink.html
+    etree.SubElement(
+        channel_el,
+        "{http://www.w3.org/2005/Atom}link",
+        href=f"{CHANNEL_LINK}/site.rss",
+        rel="self",
+        type="application/rss+xml"
+    )
 
     # Add XML for each individual entry.
     for entry in blog_entries:
