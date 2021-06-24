@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="ajxs">
+		<meta name="description" content="An introductory technical analysis of the Yamaha DX7, detailing some of the known information about the synthesiser’s engineering.">
+		<meta name="robots" content="index, follow">
+		<meta name="keywords" content="Musical Equipment, Synthesizers, Reverse Engineering">
+		<meta name="reply-to" content="ajxs@panoptic.online">
+		<meta name="owner" content="ajxs">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>~ajxs/Yamaha DX7 Technical Analysis</title>
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+	</head>
+	<body>
+		<header class="colour_light">
+			<a href="/">~ajxs</a>
+		</header>
+		<article class="blog-entry colour_mid-light">
+	<header class="colour_dark-bg">
+		<h1>Yamaha DX7 Technical Analysis</h1>
+		<div class="date colour_mid-dark">2021.04.23</div>
+		<div class="short colour_mid">An introductory technical analysis of the Yamaha DX7, detailing some of the known information about the synthesiser’s engineering.</div>
+		<div class="tags colour_mid-dark">
+	<span>Tagged as: </span>
+	<ul class="tag-list colour_mid-light">
+		<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li><li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li><li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
+	</ul>
+</div>
+
+	</header>
+	<div class="entry-body colour_light">
+		<h2 id="foreword">Foreword <a class="permalink" href="#foreword">#</a></h2>
+<p>
+	This article is intended to serve as an introductory technical analysis of the Yamaha DX7,
+	detailing some of the known information about the synthesiser’s engineering. This
+	article does not intend to be an exhaustive repository of such information, or as reference
+	material for technical means. Instead it intends to provide an informative introduction to the subject.
+</p>
+<p>
+	The intended audience for this article is people with a computer science or similar
+	engineering background who are interested in the technical aspects of synthesisers.
+</p>
+
+<h2 id="acknowledgements">Acknowledgements <a class="permalink" href="#acknowledgements">#</a></h2>
+<p>
+	The debt of gratitude this article owes to the hard work of others is so great that
+	I would be remiss to even risk taking undue credit for their hard work.<br />
+	This article would not have been possible without the work of <a href="https://acreil.wordpress.com/">Acreil</a>, <a
+		href="https://levien.com/">Raph Levien</a>,
+	the <a href="http://asb2m10.github.io/dexed/">Dexed</a> team, and Steffen Ohrendorf. I would also like to thank <a
+		href="https://www.youtube.com/user/madfameltd">MadFame</a> for his
+	fantastic research into the DX7’s history, from which he has made an extremely informative short documentary.
+</p>
+
+<div class="table-of-contents colour_mid-bg">
+	<div class="table-of-contents-title">Table of Contents</div>
+	<ol>
+		<li><a href="#introduction">Introduction</a></li>
+		<li><a href="#hardware">Hardware</a>
+			<ol>
+				<li><a href="#ym21280">YM21280</a></li>
+				<li><a href="#ym21290">YM21290</a></li>
+			</ol>
+		</li>
+		<li><a href="#dac">DAC</a></li>
+		<li><a href="#afterword">Afterword and Going Further</a></li>
+		<li><a href="#references">References</a></li>
+	</ol>
+</div>
+
+<h2 id="introduction">Introduction <a class="permalink" href="#introduction">#</a></h2>
+<p>
+	In 1983 Yamaha Corporation released the now iconic DX7 synthesiser.
+	Featuring a novel form of digital tone synthesis called <i>frequency modulation</i>,
+	it would introduce musicians to a world of new timbral possibilities not possible with its analog
+	contemporaries. By all accounts it was revolutionary, its brassy, metallic timbres would go on to define the
+	characteristic sound of the decade.
+	It would become the first commercially successful digital synthesiser, going on to sell over 200,000 units worldwide.
+</p>
+<p>
+	The frequency modulation synthesis that forms the basis of Yamaha’s FM synthesiser
+	technology had its origins in the research of Stanford University professor John M. Chowning.
+	Inspired by the groundbreaking work of <a href="https://en.wikipedia.org/wiki/Max_Mathews">Max Mathews</a> at Bell
+	Labs,
+	Chowning shifted his course of study from music composition to focus on computer music.
+	While experimenting with the modulation of a sound wave’s frequency, Chowning discovered
+	that as the frequency of the modulating wave increased into the audible spectrum new
+	and interesting harmonic partials were created in the carrier tone, while retaining the
+	same pitch characteristics. Through a controlled application of this process
+	a much wider range of tones could be synthesised than was possible using contemporary analog synthesisers.
+</p>
+<p>
+	The significance of Chowning's discovery was not lost on his colleagues, who urged him
+	to patent this remarkable new technique.
+	Interestingly, at this point in history it was not actually possible for an algorithm
+	—or in fact any other kind of software— to be patented under United States law<sup><a href="#footnote_1">1</a></sup>,
+	so Chowning enlisted the help of fellow academic Andy Moore from Stanford's Artificial Intelligence Lab to come up
+	with a suitable hardware implementation.
+	Their work together would yield the paper
+	<a href="https://ccrma.stanford.edu/sites/default/files/user/jc/fm_synthesispaper-2.pdf"><i>The Synthesis of Complex
+			Audio Spectra by Means of Frequency Modulation</i><sup>[pdf]</sup></a>,
+	published by the <i>Audio Engineering Society</i>, and would ultimately become United States Patent No. 4,018,121.
+</p>
+<p>
+	In mathematical terms, FM synthesis is achieved by using the instantaneous amplitude
+	of a sound wave (the <i>modulator</i>) to adjust the rate of change in the phase
+	angle of another wave (the <i>carrier</i>).<br />
+	As convoluted as this sounds, it makes more sense when visualised:
+</p>
+
+<figure>
+	<a href="/static/img/articles/dx7_technical_analysis/frequency_modulation.jpg" target="_blank"><img
+			alt="DX7 frequency modulation diagram" src="/static/img/articles/dx7_technical_analysis/frequency_modulation.jpg" /></a>
+	<figcaption>
+		The above diagram demonstrates the variable rate of change in the phase
+		angle of the modulated carrier wave’s signal.
+	</figcaption>
+</figure>
+
+<p>
+	There are many fantastic resources available online that give a much better
+	explanation of FM synthesis than I can offer.
+	<a href="https://www.musictech.net/guides/essential-guide/how-fm-synthesis-works/">Here</a>
+	is one particularly informative resource that I recommend. 
+	Another more mathematical approach to documenting frequency modulation can be found <a href="https://www.sfu.ca/~truax/Frequency_Modulation.html">here</a>, created by
+	composer and synthesiser pioneer <a href="https://www.sfu.ca/~truax/index.html">Barry Truax</a>.
+</p>
+<p>
+	By the mid-1970s Stanford’s Office of technology and licensing had yet to successfully
+	find a prospective licensee for their breakthrough in American music technology
+	manufacturers<sup><a href="#footnote_2">2</a></sup>. At this point in time, the
+	investment required for these companies to pivot towards the manufacture of digital
+	synthesiser technology was simply too big a financial risk to take. The technological
+	requirements were simply not commercially viable for companies specialising in analog
+	equipment. To find a licensee, Stanford would need to look overseas. Despite not
+	having a significant market presence on American shores, at that time the largest
+	manufacturer of musical instruments in the world was Yamaha. As fate would have it,
+	one of their senior engineers —an expert in digital technology named Kazukiyo Ishimura— was
+	visiting their American branch at the time, apparently researching the design and
+	development of the very kinds of integrated circuit technology that would make their
+	future FM synthesis technology possible. He was willing to take a trip out to Stanford
+	to hear Chowning’s breakthrough for himself. In Chowning’s own
+	words: “In ten minutes he understood; he knew exactly what I was talking about” (Darter, 1985).
+</p>
+<p>
+	Yamaha would go on to purchase an exclusive license to the technology from Stanford, the rest is history.
+	An extremely comprehensive and entertaining mini-documentary on the history of the Yamaha’s FM synthesiser range made
+	by
+	content-creator <a href="http://madfame.com/">MadFame</a> can be seen
+	<a href="https://www.youtube.com/watch?v=sXt_NXjc7oY">here</a>.
+</p>
+<p>
+	In his memoirs, Roland Corporation’s founder Ikutarō Kakehashi wrote that he had also met
+	with Chowning to discuss his research. Unfortunately for Roland, Stanford were unable to
+	enter into any arrangement due to the exclusive license they had signed with Yamaha
+	only six months earlier.
+	Kakehashi admits that Yamaha were the right people for the job, given their capability
+	to manufacture the LSI chips necessary to make the technology viable. (Kakehashi, 2002, pp. 194-195)
+</p>
+<p>
+	Roland’s technical R&D director Tadao Kikumoto —himself no stranger to
+	innovation, having been the inventor of the iconic TB-303— spent a year poring over Yamaha’s technical
+	literature looking for a way to implement an FM synth without running afoul of patent
+	infringement<sup><a href="#footnote_3">3</a></sup>. By his own account he had also invested considerable time
+	searching high and low for prior art to
+	invalidate Yamaha's patent. This search would ultimately prove
+	unfruitful (Reiffenstein, 2004, pp. 275-276). However unsuccessful these efforts may have been,
+	Roland's research in the area of digital synthesis would lead to them produce their
+	own groundbreaking digital synth: The D50.
+</p>
+<p>
+	Yamaha’s approach to patenting their FM technology is by all accounts comprehensive. It’s through these patents,
+	service manuals, and the heroic reverse engineering efforts of some extremely talented engineers that we have been
+	able to gleam what information we know of the DX7’s internals.
+</p>
+
+<h2 id="hardware">Hardware <a class="permalink" href="#hardware">#</a></h2>
+<p>
+	The beating heart of the DX7 is a Hitachi 63B03 microprocessor, an enhanced version of Motorola’s venerable late 70s
+	8-bit CPU
+	built under license as a second-source supplier<sup><a href="#footnote_4">4</a></sup>.
+	Clocked at around 2MHz, it provides the synthesizer a steady pulse, albeit not the arithmetic
+	power required for real-time digital synthesis<sup><a href="#footnote_5">5</a></sup>.
+	The DX7’s real capabilities lay inside two proprietary integrated circuits: the YM21280 FM-Operator Type S chip,
+	otherwise known in Yamaha’s technical literature as the <i>OPS</i>, and it’s counterpart
+	the YM21290 Envelope Generator or <i>EGS</i>. As their names suggest, the OPS and EGS are responsible for operator and
+	envelope generation respectively.
+</p>
+<p>
+	The DX7 also features a “sub-CPU”, responsible for handling keyboard input, measuring key velocity, and panel switch
+	scanning. This is a Hitachi 6805S, a member of the <a href="https://www.cpu-world.com/CPUs/6800/index.html">6800
+		family</a> of 8-bit CPUs.
+	The analog-to-digital conversion process for interface signals and the sub-CPU’s
+	communication with the main CPU are described in detail in the service manual.
+</p>
+<p>
+	Handling of MIDI communication is performed by the main CPU, via an integrated UART interface.
+	It's worth noting that this is referred to in the service manual as an <i>ACIA</i> (Asynchronous Communications
+	Interface Adapter),
+	and as an <i>SCI</i> (Serial Communications Interface) in Hitachi's technical literature.
+</p>
+<p>
+	Interestingly, the TX7 features a different microprocessor to the DX7, the Hitachi HD63A03X. The TX7 also does not
+	have a sub-CPU, with all input scanning being performed by the main CPU.
+	The service manual for the TX7 —an incredibly detailed source of technical information— provides a detailed memory map
+	for the main CPU,
+	as well as a flowchart of the ACIA interrupt routine, timer interrupt routine and main executive loop.
+</p>
+<p>
+	We know from the service manual that the OPS processes all 16 six-operator voices in ~20.368032μs.
+	From this we can deduce that the synth’s overall sample rate is 49096Hz.
+</p>
+<h3 id="ym21280">YM21280 <a class="permalink" href="#ym21280">#</a></h3>
+<p>
+	Each of the DX7’s six operators consist of a digital sine wave oscillator, with its own independent envelope.
+	In technical terms, these are what are known as <i>numerically controlled oscillators</i>: A phase accumulator
+	register is used to store an index into a lookup table of wave amplitude values stored in ROM.
+	In this system the angular velocity of the oscillator’s wave is controlled by incrementing the phase
+	accumulator each sampling iteration with an amount proportional to the desired frequency<sup><a
+			href="#footnote_6">6</a></sup>.
+	The result of this process is a sine wave output supporting smooth modulation of its frequency.
+</p>
+
+<figure>
+	<a href="/static/img/articles/dx7_technical_analysis/phase_accumulator.jpg" target="_blank"><img
+			alt="Phase accumulator increment diagram" src="/static/img/articles/dx7_technical_analysis/phase_accumulator.jpg" /></a>
+	<figcaption>
+		The above diagram illustrates the relationship between the phase accumulator register
+		and the oscillator’s sinusoidal output. 110hz, 220hz and 440hz waves are synthesised
+		using by varying the gradient of the phase increment. The diagram demonstrates
+		clearly that the phase accumulator value resembles a modulo-2n sawtooth wave
+		when plotted, where n is the resolution of the wave lookup table.
+	</figcaption>
+</figure>
+
+<p>
+	Each operator has its own phase accumulator. The patent describes a 96 stage shift register to store the phase
+	increment for the 6 operators each of the synth’s 16 voices.
+</p>
+<p>
+	We know from the patent literature that the YM21280’s pre-calculated sine wave lookup table is stored in logarithmic
+	format.
+	Two studious engineers Matthew Gambrell and Olli Niemitalo were able to <a href="http://yehar.com/blog/?p=665">decapsulate the YMF262</a>,
+	a nineties-era 2-operator Yamaha FM sound-chip designed for use within PC sound-cards, otherwise known as the
+	<i>OPL3</i>.
+	From the decapsulated IC they were able to read the binary ROM data encoded in the chip’s die.
+	Thanks to their incredible work we now know the format and content of this sine wave table.
+</p>
+<p>
+	Taking full advantage of the sine wave’s symmetrical property, the YMF262 stores only a
+	quarter of the sine’s full period. Flipping and inverting the data to assemble the full
+	wave as needed. It’s highly likely that the YM21280’s sine wave table is formatted similarly<sup><a
+			href="#footnote_7">7</a></sup>.
+</p>
+<p>
+	Using a novel mathematical trick known to anyone familiar with a slide-rule, storing the oscillator’s
+	wave data in logarithmic
+	format allows for scaling the amplitude of the wave without the need for multiplication<sup><a
+			href="#footnote_8">8</a></sup>.
+	Given the logarithmic identity: <i>log(xy) = log(x) + log(y)</i>, storing the operator’s
+	wave and envelope data in logarithmic form allows for replacing the multiplication
+	of the wave’s instantaneous amplitude with the envelope gain coefficient with a relatively cheap addition operation.
+</p>
+<p>
+	We know that the YMF262 stores a lookup table of exponential values which is used to convert the product
+	of this calculation from logarithmic to linear format, taking advantage of the exponential identity
+	<i>2<sup>log2(x)</sup> = x</i>.
+	The service manual of the CE-20 (an earlier, lesser-known FM synthesiser produced by Yamaha)
+	confirms the presence of such an exponential table there too.
+	Although the DX7’s patent literature does not explicitly mention such a thing, it is
+	reasonable to assume this is how the <i>logarithm-linear converter</i> described in the patent functions.
+</p>
+<p>
+	The best description I’ve found of the process of constructing the operator samples from the sine
+	and exponential tables has been made by the amazing <a href="https://github.com/stohrendorf">Steffen Ohrendorf</a>,
+	who has documented the process for the <i>OPL3</i> <a
+		href="https://raw.githubusercontent.com/gtaylormb/opl3_fpga/master/docs/opl3math/opl3math.pdf">here</a>
+	in a brilliant, mathematically correct notation.
+</p>
+<p>
+	Once the correct phase data has been calculated for each of the operators, the actual frequency modulation is
+	performed.
+	The sinusoidal output of one operator (described in the patent as <i>f(ωmt)</i>) is then used to modulate the phase
+	angle<sup><a href="#footnote_9">9</a></sup> <i>(Kωt)</i> of another operator acting as a carrier.
+	In the patent’s poetic flourish: <i>“the sine wave table provides an instantaneous amplitude value of the frequency
+		modulated signal, i.e., sin {Kωt + f(ωmt)}”</i>.
+	The service manual provides a surprisingly in-depth description (considering that no datasheet for the EGS or OPS is
+	publicly available)
+	of how data is stored in the OPS’ internal registers during the synthesis process. Describing the process used in
+	several different distinct algorithms in detail. This process is not worth paraphrasing here. I would encourage
+	interested readers to refer to this document.
+</p>
+<p>
+	Thanks to the brilliant research of synthesiser enthusiast Acreil, we have evidence that the
+	length of the DX7’s full sine table likely consists of 4096 entries: He makes the remarkable observation
+	that when using a modulator frequency much lower than the carrier, harmonics appear in the wave corresponding to the
+	length of
+	sine table. With a modulator frequency of <i>f</i>, and a hypothetical full sine period of n
+	samples, images of the harmonic appear at <i>n*f</i>. In the case of the DX7, <i>n=4096</i>.
+	Interestingly, these harmonics become more attenuated as the sine table length increases.
+	This factor likely contributes heavily to the trademark gritty <i>digital</i> quality of the later FM chips.
+</p>
+<p>
+	Unfortunately, we can’t infer from this any additional information regarding the bit-depth of the DX7’s sine table.
+	The bit-depth of the sine table in the YM3812 chip appears to be 12-bit, so it’s reasonable to infer that the DX7 is
+	similar.
+	The DX7 service manual supports this hypothesis, showing that amplitude data is transmitted from the YM21280 to the
+	DX7’s DAC over a 12-bit parallel interface.
+</p>
+
+<h4>Feedback</h4>
+<p>
+	The DX7’s novel feedback mechanism is implemented by storing the result of processing an operator and using it to
+	modulate itself over multiple iterations.
+	In technical terms, the instantaneous output amplitude of the last operator processing iteration is added to the phase
+	accumulator value used as the input for the current.
+	This feedback input added to the phase accumulator is scaled according to the <i>feedback level</i> parameter.
+	As the feedback iterations increase the sinusoidal operator output approaches the appearance of a sawtooth wave.
+	For interested readers, US patent 4,249,447 contains a detailed description of the feedback synthesis process.
+</p>
+<p>
+	The ‘anti-hunting’ filter mentioned in the patent literature<sup><a href="#footnote_10">10</a></sup> is
+	applied as an anti-aliasing measure, implemented by averaging the latest sample with the last.
+</p>
+
+<h3 id="ym21290">YM21290 <a class="permalink" href="#ym21290">#</a></h3>
+<p>
+	The YM21290 (<i>EGS</i>) is the entry point of the DX7’s synthesis process. It receives data from the CPU, and
+	generates the frequency data and envelope amplitudes. This data is then sent on to the YM21280 to process the
+	operators and generate tones.
+</p>
+<p>
+	We know from the service manual that the frequency data <i>(Kωt)</i> has a word length of 14-bits.
+	This is suggested by the <i>‘OPS block diagram description’</i>, which states:
+	<i>“Converts frequency data of <b>F1 to F14</b> into phase data using the phase accumulator and reads sine wave
+		memory”</i>.
+	Similarly, we can see that the amplitude data has a word length of 12-bits.
+	This data is transmitted between the EGS and OPS via a parallel interface. The DX1 service manual confirms this,
+	providing a pinout description for the EGS and OPS.
+</p>
+<p>
+	The patent describes the phase generator as having a <i>“96 stage/22-bit shift register”</i>. Without evidence to the
+	contrary it is reasonable to assume that the patent is correct, and that the width of the phase accumulator register
+	is 22-bits.
+</p>
+<p>
+	According to <a href="https://levien.com/">Raph Levien</a>, whose fantastic engineering serves as the basis of the
+	highly acclaimed Dexed emulator:
+	<i>“Through measurement, it's clear that the 12-bit envelope value is a simple Q8 fixed-point representation of
+		logarithmic (base 2) gain. Linear gain is equal to 2^(value / 256).
+		The steps are particularly clearly seen in plots of amplitude for slow-decaying envelopes.
+		This gives a total of about 96dB of dynamic range, in steps of approximately 6 / 256 = .0234 dB, which is smooth to
+		the ear”</i>.
+</p>
+<p>
+	The exact internal representation of this numerical data remains the subject of debate<sup><a
+			href="#footnote_11">11</a></sup>,
+	however Raph Levien’s conjecture above regarding the representation of numerical data stands up to scrutiny.
+	These formats have been used in the emulation of the DX7 Mk1 engine in Dexed. They say the proof is in the pudding: in
+	this regard the accuracy of Dexed’s emulation speaks for itself.
+</p>
+
+<h4>Phase Generator</h4>
+<p>
+	The DX7 patent describes in light detail the functionality of the phase generator, a sub-component of the EGS used to
+	create the phase angle data <i>(Kωt)</i>,
+	according to what key is pressed. In patent’s florid verbiage:
+	<i> “The adder 14 is provided for changing the value of the key code KC in response to the coefficient k. A frequency
+		number generator 15 generates, responsive to the output of the adder 14,
+		numerical data representing an amount of phase change per unit time, i.e., a frequency number.”</i>
+	This likely refers to the addition of the key code (likely represented in <i>cents/100</i>) together with the scale of
+	an operator.
+	An internal exponential table is most likely referenced to convert the resulting logarithmic value into hz, from which
+	the phase increment can be obtained.
+	This is consistent with <i>Figure 1</i> in the patent, which shows the <i>KEYCODE</i> (KC) and the output
+	of the <i>OPERATOR CONTROL DATA REGISTER</i> (k) being applied as inputs to an adder, then to the <i>FREQUENCY NUMBER
+		GENERATOR</i>,
+	ultimately yielding <i>Kωt</i>. The patent describes this component as:
+	<i>
+		“A frequency number generator 15 is constituted of a logarithm-linear converter converting the logarithmically
+		expressed frequency number to the linearly expressed frequency number kω.”
+	</i>
+</p>
+
+<figure>
+	<a href="/static/img/articles/dx7_technical_analysis/dx7_patent_figure_1.jpg" target="_blank"><img alt="DX7 Patent Figure 1"
+			src="/static/img/articles/dx7_technical_analysis/dx7_patent_figure_1.jpg" /></a>
+	<figcaption>
+		US Patent 4,554,857 Figure 1 shows a detailed block diagram of the EGS, which features the DX7's phase generator
+		circuit.
+	</figcaption>
+</figure>
+
+	<p>Generally speaking, the formula for obtaining the phase increment for a desired frequency in such a system is:</p>
+	<figure>
+		<div class="formula">ΔP = N⋅(f<sub>mus</sub> / f<sub>sam</sub>)</div>
+		<figcaption>Where N is the size of the phase accumulator (In this case the length of the sine table). f<sub>mus</sub> is the
+			musical frequency of the note, and f<sub>sam</sub> is the synthesiser’s sample rate.</figcaption>
+	</figure>
+
+<p>The exact method by which the YM21290 calculates the phase increment for a given key is unknown, and without further
+	experimentation (see afterword), it will likely remain so. We can gain some insight into likely methodologies by
+	examining Yamaha’s later FM chips, Many of which were mass-produced and used in various different electronic
+	appliances such as PC sound-cards and arcade game consoles. As a result, much more documentation is publicly
+	available.</p>
+<p>The YM2151 sound chip was Yamaha’s first single-chip FM synth system, and the direct successor to the YM21280.
+	Released in 1984 —hot on the heels of the DX7— it contains only four FM operators and does not require a separate
+	envelope generator chip. It is used in Yamaha’s four operator FM synthesiser range: the DX21, DX27, and DX100. While
+	its design is clearly distinct to that of the chips used in the DX7, it’s highly likely that they share implementation
+	details.</p>
+<p>
+	The <i>YM2151 application manual</i> describes in detail the internal registers involved in the calculation of the
+	phase increment,
+	however it stops short of providing an exact formula. I won’t describe its novel system of phase generation here,
+	however anyone interested should refer to the publicly
+	available documentation for the <i>OPM</i>, <i>OPL</i>, and <i>OPL2</i> chips.
+	One particularly good resource on programming these 4-operator FM chips can be found <a
+		href="https://moddingwiki.shikadi.net/wiki/OPL_chip">here</a>.
+</p>
+<p>
+	As the OPS section above states, the envelope amplitude is stored in logarithmic format, which allows for the scaling
+	of the wave amplitude to be performed in a relatively inexpensive manner. The service manual contains an extremely
+	informative block diagram of the EGS showing the process of assembling the final envelope amplitude value. It
+	demonstrates that the rate scaling and envelope modulation values for each operator are added to the final envelope
+	amplitude value, heavily implying that these too are stored in logarithmic format. Similarly it shows that the detune
+	and pitch modulation buffers are added to the phase increment value before it is transferred to the OPS.
+</p>
+
+<figure>
+	<a href="/static/img/articles/dx7_technical_analysis/ops_block_diagram.jpg" target="_blank"><img alt="OPS Block Diagram"
+			src="/static/img/articles/dx7_technical_analysis/ops_block_diagram.jpg" /></a>
+	<figcaption>
+		Block diagram of the YM21290. This diagram demonstrates the involvement of the operator detune settings and rate
+		scaling in calculating the envelope amplitude.
+	</figcaption>
+</figure>
+
+<h3 id="dac">DAC <a class="permalink" href="#dac">#</a></h3>
+<p>
+	The DX7 uses a time-multiplexed DAC with two sample and hold circuits.
+	This means that the synth’s 16 voices are output in two repeating time slices. This is done for purposes of maximising
+	the dynamic range of the synth’s
+	output and limiting intermodulation distortion between the different voices. This can be seen by analysing the
+	synthesiser's output in an oscilloscope, and is
+	confirmed by the TX7 Service Manual.
+</p>
+<p>
+	The actual digital-to-analog conversion of the synthesiser's output is performed by a BA9221 12-bit bipolar DAC chip
+	with a parallel data interface.
+	Interestingly, the reference voltage of the DAC is not hard-wired, but is controlled via a DAC circuit consisting of a
+	resistor ladder connected to an
+	analog multiplexer (This chip is labelled as IC46 in the schematics).
+	This effectively allows for 8 discrete volume levels controllable via software.
+	This circuit is connected to the main CPU's data bus and is presumably controlled via the MIDI amplitude parameters.
+	This particular setup seems to vary widely between different synth implementations,
+	with the TX7 and TX802 having different setups entirely.
+</p>
+<p>
+	The most interesting feature of the DX7's DAC is that the output of the aforementioned BA9221 is fed into another
+	analog multiplexer (labelled as IC41 in the schematics),
+	which functions as an exponential scaler for the DAC output, effectively expanding the resolution of the DAC to
+	15-bits.
+	This analog multiplexer consists of a TC4066BP <i>quad bilateral switch</i> connected to an R-2R resistor ladder.
+	This is described as the <i>amplitude scale factor</i> in the service manual, and is controlled via the SF0 ~ SF3 pins
+	on the YM21280.
+	This effectively converts the 12-bit linear DAC into what could be described as a 15-bit floating point DAC, having a
+	12-bit mantissa and 3-bit exponent.
+	The TX7's service manual describes this functionality of this circuit in the following manner (corrections mine):
+</p>
+<p>
+	<i>"The output data of the OPS is 12-bit. However, to make this the equivalent of 14-bit [sic], the lower levels are
+		expanded 2, 4, and 8 times respectively.
+		To return this to the original value, shift data (SF0~SF3) is sent out.</i>
+</p>
+<p>
+	<i>The-12 bit digital data from the OPS is sent to the DAC IC24 and converted into an analog signal. This 12 bit
+		digital
+		data has been expanded inside the OPS, so the IC26 and the connected resistances will return it to the original
+		level.
+		This is controlled by the shift data sent from the OPS (SF<sub>0</sub> ~ SF<sub>3</sub>), which is sent at the same
+		time as the 12 bit digital data.<br />
+		The shift data is as follows:<br />
+		When the data sent to the DAC has been shifted 1 time, SF<sub>0</sub> sends "High".<br />
+		When the data sent to the DAC has been shifted 2 times, SF<sub>1</sub> sends "High".<br />
+		When the data sent to the DAC has been shifted 4 times, SF<sub>2</sub> sends "High".<br />
+		When the data sent to the DAC has been shifted 8 times, SF<sub>3</sub> Sends "High"."</i>
+</p>
+<p>
+	Misleading terminology aside, this confirms the functionality of the <i>Scale Factor</i> pins and this DAC circuit.
+	The TX7's schematics refer to this as a <a href="https://en.wikipedia.org/wiki/Compander"><i>compander</i></a>, which
+	is analogous to the role this circuit plays within the synthesiser.
+	It was highly likely that the reasoning behind this curious setup was simply the unit cost associated with
+	higher-quality DAC chips. Yamaha's engineers likely did not have access
+	to reasonably priced DAC chips capable of the required analog performance, necessitating some clever engineering on
+	their behalf<sup><a href="#footnote_12">12</a></sup>.
+</p>
+<p>
+	After the DAC stage, an analog amplifier circuit is used to control the final output volume. A lowpass filter with a
+	fixed cutoff frequency of 16KHz is then applied to remove high-frequency aliasing.
+</p>
+
+<h2 id="afterword">Afterword and Going Further <a class="permalink" href="#afterword">#</a></h2>
+<p>
+	This article serves as a cursory technical analysis of Yamaha’s DX7 synthesiser. The technical subject matter
+	underpinning Yamaha's DX series of synthesisers is a topic easily as broad as it is deep.
+	There are several areas that I have regretfully had to neglect in my coverage for the sake of brevity or the
+	difficulty of research, such as the keyboard scanning implementation for just one example.
+</p>
+<p>
+	I have done my best to ensure the factual accuracy of the information presented here, however I permit the possibility
+	that some inaccuracies may be present.
+	If you have any additional relevant information, or can spot any errors in the article, please <a
+		href="mailto:ajxs@panoptic.online">email me</a> and let me know. You’ll be credited in the article for your efforts!
+</p>
+<p>
+	The efforts of developers working on the various emulations of the DX7, particularly the <a
+		href="http://asb2m10.github.io/dexed/">Dexed</a> emulator, represent what is likely the most accurate understanding
+	of the DX7’s internal implementation available.
+</p>
+<p>
+	To get a more information on the DX7’s implementation, some next steps could include:
+</p>
+<p>
+	<b>Decapsulate the YM21280 and YM21290:</b> It’s likely that this has been performed by Yamaha’s competitors, if not
+	hobbyist reverse engineers, at some point in the past.
+	However there does not seem to be any public account of this. Decapsulating the IC’s would reveal at minimum the
+	contents of the sine and exponential tables,
+	and potentially provide further details as to the internal representation of the numeric data.
+</p>
+<p>
+	Acreil points out that several of Yamaha's digital pianos, such as the PF80 or the Clavinova CLP-30, feature the
+	YM2604 <i>OPS2</i> and YM2603 <i>EGS2</i> chips.
+	These chips are likely very similar in nature to the YM21280/YM21290 and would provide good alternative candidates for
+	IC decapsulation. The DX9 also uses the same chips as the DX7, and can
+	potentially be obtained more cheaply than the DX7.
+</p>
+<p>
+	<b>Probe the circuitry:</b> Additional information regarding the format of data transferred between the ICs could be
+	gained by an engineer using a logic analyser on the lines of the various internal chips. For one example, probing the
+	input lines to the YM21290 could potentially yield additional information regarding the operation of the chip’s phase
+	generator.
+</p>
+<p>
+	<b>Disassemble the OS ROM:</b> Additional information regarding the transmission of data between the key scanner,
+	CPU(s) and the YM21290 could be obtained by
+	disassembling the OS ROM. As daunting a task as this may seem, it is not outside the realm of possibility. It has
+	likely been performed in the past<sup><a href="#footnote_13">13</a></sup>,
+	however no online record can be found.
+	The service manual even lists the address space layout for the CPU, which would be invaluable in reverse engineering
+	the operating system ROM image.
+	If one were to disassemble the ROM, it would theoretically be possible to alter it to dump debugging information out
+	via the MIDI output port, recompile and flash it to an EPROM chip.
+</p>
+<p>
+	<b>Obtain original documentation:</b> Obtaining any original documentation from Yamaha would certainly settle the
+	matter of reverse engineering the DX7 definitively.
+	Obtaining datasheets or programming manuals for the OPS or EGS chips would likely provide useful information on their
+	internal register layout and implementation.
+	Unfortunately I am not optimistic about Yamaha ever releasing this information, were it available. Corporations tend
+	to have narrow views about the sharing of proprietary information.
+	For what it’s worth, I emailed Yamaha enquiring about the possibility of obtaining this documentation and was told by
+	their contact centre they have no access to this documentation.<br />
+	It’s also likely that such documentation may have been lost in the intervening decades, and that if this documentation
+	were to still exist it may not have been translated into English.
+</p>
+
+<p>
+	When it comes to telling the rich history of technical innovation that led to the Yamaha DX7, this article does not
+	even scratch the surface.
+	To fully cover not only the technical details, but the history, would take easily a year of research and an entire
+	series of articles.
+	Despite the limited scope of this article, I hope it has served to entertain and inform readers. I hope that it can be
+	of some practical use in future reverse engineering efforts. If you are involved in any such efforts and this article
+	was useful, I’d love to hear about your work.
+</p>
+
+<h2 id="references">References <a class="permalink" href="#references">#</a></h2>
+
+<ul id="references-list">
+	<li>Darter, T. (1985, November). Exclusive Interview With The Father Of Digital FM Synthesis. Aftertouch Magazine,
+		Volume 1, No. 2.</li>
+	<li>Ikutarō Kakehashi, & Olsen, R. (2002). <i>I believe in music : life experiences and thoughts on the future of
+			electronic music by the founder of the Roland Corporation</i>. Milwaukee, Wi: Hal Leonard Corp.</li>
+	<li>Reiffenstein, T. W. (2004). <i>Transectorial innovation, location dynamics and knowledge formation in the Japanese
+			electronic musical instrument industry</i>.</li>
+	<li><a href="https://archive.org/details/DX7SCHEMATICS">Yamaha DX7 Schematics</a></li>
+	<li><a href="http://www.synthmanuals.com/manuals/yamaha/dx7/service_manual/">Yamaha DX7 Service Manual</a></li>
+	<li><a href="https://archive.org/details/TX7SM">Yamaha TX7 Service Manual</a></li>
+	<li><a
+			href="https://electronics.stackexchange.com/questions/512992/how-does-the-yamaha-dx7-digital-analog-converter-work">How
+			does the Yamaha DX7 digital analog converter work? - Electrical Engineering Stack Exchange</a></li>
+	<li><a
+			href="https://github.com/google/music-synthesizer-for-android/blob/master/wiki/Dx7Hardware.wiki">music-synthesizer-for-android/wiki/Dx7Hardware.wiki</a>
+	</li>
+	<li><a href="https://news.stanford.edu/pr/94/940607Arc4222.html">Music synthesis approaches sound quality of real
+			instruments</a></li>
+</ul>
+
+<hr />
+<ol class="footnotes">
+	<li id="footnote_1">
+		The history of software patenting is interesting topic in and of itself: <a
+			href="https://bitlaw.com/software-patent/history.html">https://bitlaw.com/software-patent/history.html</a>.
+		This legal curiosity accounts for the particular format of Chowning's original patent, which focuses on a 'preferred
+		embodiment' represented in the form of an integrated circuit. Consisting of a series
+		of gates.
+	</li>
+	<li id="footnote_2">
+		These were organ manufacturers, such as Allen, Hammond and Lowery. By Chowning’s account, their engineers were
+		either inexperienced in digital systems, or outrightly disinterested (Darter, 1985).
+		This shouldn’t surprise readers. It was the mid-seventies, by all accounts the heyday of the analog synthesiser.
+		Something the DX7 was going to change.
+	</li>
+	<li id="footnote_3">
+		The historical record attests to Yamaha and Stanford having sent patent infringement notices to various companies
+		who had implemented FM synthesis in their devices.
+		It is probably for this reason that synthesiser manufacturers throughout the 80s and 90s implemented <a
+			href="https://en.wikipedia.org/wiki/Korg_Mono/Poly">all manner of</a>
+		cross-modulation mechanisms into their synthesisers, calling them anything other than <i>'frequency
+			modulation'</i>.<br />
+		Dave Smith offers an interesting account of the patenting strategy employed by the large Japanese firms, contending
+		that it was a defensive tactic against spurious claims of infringement: <i>"If you have a lot of patents and
+			somebody comes after you, chances are one of your patents will overlap
+			enough with one of their patents that you can negotiate a deal so nobody gets hurt. Whereas if you don't have
+			anything to offer and you have nothing in your stable of patents, then you're stuck"
+		</i>: (Reiffenstein, 2004, pp. 247-248)
+	</li>
+	<li id="footnote_4">
+		It is commonplace in the electronics manufacturing industry to not utilise any components for which only one
+		supplier is available.
+		Where a case of supply-side disruption could jeopardise manufacturing.
+		As a way to ensure that their components weren’t passed over in favour of safer bets, companies licensed out their
+		IP to <a href="https://en.wikipedia.org/wiki/Second_source">‘second-source suppliers’</a> to manufacture compatible
+		components.
+		<a href="https://medium.com/the-innovation/the-rise-of-amd-69c46148c8fa">AMD</a>, possibly the most famous example,
+		made their mark this way.
+	</li>
+	<li id="footnote_5">
+		It should be mentioned that the <a href="https://en.wikipedia.org/wiki/Motorola_6809">6809/6309</a> was an extremely
+		capable processor in its time, one of the last mainstream 8-bit processors.
+		As a result it contains many advanced features not found among its contemporaries, such as the <i>Direct Page
+			Register</i>.
+		A special register used to store an 8-bit base address, which allowed the use of instructions addressing absolute
+		16-bit address offsets stored within the machine’s 8-bit accumulator registers.
+		A novel feature for its time. However capable the processor was, at these low clock speeds it was simply not capable
+		of meeting the arithmetic requirements of 16 voices of 6-operator FM synthesis.
+	</li>
+	<li id="footnote_6">
+		This use of a <i>Phase Accumulator</i> is standard practice in <i>Direct Digital Synthesis</i>, used in a variety of
+		different engineering disciplines.
+	</li>
+	<li id="footnote_7">
+		As of the time of writing, I’m unaware of anyone who has decapsulated a YM21280. With the going price of a DX7 on
+		second-hand marketplaces being what they are, I’m certainly not about to volunteer my own for the task.
+	</li>
+	<li id="footnote_8">
+		A comparatively expensive operation relative to integer addition, in terms of both clock size on the CPU and die
+		size on the LSI chip. Since the DX7’s DAC is clocked in at an impressive 49096Hz, with 16 6-operator voices -not to
+		mention feedback operations- each featuring it’s own independent gain and envelope, this trick avoids the need for
+		<i>millions</i> of multiplication operations per second.
+	</li>
+	<li id="footnote_9">
+		Whether the DX7 uses <i>frequency modulation</i> or some other form of <i>phase modulation</i> (or whether FM is
+		even classifiable as phase modulation) has been the source of some serious contention. Tom Wiltshire from Electric
+		Druid does an excellent write-up of Casio’s similar ‘phase-distortion synthesis’ technology <a
+			href="https://electricdruid.net/phase-distortion-synthesis/">here</a>.
+	</li>
+	<li id="footnote_10">
+		The patent describes this filter mechanism as: <i>“Such averaging operation serves to the prevent the hunting
+			phenomenon in the circulating type frequency modulation operation”</i>. An illustration of this phenomena can be
+		found in the patent <i>US4249447</i>.
+	</li>
+	<li id="footnote_11">
+		Carbon14 makes a detailed analysis of the OPL2 <a
+			href="http://forums.submarine.org.uk/phpBB/viewtopic.php?f=9&t=1054">here</a>, and credibly argues that the
+		internal representation of the phase accumulator could not be floating point based upon the clamping observed during
+		analysis of operator summation.
+	</li>
+	<li id="footnote_12">
+		Acreil points out that the increased quantization distortion resulting from this setup is neglibile and is likely
+		not responsible for the DX7's trademark distortion, noting that the
+		source is more likely to be poor resistor matching in the compander's resistor ladder, or even the settling time of
+		the BA9221 DAC being insufficient for the high frequency at which it is operated in the DX7.
+	</li>
+	<li id="footnote_13">
+		Aftermarket operating systems for various contemporary synthesisers existed in this era, distributed via EPROM
+		chips.
+		One particularly good example is the <a
+			href="https://www.matrixsynth.com/2020/01/ensoniq-mirage-soundprocess-forgotten-os.html">Soundprocess OS</a> for
+		the Ensoniq Mirage, developed by <a href="http://www.buchty.net/~buchty/ensoniq/transoniq_hacker/PDF/039.pdf">Mark
+			Cecys</a>.
+	</li>
+</ol>
+	</div>
+</article>
+
+		<footer class="colour_dark">
+				© 2021 AJXS
+		</footer>
+	</body>
+</html>

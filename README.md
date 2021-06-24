@@ -1,2 +1,0 @@
-# panoptic.online
-Personal website
