@@ -1,0 +1,542 @@
+/**
+ *  Copyright (c) 2020, AJXS.
+ *  This program is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Authors:
+ *     Anthony <ajxs [at] panoptic.online>
+ */
+
+
+ .colour_dark-bg {
+	background-color:#17170c;
+}
+
+
+.colour_mid-bg {
+	background-color:#242414;
+}
+
+
+.colour_dark-bg_hover:hover {
+	background-color:#282813;
+}
+
+
+.colour_dark, .colour_dark a {
+	color:#282814;
+}
+
+
+.colour_light, .colour_light a {
+	color: #dfdfd3;
+}
+
+
+.colour_light a:hover {
+	color: #c1c1c1;
+}
+
+
+.colour_light a.permalink {
+	color: #41413e;
+}
+
+
+.colour_light a.permalink:hover {
+	color:#585853;
+}
+
+
+.colour_mid-dark, .colour_mid-dark a {
+	color: #848478;
+}
+
+
+.colour_mid, .colour_mid a {
+	color: #c1c1c1;
+}
+
+
+.colour_mid-dark a.permalink {
+	color: #2c2c2a;
+}
+
+
+.colour_mid-dark a.permalink:hover {
+	color:#3f3f3c;
+}
+
+
+.colour_mid a:hover{
+	color: #b5b5b5;
+}
+
+
+.colour_mid-light, .colour_mid-light a {
+	color: #f0f0f0;
+}
+
+
+.colour_mid-light a:hover{
+	color: #c1c1c1;
+}
+
+
+html {
+	background-color: #050505;
+}
+
+
+body {
+	background-color: #0d0d0a;
+	color: white;
+	box-sizing: border-box;
+	font-family: Arial, "Liberation sans", sans-serif;
+	margin: 0 auto;
+	padding: 0.4rem;
+	width: 800px;
+}
+
+
+body > header {
+	text-align: center;
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
+	font-size: 2.643rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+	padding: 1rem 0 0 0;
+	letter-spacing: 0.25rem;
+}
+
+
+body > header a:visited, body > header a:link, body > header a:active {
+	text-decoration: none;
+}
+
+
+body > header a:hover {
+	text-decoration: underline;
+}
+
+
+h1, h2, h3, h4 {
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
+}
+
+
+h1 {
+	font-size: 1.478rem;
+	font-weight: 700;
+	margin: 0.8rem 0 0.8rem;
+	letter-spacing: 0.2rem;
+	text-transform: uppercase;
+}
+
+
+h2 {
+	font-size: 1.157rem;
+	font-weight: 700;
+	margin: 0 0 0.4rem;
+	text-transform: none;
+}
+
+
+a.permalink {
+	text-decoration: none;
+	font-style: italic;
+}
+
+
+section {
+	margin-bottom: 1.4rem;
+}
+
+
+section#contact-info {
+	font-size: 1rem;
+	padding: 0px;
+	text-align: left;
+}
+
+
+section#contact-info #contact-info-list {
+	font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
+	list-style: none;
+	margin: 0 0 0 0.4rem;
+	padding: 0;
+}
+
+
+section#contact-info #contact-info-list li {
+	margin-bottom: 0.4rem;
+}
+
+
+section#contact-info #contact-info-list li .icon {
+	display: inline-block;
+	height: 20px;
+	margin-right: 0.5rem;
+	width: 20px;
+	vertical-align: middle;
+}
+
+
+section#blog ul#blog-entries {
+	list-style: none;
+	padding: 0;
+}
+
+
+section#blog ul#blog-entries>li {
+	margin-bottom: 0.8rem;
+}
+
+
+section#blog ul#blog-entries>li a.entry-link {
+	display: block;
+	padding: 0.4rem;
+	text-decoration: none;
+}
+
+
+section#blog ul#blog-entries>li .date {
+	font-size: 0.8rem;
+	margin: 0 0 0.4rem;
+}
+
+
+section#blog ul#blog-entries>li .short {
+	font-size: 0.8rem;
+}
+
+
+section#blog ul#blog-entries>li .tags {
+	font-size: 0.75rem;
+	padding: 0 0.4rem 0.4rem 0.4rem;
+}
+
+
+ul.tag-list {
+	display: inline;
+	list-style: none;
+	padding: 0;
+}
+
+
+ul.tag-list > li::after {
+	content: ', ';
+}
+
+
+ul.tag-list > li:last-child:after {
+	content: '';
+}
+
+
+ul.tag-list > li {
+	display: inline;
+}
+
+
+section#blog #tag-heading {
+	text-transform: none;
+}
+
+
+article.blog-entry header {
+	text-align: left;
+	margin-bottom: 0.8rem;
+	padding: 0.8rem 0.4rem;
+}
+
+
+article.blog-entry header h1 {
+	font-size: 2rem;
+	margin: 0 0 0.6rem;
+	letter-spacing: initial;
+	text-transform: none;
+}
+
+
+article.blog-entry header .date {
+	font-size: 1rem;
+	margin: 0 0 0.4rem;
+}
+
+
+article.blog-entry header .short {
+	font-size: 0.8rem;
+}
+
+
+article.blog-entry header .tags {
+	font-size: 0.75rem;
+	margin-top: 0.6rem;
+}
+
+
+article.blog-entry .entry-body {
+	color: #d7d7d7;
+	font-size: 0.9rem;
+	padding: 0 0.4rem 0 0.4rem;
+}
+
+
+article.blog-entry .entry-body h1 {
+	font-size: 2.37rem;
+	letter-spacing: initial;
+	margin: 1.25rem 0;
+	text-transform: none;
+}
+
+
+article.blog-entry .entry-body h2 {
+	font-size: 1.863rem;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 1.25rem 0 0.85rem;
+	text-transform: none;
+}
+
+
+article.blog-entry .entry-body h3 {
+	font-size: 1.47rem;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 1rem 0 0.85rem;
+	text-transform: none;
+}
+
+
+article.blog-entry .entry-body h4 {
+	font-size: 1.15rem;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 0.8rem 0;
+	text-transform: none;
+}
+
+
+article.blog-entry .entry-body figure {
+	margin: 1rem 0.4rem;
+}
+
+
+article.blog-entry .entry-body figure img {
+	max-width: 100%;
+	max-height: 360px;
+	margin-bottom: 0.5rem;
+}
+
+
+article.blog-entry .entry-body figure figcaption {
+	font-style: italic;
+	font-size: 0.8rem;
+}
+
+
+.table-of-contents {
+	margin: 1.25rem 0;
+	padding: 0.8rem 0.4rem;
+	width: 50%;
+	outline: 2px solid #242414;
+	border: 1px solid black;
+}
+
+
+.table-of-contents .table-of-contents-title {
+	font-weight: bold;
+	font-size: 1.157rem;
+	margin-bottom: 0.6rem;
+}
+
+
+.table-of-contents ol {
+	margin: 0 0 0.25rem 0;
+	padding-left: 1rem;
+	counter-reset: heading;
+	list-style: none;
+}
+
+
+.table-of-contents ol > li {
+	margin: 0 0 0.15rem 0;
+}
+
+
+.table-of-contents ol > li::before { 
+	content: counters(heading, ".") ". ";
+	counter-increment: heading;
+}
+
+
+/** Sub-list. **/
+.table-of-contents ol > li > ol {
+	margin: 0.25rem 0;
+}
+
+
+.tldr {
+	font-size: 0.8rem;
+	margin-bottom: 0.8rem;
+	padding: 0.8rem 0.4rem;
+}
+
+
+.tldr .tldr-heading {
+	font-weight: bold;
+}
+
+
+ol.footnotes {
+	padding-left: 1.6rem;
+}
+
+
+footer {
+	font-size: 0.8rem;
+	padding: 0.4rem 0 0.4rem;
+	text-align: center;
+}
+
+
+ul#references-list {
+	list-style: none;
+	padding: 0;
+}
+
+
+ul#references-list > li {
+	margin-bottom: 0.8rem;
+}
+
+
+.formula {
+	margin: 0.6rem 0;
+	font-family: monospace;
+}
+
+
+.code-block { 
+	background: #f0f3f3; 
+	border: solid grey; 
+	border-width: .1em .1em .1em .8em; 
+	padding: .2em .6em; 
+	color: black;
+}
+
+
+.code-block pre { margin: 0; }
+.code-block .hll { background-color: #ffffcc; }
+.code-block .c { color: #0099FF; font-style: italic } /* Comment */
+.code-block .err { color: #AA0000; background-color: #FFAAAA } /* Error */
+.code-block .k { color: #006699; font-weight: bold } /* Keyword */
+.code-block .o { color: #555555 } /* Operator */
+.code-block .ch { color: #0099FF; font-style: italic } /* Comment.Hashbang */
+.code-block .cm { color: #0099FF; font-style: italic } /* Comment.Multiline */
+.code-block .cp { color: #009999 } /* Comment.Preproc */
+.code-block .cpf { color: #0099FF; font-style: italic } /* Comment.PreprocFile */
+.code-block .c1 { color: #0099FF; font-style: italic } /* Comment.Single */
+.code-block .cs { color: #0099FF; font-weight: bold; font-style: italic } /* Comment.Special */
+.code-block .gd { background-color: #FFCCCC; border: 1px solid #CC0000 } /* Generic.Deleted */
+.code-block .ge { font-style: italic } /* Generic.Emph */
+.code-block .gr { color: #FF0000 } /* Generic.Error */
+.code-block .gh { color: #003300; font-weight: bold } /* Generic.Heading */
+.code-block .gi { background-color: #CCFFCC; border: 1px solid #00CC00 } /* Generic.Inserted */
+.code-block .go { color: #AAAAAA } /* Generic.Output */
+.code-block .gp { color: #000099; font-weight: bold } /* Generic.Prompt */
+.code-block .gs { font-weight: bold } /* Generic.Strong */
+.code-block .gu { color: #003300; font-weight: bold } /* Generic.Subheading */
+.code-block .gt { color: #99CC66 } /* Generic.Traceback */
+.code-block .kc { color: #006699; font-weight: bold } /* Keyword.Constant */
+.code-block .kd { color: #006699; font-weight: bold } /* Keyword.Declaration */
+.code-block .kn { color: #006699; font-weight: bold } /* Keyword.Namespace */
+.code-block .kp { color: #006699 } /* Keyword.Pseudo */
+.code-block .kr { color: #006699; font-weight: bold } /* Keyword.Reserved */
+.code-block .kt { color: #007788; font-weight: bold } /* Keyword.Type */
+.code-block .m { color: #FF6600 } /* Literal.Number */
+.code-block .s { color: #CC3300 } /* Literal.String */
+.code-block .na { color: #330099 } /* Name.Attribute */
+.code-block .nb { color: #336666 } /* Name.Builtin */
+.code-block .nc { color: #00AA88; font-weight: bold } /* Name.Class */
+.code-block .no { color: #336600 } /* Name.Constant */
+.code-block .nd { color: #9999FF } /* Name.Decorator */
+.code-block .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.code-block .ne { color: #CC0000; font-weight: bold } /* Name.Exception */
+.code-block .nf { color: #CC00FF } /* Name.Function */
+.code-block .nl { color: #9999FF } /* Name.Label */
+.code-block .nn { color: #00CCFF; font-weight: bold } /* Name.Namespace */
+.code-block .nt { color: #330099; font-weight: bold } /* Name.Tag */
+.code-block .nv { color: #003333 } /* Name.Variable */
+.code-block .ow { color: #000000; font-weight: bold } /* Operator.Word */
+.code-block .w { color: #bbbbbb } /* Text.Whitespace */
+.code-block .mb { color: #FF6600 } /* Literal.Number.Bin */
+.code-block .mf { color: #FF6600 } /* Literal.Number.Float */
+.code-block .mh { color: #FF6600 } /* Literal.Number.Hex */
+.code-block .mi { color: #FF6600 } /* Literal.Number.Integer */
+.code-block .mo { color: #FF6600 } /* Literal.Number.Oct */
+.code-block .sa { color: #CC3300 } /* Literal.String.Affix */
+.code-block .sb { color: #CC3300 } /* Literal.String.Backtick */
+.code-block .sc { color: #CC3300 } /* Literal.String.Char */
+.code-block .dl { color: #CC3300 } /* Literal.String.Delimiter */
+.code-block .sd { color: #CC3300; font-style: italic } /* Literal.String.Doc */
+.code-block .s2 { color: #CC3300 } /* Literal.String.Double */
+.code-block .se { color: #CC3300; font-weight: bold } /* Literal.String.Escape */
+.code-block .sh { color: #CC3300 } /* Literal.String.Heredoc */
+.code-block .si { color: #AA0000 } /* Literal.String.Interpol */
+.code-block .sx { color: #CC3300 } /* Literal.String.Other */
+.code-block .sr { color: #33AAAA } /* Literal.String.Regex */
+.code-block .s1 { color: #CC3300 } /* Literal.String.Single */
+.code-block .ss { color: #FFCC33 } /* Literal.String.Symbol */
+.code-block .bp { color: #336666 } /* Name.Builtin.Pseudo */
+.code-block .fm { color: #CC00FF } /* Name.Function.Magic */
+.code-block .vc { color: #003333 } /* Name.Variable.Class */
+.code-block .vg { color: #003333 } /* Name.Variable.Global */
+.code-block .vi { color: #003333 } /* Name.Variable.Instance */
+.code-block .vm { color: #003333 } /* Name.Variable.Magic */
+.code-block .il { color: #FF6600 } /* Literal.Number.Integer.Long */
+
+
+@media screen and (max-width: 640px) {
+	body {
+		width: unset;
+		margin: 0;
+	}
+
+
+	body > header {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+		letter-spacing: 0.25rem;
+		padding: 0.5rem 0 0;
+	}
+
+
+	article.blog-entry header {
+		padding: 0.4rem;
+	}
+
+
+	article.blog-entry header h1 {
+		font-size: 1.5rem;
+	}
+
+
+	.table-of-contents {
+		width: unset;
+	}
+
+
+	ol.footnotes {
+		padding-left: 1rem;
+		font-size: 0.8rem;
+	}
+
+	
+	section#blog #tag-heading {
+		font-size: 1.1rem;
+	}
+}
