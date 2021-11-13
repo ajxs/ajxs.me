@@ -18,7 +18,7 @@ MAKEFLAGS += --no-builtin-rules
 
 SRC_FOLDER          := ./src
 
-DIST_FOLDER         := ./dist
+DIST_FOLDER         := ./docs
 DIST_BLOG_FOLDER    := ${DIST_FOLDER}/blog
 DIST_TAGS_FOLDER    := ${DIST_FOLDER}/blog/tag
 DIST_STATIC_CONTENT := ${DIST_FOLDER}/static

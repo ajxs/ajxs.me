@@ -30,7 +30,7 @@ PAGE_META_AUTHOR = "ajxs"
 PAGE_META_EMAIL = "ajxs@panoptic.online"
 
 # The destination folder for the distributable artifacts.
-DIST_FOLDER = f"{os.getcwd()}/dist"
+DIST_FOLDER = f"{os.getcwd()}/docs"
 # The base template folder.
 TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.

@@ -30,7 +30,7 @@ CHANNEL_DESC = "Ajxs blog"
 # Re: format, refer to: https://www.rssboard.org/rss-profile#data-types-email
 CHANNEL_WEBMASTER = "ajxs@panoptic.online (Anthony)"
 # The destination folder for the distributable artifacts.
-DIST_FOLDER = f"{os.getcwd()}/dist"
+DIST_FOLDER = f"{os.getcwd()}/docs"
 # The path to save the resulting RSS feed file in.
 RSS_FILE_PATH = f"{DIST_FOLDER}/site.rss"
 # The W3C Atom namespace URI.
