@@ -24,6 +24,7 @@ DIST_TAGS_FOLDER    := ${DIST_FOLDER}/blog/tag
 DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_RSS            := ${DIST_FOLDER}/site.rss
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
+ADA_ARTICLE_SYMLINK := ${DIST_BLOG_FOLDER}/Giving_Ada_a_chance.html
 
 all: site
 
@@ -31,7 +32,7 @@ clean:
 	rm -rf ${DIST_FOLDER}
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
-	${DIST_STATIC_CONTENT} ${DIST_RSS} ${GITHUB_DNS_RECORD}
+	${DIST_STATIC_CONTENT} ${DIST_RSS} ${GITHUB_DNS_RECORD} ${ADA_ARTICLE_SYMLINK}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -51,6 +52,12 @@ ${DIST_RSS}:
 
 ${GITHUB_DNS_RECORD}:
 	cp ${SRC_FOLDER}/CNAME ${GITHUB_DNS_RECORD}
+
+# Unfortunately when creating the Ada article, the originally published version had 
+# a mis-capitalised title. This makefile creates a symlink with the incorrectly capitalised
+# filename, pointing to the correct file name.
+${ADA_ARTICLE_SYMLINK}:
+	cd ${DIST_BLOG_FOLDER} && ln -s Giving_Ada_a_Chance.html Giving_Ada_a_chance.html
 
 emu: site
 	cd "${DIST_FOLDER}" && python -m SimpleHTTPServer
