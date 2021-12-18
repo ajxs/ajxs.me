@@ -30,7 +30,7 @@ def parse_footnotes(file_text):
     """
 
     # The root HTML element.
-    root = etree.fromstring(file_text)
+    root = etree.HTML(file_text)
 
     # The current 'number' of the footnote. This is used to create the actual footnote
     # numbering, and text. This is incremented for each footnote parsed.
@@ -56,7 +56,13 @@ def parse_footnotes(file_text):
         # The final footnote 'body' element.
         footnote_body_element = etree.Element("li")
         footnote_body_element.set("id", f"footnote_{current_footnote_number}")
+
+        # Populate the footnote element's content.
+        # Add the original element's first text node to the new element, and then add
+        # any addition children elements.
         footnote_body_element.text = footnote_body.text
+        for child_element in footnote_body.iterchildren():
+            footnote_body_element.append(child_element)
 
         # Append the final body element, and remove the text definition.
         footnote_list[0].append(footnote_body_element)
