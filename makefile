@@ -23,6 +23,7 @@ DIST_BLOG_FOLDER    := ${DIST_FOLDER}/blog
 DIST_TAGS_FOLDER    := ${DIST_FOLDER}/blog/tag
 DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_RSS            := ${DIST_FOLDER}/site.rss
+GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 
 all: site
 
@@ -30,7 +31,7 @@ clean:
 	rm -rf ${DIST_FOLDER}
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
-	${DIST_STATIC_CONTENT} ${DIST_RSS}
+	${DIST_STATIC_CONTENT} ${DIST_RSS} ${GITHUB_DNS_RECORD}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -47,6 +48,9 @@ ${DIST_TAGS_FOLDER}:
 
 ${DIST_RSS}:
 	${SRC_FOLDER}/site/generate_rss
+
+${GITHUB_DNS_RECORD}:
+	cp ${SRC_FOLDER}/CNAME ${GITHUB_DNS_RECORD}
 
 emu: site
 	cd "${DIST_FOLDER}" && python -m SimpleHTTPServer
