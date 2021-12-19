@@ -9,7 +9,7 @@ import os
 import email.utils
 from lxml import etree
 import pytz
-from blog import load_blog_entries
+from site_data import load_blog_entries
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"

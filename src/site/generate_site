@@ -8,7 +8,7 @@ This script generates all of the page content from the blog SQLite database.
 from string import Template
 from datetime import datetime
 import os
-from blog import load_blog_entries, load_tags, load_tagged_entries
+from site_data import load_blog_entries, load_tags, load_tagged_entries, load_static_pages
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -81,10 +81,6 @@ def create_blog_entry_file(entry):
     Creates an individual blog entry HTML file from a parsed entry.
     """
 
-    # Fail if the template has not been loaded.
-    if BLOG_ENTRY_TEMPLATE is None or BLOG_ENTRY_TAGS_TEMPLATE is None:
-        raise ValueError("Blog entry templates are not loaded")
-
     # The HTML to display the entry tags.
     entry_tag_list_html = ""
     # The HTML to display the entry tag list.
@@ -106,7 +102,7 @@ def create_blog_entry_file(entry):
     date_created = entry["date_created"].strftime("%Y.%m.%d")
 
     # An array of tag names.
-    tag_names = list(map(lambda tag : tag['name'], entry['tags']))
+    tag_names = list(map(lambda tag: tag['name'], entry['tags']))
     # The meta keywords string.
     page_keywords_string = ", ".join(tag_names)
 
@@ -142,10 +138,6 @@ def create_tag_pages():
     """
     Creates all of the individual tag index pages.
     """
-
-    # Fail if the template has not been loaded.
-    if TAG_INDEX_TEMPLATE is None or INDEX_TEMPLATE is None:
-        raise ValueError("Templates are not loaded")
 
     # All of the tags used in the blog.
     tags = load_tags()
@@ -203,10 +195,6 @@ def create_index(entries):
     Creates the site index.
     """
 
-    # Fail if the required templates have not been loaded.
-    if BLOG_ENTRY_INDEX_TEMPLATE is None or INDEX_TEMPLATE is None:
-        raise ValueError("Templates are not loaded")
-
     # The HTML for the blog entries in the index.
     index_entries_html = ""
     # The HTML for the site index.
@@ -263,10 +251,62 @@ def create_index(entries):
     print("Wrote index.html")
 
 
+def create_static_page(page):
+    """
+    Creates a static page file.
+    """
+
+    # Create the directory tree for the file path.
+    full_page_path = f"{DIST_FOLDER}/{page['path']}"
+    os.makedirs(os.path.dirname(full_page_path), exist_ok=True)
+
+    with open(full_page_path, "w+") as page_file:
+        full_file_html = MAIN_PAGE_TEMPLATE.substitute(
+            page_title=page["title"],
+            page_html=page["body"],
+            copyright_text=COPYRIGHT_TEXT,
+            page_meta_description=page["description"],
+            page_meta_author=PAGE_META_AUTHOR,
+            page_meta_email=PAGE_META_EMAIL,
+            page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
+        )
+
+        page_file.write(full_file_html)
+
+        print(f"Wrote static page file: {full_page_path}")
+
+
+def are_templates_loaded():
+    """
+    Tests whether all templates have been loaded.
+    """
+
+    templates = [
+        BLOG_ENTRY_TEMPLATE,
+        BLOG_ENTRY_TAGS_TEMPLATE,
+        BLOG_ENTRY_INDEX_TEMPLATE,
+        BLOG_ENTRY_INDEX_TAGS_TEMPLATE,
+        INDEX_TEMPLATE,
+        MAIN_PAGE_TEMPLATE,
+        TAG_INDEX_TEMPLATE,
+    ]
+
+    for template in templates:
+        if not template:
+            return False
+
+    return True
+
+
+
 def main():
     """
     Main program.
     """
+
+    # Exit in a failure condition if the templates have not been loaded.
+    if not are_templates_loaded():
+        raise ValueError("Templates are not loaded")
 
     # Load all of the individual blog entries from the database.
     blog_entries = load_blog_entries()
@@ -281,6 +321,9 @@ def main():
     # Creates the site index.
     create_index(blog_entries)
 
+    static_pages = load_static_pages()
+    for page in static_pages:
+        create_static_page(page)
 
 if __name__ == "__main__":
     main()

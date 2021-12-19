@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Blog library.
-Contains all of the functionality necessary for loading data from the blog database.
+Site library.
+Contains all of the functionality necessary for loading data from the site database.
 """
 
 from datetime import datetime
@@ -21,7 +21,7 @@ __status__ = "Production"
 
 
 # The main database file.
-DATABASE_FILE = "{}/blog.sqlite3".format(os.getcwd())
+DATABASE_FILE = "{}/site.sqlite3".format(os.getcwd())
 
 # The database query to load all blog entries.
 LOAD_ENTRIES_QUERY = """
@@ -53,6 +53,13 @@ LEFT JOIN entry e ON e.entry_id = k.entry_id
 WHERE k.tag_id = ?
 AND e.date_deleted IS NULL
 ORDER BY e.date_created DESC;
+"""
+
+# Database query used to load static page entries.
+LOAD_STATIC_PAGES_QUERY = """
+SELECT *
+FROM static_page p
+WHERE p.date_deleted IS NULL;
 """
 
 
@@ -223,3 +230,36 @@ def load_blog_entries():
                 blog_entries.append(parsed_entry_row)
 
     return blog_entries
+
+
+def load_static_pages():
+    """
+    Loads all of the static pages from the database.
+    """
+
+    # The full array of static pages which will be returned.
+    static_pages = []
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        # The cursor used to fetch entries.
+        cursor = conn.cursor()
+
+        # The cursor used to fetch the entries.
+        cursor.execute(LOAD_STATIC_PAGES_QUERY)
+
+        # Fetch all page rows.
+        while True:
+            rows = cursor.fetchmany()
+            # Break if all rows read.
+            if not rows:
+                break
+
+            for row in rows:
+                static_pages.append({
+                    "title": row[1],
+                    "description": row[2],
+                    "path": row[3],
+                    "body": row[4],
+                })
+
+    return static_pages
