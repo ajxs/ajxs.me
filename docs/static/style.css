@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2020, AJXS.
+ *  Copyright (c) 2021, AJXS.
  *  This program is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
  *  Free Software Foundation; either version 3 of the License, or
@@ -38,7 +38,7 @@ body > header {
   color: #dfdfd3;
   text-align: center;
   font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
-  font-size: 2.643rem;
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
   padding: 1rem 0 0 0;
@@ -174,6 +174,8 @@ section#blog #tag-heading span#tag-index-name a:hover {
 section#blog ul#blog-entries {
   list-style: none;
   padding: 0;
+  font-size: 0.8rem;
+  line-height: 1.184rem;
 }
 
 section#blog ul#blog-entries > li {
@@ -201,7 +203,6 @@ section#blog ul#blog-entries > li a.entry-link h2 a:hover {
 
 section#blog ul#blog-entries > li .date {
   color: #848478;
-  font-size: 0.8rem;
   margin: 0 0 0.4rem;
 }
 
@@ -215,7 +216,6 @@ section#blog ul#blog-entries > li .date a:hover {
 
 section#blog ul#blog-entries > li .short {
   color: #c1c1c1;
-  font-size: 0.8rem;
 }
 
 section#blog ul#blog-entries > li .short a {
@@ -357,6 +357,7 @@ article.blog-entry .entry-body {
   color: #f0f0f0;
   color: #d7d7d7;
   font-size: 0.9rem;
+  line-height: 1.332rem;
   padding: 0 0.4rem 0 0.4rem;
 }
 
@@ -378,6 +379,7 @@ article.blog-entry .entry-body a.permalink:hover {
 
 article.blog-entry .entry-body h1 {
   font-size: 2.37rem;
+  line-height: 3.5076rem;
   letter-spacing: initial;
   margin: 1.25rem 0;
   text-transform: none;
@@ -385,6 +387,7 @@ article.blog-entry .entry-body h1 {
 
 article.blog-entry .entry-body h2 {
   font-size: 1.863rem;
+  line-height: 2.75724rem;
   font-weight: 700;
   letter-spacing: initial;
   margin: 1.25rem 0 0.85rem;
@@ -393,6 +396,7 @@ article.blog-entry .entry-body h2 {
 
 article.blog-entry .entry-body h3 {
   font-size: 1.47rem;
+  line-height: 2.1756rem;
   font-weight: 700;
   letter-spacing: initial;
   margin: 1rem 0 0.85rem;
@@ -401,6 +405,7 @@ article.blog-entry .entry-body h3 {
 
 article.blog-entry .entry-body h4 {
   font-size: 1.15rem;
+  line-height: 1.702rem;
   font-weight: 700;
   letter-spacing: initial;
   margin: 0.8rem 0;
@@ -422,7 +427,7 @@ article.blog-entry .entry-body figure figcaption {
   font-size: 0.8rem;
 }
 
-.table-of-contents {
+article.blog-entry .entry-body .table-of-contents {
   background-color: #242414;
   margin: 1.25rem 0;
   padding: 0.8rem 0.4rem;
@@ -431,61 +436,61 @@ article.blog-entry .entry-body figure figcaption {
   border: 1px solid black;
 }
 
-.table-of-contents .table-of-contents-title {
+article.blog-entry .entry-body .table-of-contents .table-of-contents-title {
   font-weight: bold;
   font-size: 1.157rem;
   margin-bottom: 0.6rem;
 }
 
-.table-of-contents ol {
+article.blog-entry .entry-body .table-of-contents ol {
   margin: 0 0 0.25rem 0;
   padding-left: 1rem;
   counter-reset: heading;
   list-style: none;
 }
 
-.table-of-contents ol > li {
+article.blog-entry .entry-body .table-of-contents ol > li {
   margin: 0 0 0.15rem 0;
   /** Sub-list. **/
 }
 
-.table-of-contents ol > li::before {
+article.blog-entry .entry-body .table-of-contents ol > li::before {
   content: counters(heading, ".") ". ";
   counter-increment: heading;
 }
 
-.table-of-contents ol > li > ol {
+article.blog-entry .entry-body .table-of-contents ol > li > ol {
   margin: 0.25rem 0;
 }
 
-.tldr {
+article.blog-entry .entry-body .tldr {
   font-size: 0.8rem;
   margin-bottom: 0.8rem;
   padding: 0.8rem 0.4rem;
 }
 
-.tldr .tldr-heading {
+article.blog-entry .entry-body .tldr .tldr-heading {
   font-weight: bold;
 }
 
-ol.footnotes {
+article.blog-entry .entry-body ol.footnotes {
   padding-left: 1.6rem;
 }
 
-ol.footnotes li {
+article.blog-entry .entry-body ol.footnotes li {
   margin-bottom: 0.6rem;
 }
 
-ul#references-list {
+article.blog-entry .entry-body ul#references-list {
   list-style: none;
   padding: 0;
 }
 
-ul#references-list > li {
+article.blog-entry .entry-body ul#references-list > li {
   margin-bottom: 0.8rem;
 }
 
-.formula {
+article.blog-entry .entry-body .formula {
   margin: 0.6rem 0;
   font-family: monospace;
 }
@@ -507,10 +512,10 @@ ul#references-list > li {
   article.blog-entry header h1 {
     font-size: 1.5rem;
   }
-  .table-of-contents {
+  article.blog-entry .table-of-contents {
     width: unset;
   }
-  ol.footnotes {
+  article.blog-entry ol.footnotes {
     padding-left: 1rem;
     font-size: 0.8rem;
   }
