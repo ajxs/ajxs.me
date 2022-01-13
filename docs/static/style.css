@@ -418,7 +418,7 @@ article.blog-entry .entry-body .table-of-contents {
   padding: 0.8rem 0.4rem;
   width: 50%;
   outline: 2px solid #242414;
-  border: 1px solid black;
+  border: 1px solid #000000;
 }
 
 article.blog-entry .entry-body .table-of-contents .table-of-contents-title {
