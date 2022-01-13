@@ -8,25 +8,12 @@
  *  Authors:
  *     Anthony <ajxs [at] panoptic.online>
  */
-.colour_dark-bg {
-  background-color: #17170c;
-}
-
-.colour_mid-bg {
-  background-color: #242414;
-}
-
-.colour_dark-bg_hover:hover {
-  background-color: #282813;
-}
-
 html {
   background-color: #050505;
 }
 
 body {
   background-color: #0d0d0a;
-  color: white;
   box-sizing: border-box;
   font-family: Arial, "Liberation sans", sans-serif;
   margin: 0 auto;
@@ -72,28 +59,12 @@ body > footer a {
   color: #282814;
 }
 
+body > footer a:hover {
+  color: #848478;
+}
+
 h1, h2, h3, h4 {
   font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
-}
-
-h1 {
-  font-size: 1.478rem;
-  font-weight: 700;
-  margin: 0.8rem 0 0.8rem;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-size: 1.157rem;
-  font-weight: 700;
-  margin: 0 0 0.4rem;
-  text-transform: none;
-}
-
-a.permalink {
-  text-decoration: none;
-  font-style: italic;
 }
 
 section {
@@ -134,16 +105,28 @@ section#contact-info #contact-info-list li .icon {
   vertical-align: middle;
 }
 
-section#blog > h1 {
+section#blog h1 {
+  color: #dfdfd3;
+  font-size: 1.478rem;
+  font-weight: 700;
+  margin: 0.8rem 0 0.8rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+section#blog h1 a {
   color: #dfdfd3;
 }
 
-section#blog > h1 a {
-  color: #dfdfd3;
-}
-
-section#blog > h1 a:hover {
+section#blog h1 a:hover {
   color: #c1c1c1;
+}
+
+section#blog h2 {
+  font-size: 1.157rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  text-transform: none;
 }
 
 section#blog #tag-heading {
@@ -370,6 +353,8 @@ article.blog-entry .entry-body a:hover {
 }
 
 article.blog-entry .entry-body a.permalink {
+  text-decoration: none;
+  font-style: italic;
   color: #41413e;
 }
 

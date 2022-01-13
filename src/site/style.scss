@@ -15,113 +15,118 @@ $font-mono: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 
 $line-height-scale: 1.48;
 
+$blog-index-h1-font-size: 1.478rem;
+$blog-index-h2-font-size: 1.157rem;
 $blog-index-font-size: 0.8rem;
-$blog-index-line-height: $blog-index-font-size * $line-height-scale;
-
-$entry-body-font-size: 0.9rem;
-$entry-body-line-height: $entry-body-font-size * $line-height-scale;
 
 $entry-body-h1-font-size: 2.37rem;
-$entry-body-h1-line-height: $entry-body-h1-font-size * $line-height-scale;
-
 $entry-body-h2-font-size: 1.863rem;
-$entry-body-h2-line-height: $entry-body-h2-font-size * $line-height-scale;
-
 $entry-body-h3-font-size: 1.47rem;
-$entry-body-h3-line-height: $entry-body-h3-font-size * $line-height-scale;
-
 $entry-body-h4-font-size: 1.15rem;
-$entry-body-h4-line-height: $entry-body-h4-font-size * $line-height-scale;
+$entry-body-font-size: 0.9rem;
+
+$entry-body-text-colour: #d7d7d7;
+$entry-body-text-colour-permalink: #41413e;
+$entry-body-text-colour-permalink-hover: #585853;
+
+$background-colour-body: #0d0d0a;
+$background-colour-page: #050505;
 
 $background-colour-dark: #17170c;
 $background-colour-dark-hover: #282813;
 $background-colour-mid: #242414;
 
+$text-colour-light: #dfdfd3;
+$text-colour-light-hover: #c1c1c1;
+
+$text-colour-mid: #c1c1c1;
+$text-colour-mid-hover: #b5b5b5;
+
+$text-colour-mid-light: #f0f0f0;
+$text-colour-mid-light-hover: #c1c1c1;
+
+$text-colour-mid-dark: #848478;
+$text-colour-mid-dark-hover: #b5b5b5;
+
+$text-colour-dark: #282814;
+$text-colour-dark-hover: #848478;
+
+$table-of-contents-outline-colour: #242414;
+$table-of-contents-border-colour: #000000;
+
 
 @mixin colour_light {
-	color: #dfdfd3;
+	color: $text-colour-light;
 
 	a {
-		color: #dfdfd3;
+		color: $text-colour-light;
 
 		&:hover {
-			color: #c1c1c1;
+			color: $text-colour-light-hover;
 		}
 	}
 }
 
 
 @mixin colour_mid {
-	color: #c1c1c1;
+	color: $text-colour-mid;
 
 	a {
-		color: #c1c1c1;
+		color: $text-colour-mid;
 
 		&:hover {
-			color: #b5b5b5;
+			color: $text-colour-mid-hover;
 		}
 	}
 }
 
 
 @mixin colour_mid_light {
-	color: #f0f0f0;
+	color: $text-colour-mid-light;
 
 	a {
-		color: #f0f0f0;
+		color: $text-colour-mid-light;
 
 		&:hover {
-			color: #c1c1c1;
+			color: $text-colour-mid-light-hover;
 		}
 	}
 }
 
 
 @mixin colour_mid_dark {
-	color: #848478;
+	color: $text-colour-mid-dark;
 
 	a {
-		color: #848478;
+		color: $text-colour-mid-dark;
 
 		&:hover {
-			color: #b5b5b5;
+			color: $text-colour-mid-dark-hover;
 		}
 	}
 }
 
 
 @mixin colour_dark {
-	color:#282814;
+	color: $text-colour-dark;
 
 	a {
-		color:#282814;
+		color: $text-colour-dark;
+
+		&:hover {
+			color: $text-colour-dark-hover;
+		}
 	}
 }
 
 
-.colour_dark-bg {
-	background-color:#17170c;
-}
-
-
-.colour_mid-bg {
-	background-color:#242414;
-}
-
-
-.colour_dark-bg_hover:hover {
-	background-color:#282813;
-}
-
-
 html {
-	background-color: #050505;
+	background-color: $background-colour-page;
 }
 
 
 body {
-	background-color: #0d0d0a;
-	color: white;
+	background-color: $background-colour-body;
 	box-sizing: border-box;
 	font-family: $font-body;
 	margin: 0 auto;
@@ -163,29 +168,6 @@ h1, h2, h3, h4 {
 }
 
 
-h1 {
-	font-size: 1.478rem;
-	font-weight: 700;
-	margin: 0.8rem 0 0.8rem;
-	letter-spacing: 0.2rem;
-	text-transform: uppercase;
-}
-
-
-h2 {
-	font-size: 1.157rem;
-	font-weight: 700;
-	margin: 0 0 0.4rem;
-	text-transform: none;
-}
-
-
-a.permalink {
-	text-decoration: none;
-	font-style: italic;
-}
-
-
 section {
 	margin-bottom: 1.4rem;
 }
@@ -220,8 +202,22 @@ section#contact-info {
 
 
 section#blog {
-	& > h1 {
+	h1 {
 		@include colour_light;
+
+		font-size: $blog-index-h1-font-size;
+		font-weight: 700;
+		margin: 0.8rem 0 0.8rem;
+		letter-spacing: 0.2rem;
+		text-transform: uppercase;
+	}
+	
+	
+	h2 {
+		font-size: $blog-index-h2-font-size;
+		font-weight: 700;
+		margin: 0 0 0.4rem;
+		text-transform: none;
 	}
 
 	#tag-heading {
@@ -239,7 +235,7 @@ section#blog {
 		padding: 0;
 
 		font-size: $blog-index-font-size;
-		line-height: $blog-index-line-height;
+		line-height: $blog-index-font-size * $line-height-scale;
 
 		& > li {
 			background-color: $background-colour-dark;
@@ -347,22 +343,24 @@ article.blog-entry {
 	.entry-body {
 		@include colour_mid_light;
 	
-		color: #d7d7d7;
+		color: $entry-body-text-colour;
 		font-size: $entry-body-font-size;
-		line-height: $entry-body-line-height;
+		line-height: $entry-body-font-size * $line-height-scale;;
 		padding: 0 0.4rem 0 0.4rem;
 
 		a.permalink {
-			color: #41413e;
+			text-decoration: none;
+			font-style: italic;
+			color: $entry-body-text-colour-permalink;
 	
 			&:hover {
-				color:#585853;
+				color: $entry-body-text-colour-permalink-hover;
 			}
 		}
 
 		h1 {
 			font-size: $entry-body-h1-font-size;
-			line-height: $entry-body-h1-line-height;
+			line-height: $entry-body-h1-font-size * $line-height-scale;
 			letter-spacing: initial;
 			margin: 1.25rem 0;
 			text-transform: none;
@@ -370,7 +368,7 @@ article.blog-entry {
 
 		h2 {
 			font-size: $entry-body-h2-font-size;
-			line-height: $entry-body-h2-line-height;
+			line-height: $entry-body-h2-font-size * $line-height-scale;
 			font-weight: 700;
 			letter-spacing: initial;
 			margin: 1.25rem 0 0.85rem;
@@ -379,7 +377,7 @@ article.blog-entry {
 
 		h3 {
 			font-size: $entry-body-h3-font-size;
-			line-height: $entry-body-h3-line-height;
+			line-height: $entry-body-h3-font-size * $line-height-scale;
 			font-weight: 700;
 			letter-spacing: initial;
 			margin: 1rem 0 0.85rem;
@@ -388,7 +386,7 @@ article.blog-entry {
 
 		h4 {
 			font-size: $entry-body-h4-font-size;
-			line-height: $entry-body-h4-line-height;
+			line-height: $entry-body-h4-font-size * $line-height-scale;
 			font-weight: 700;
 			letter-spacing: initial;
 			margin: 0.8rem 0;
@@ -415,8 +413,8 @@ article.blog-entry {
 			margin: 1.25rem 0;
 			padding: 0.8rem 0.4rem;
 			width: 50%;
-			outline: 2px solid #242414;
-			border: 1px solid black;
+			outline: 2px solid $table-of-contents-outline-colour;
+			border: 1px solid $table-of-contents-border-colour;
 		
 			.table-of-contents-title {
 				font-weight: bold;
