@@ -13,23 +13,23 @@
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 	</head>
 	<body>
-		<header class="colour_light">
+		<header>
 			<a href="/">~ajxs</a>
 		</header>
-		<article class="blog-entry colour_mid-light">
-	<header class="colour_dark-bg">
+		<article class="blog-entry">
+	<header>
 		<h1>Giving Ada a Chance</h1>
-		<div class="date colour_mid-dark">2021.01.13</div>
-		<div class="short colour_mid">An in-depth look at the Ada programming language, its history, and what it has to offer developers today. As well as a fistful of my humble opinions.</div>
-		<div class="tags colour_mid-dark">
+		<div class="date">2021.01.13</div>
+		<div class="short">An in-depth look at the Ada programming language, its history, and what it has to offer developers today. As well as a fistful of my humble opinions.</div>
+		<div class="tags">
 	<span>Tagged as: </span>
-	<ul class="tag-list colour_mid-light">
+	<ul class="tag-list">
 		<li><a href="/blog/tag/Programming.html">Programming</a></li>
 	</ul>
 </div>
 
 	</header>
-	<div class="entry-body colour_light">
+	<div class="entry-body">
 		<div class="tldr colour_dark-bg"><span class="tldr-heading colour_light">TL;DR:</span> Ada is an extremely interesting and robust programming language that has a lot to offer modern developers of system 
 	and bare-metal software. At very least, Ada presents many interesting ideas that designers of modern programming languages could stand to learn much from. If you want a 30 second version of this article, check out the 
 	<a href="#practical_example">practical example</a> that I provide for a comparison of Ada with C.</div>
@@ -44,7 +44,7 @@
 	the more extraordinary, and for this I am all the more grateful.
 </p>
 
-<h2>A Chance Collision</h2>
+<h2 id="a_chance_collision">A Chance Collision <a class="permalink" href="#a_chance_collision">#</a></h2>
 <p>
 	By no deliberate design of my own, I happen to live close to a university. Not in the kind of ‘University town’ common
 	to much of Europe or the United States, but in the densely packed suburban sprawl of the inner-city. My regular walk
@@ -65,7 +65,7 @@
 </p>
 
 
-<h2>Exceeding My Expectations</h2>
+<h2 id="exceeding my_expectations">Exceeding My Expectations <a class="permalink" href="#exceeding my_expectations">#</a></h2>
 <p>Admittedly, I had pictured Ada’s syntax resembling the uncompromising verbosity and rigid construction of COBOL, or
 	perhaps the Lovecraftian hieroglyphics of Fortran’s various eldritch incarnations. Turning the pages, I was pleasantly
 	surprised by modern constructs associated with modern high-level languages such as ranges, slicing and
@@ -75,7 +75,7 @@
 	limited experience with bare-metal development on the x86 and ARM platforms using C and assembly, so the prospect of
 	using higher-level constructs on bare-metal seemed promising to me.</p>
 
-<h2>Not the Camel You Expected</h2>
+<h2 id="not_the_camel_you_expected">Not the Camel You Expected <a class="permalink" href="#not_the_camel_you_expected">#</a></h2>
 <p>A common pejorative refrain directed at Ada by its many detractors is that it is a language “designed by committee”,
 	or even worse, a language “designed by committee <i>for the military</i>”<sup><a href="#footnote_1">1</a></sup>. The implication of which being that (so-called)
 	design by committee precludes it from any real-world practicality. I contend that it is better to design a language to fit an
@@ -91,7 +91,7 @@
 	of readability, safety, etc.” (Whitaker, 1993). After its successful implementation, in what would prove a controversial decision, the DoD would go so far as to mandate 
 	the use of Ada for all in-house software engineering.</p>
 
-<h2>So What Makes It Special?</h2>
+<h2 id="what_makes_it_so_good">So What Makes It Special? <a class="permalink" href="#what_makes_it_so_good">#</a></h2>
 <p>
 	Ada has many useful features that are of particular interest for low-level programming and operating-system development. One
 	feature in particular that impressed me greatly was Ada’s <i>representation clauses</i> (see below). They provide a highly granular way to define the
@@ -144,7 +144,7 @@
 	of this range to a variable of this type will raise a <code>Constraint_Error</code> exception at runtime.
 </p>
 
-<h2>Representation Clauses</h2>
+<h3>Representation Clauses</h3>
 <p>
 	Ada allows for explicitly defining the in-memory representation of scalar and compound types. The following example
 	demonstrates the definition of a record type (equivalent to structures in C), as well as its associated
@@ -204,7 +204,7 @@
 	value of <code>Ring_1</code> will be represented by <code>0x1</code>, and so on.
 </p>
 
-<h2 id="practical_example">A Practical Example</h2>
+<h2 id="practical_example">A Practical Example <a class="permalink" href="#practical_example">#</a></h2>
 
 <p>
 	The following example, and accompanying comparison with C, demonstrates the configuration of a hypothetical UART device by interfacing with an 8-bit memory-mapped configuration register. 
@@ -318,7 +318,7 @@
 </pre></div>
 
 
-<h2>The Bad and the Ugly</h2>
+<h2 id="the_bad">The Bad and the Ugly <a class="permalink" href="#the_bad">#</a></h2>
 <p>No programming language is perfect, and Ada is no exception. I preface this section by freely admitting that I am by no means an expert in the Ada programming language.
 	Some of these (minor) complaints could be perfectly explained by my naiveté of established conventions and inexperience with the language.
 </p>
@@ -366,7 +366,7 @@
 	to beginners if taught through Ada instead of C and its derivative languages, as is common in computer science and engineering faculties worldwide.
 </p>
 
-<h2>What’s Next, and What Have We Learned?</h2>
+<h2 id="whats_next">What’s Next, and What Have We Learned? <a class="permalink" href="#whats_next">#</a></h2>
 <p>Rumors of Ada’s demise remain exaggerated, decades later. Mere years after the DoD Ada mandate had been lifted<sup><a href="#footnote_7">7</a></sup>, Lockheed Martin’s
 	choice to forgo Ada as the language of choice for the development of
 	the benighted F-35 Joint Strike Fighter in lieu of a heavily abridged dialect of C++<sup><a href="#footnote_5">5</a></sup>  was for many the definitive sign that the bell tolled for Ada. John H. Robb,
@@ -408,7 +408,7 @@
 	<a href="https://nvd.nist.gov/vuln/detail/CVE-2019-3568">wrong</a> than it is to get right.</p>
 
 <hr />
-<h2>References</h2>
+<h2 id="references">References <a class="permalink" href="#references">#</a></h2>
 
 <p>Flightglobal (2016) F-35 locked and loaded with improved Block 3i software. Retrieved 12 Jan, 2021, from <a href="https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article">https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article</a></p>
 <p>William A. Whitaker (1993). Ada - The Project, The DoD High Order Language Working Group. <i>ACM SIGPLAN Notices</i> Vol. 28, No. 3, March 1993.</p>
@@ -481,8 +481,8 @@
 	</div>
 </article>
 
-		<footer class="colour_dark">
-				© 2021 AJXS
+		<footer>
+				© 2022 AJXS
 		</footer>
 	</body>
 </html>
