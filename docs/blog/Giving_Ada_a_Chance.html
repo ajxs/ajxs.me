@@ -30,12 +30,13 @@
 
 	</header>
 	<div class="entry-body">
-		<div class="tldr colour_dark-bg"><span class="tldr-heading colour_light">TL;DR:</span> Ada is an extremely interesting and robust programming language that has a lot to offer modern developers of system 
+		<div class="tldr"><span class="tldr-heading">TL;DR:</span> Ada is an extremely interesting and robust programming language that has a lot to offer modern developers of system 
 	and bare-metal software. At very least, Ada presents many interesting ideas that designers of modern programming languages could stand to learn much from. If you want a 30 second version of this article, check out the 
 	<a href="#practical_example">practical example</a> that I provide for a comparison of Ada with C.</div>
 
 <p>
-	Much of the technical material presented in this article is available as part of <a href="https://wiki.osdev.org/User:Ajxs">my contributions</a> to <a href="https://wiki.osdev.org/Main_Page">osdev.org</a>
+	Much of the technical material presented in this article is available as part of 
+	<a href="https://wiki.osdev.org/User:Ajxs" target="_blank">my contributions</a> to <a href="https://wiki.osdev.org/Main_Page" target="_blank">osdev.org</a>
 </p>
 <p>
 	I consider myself a rational man. While I may believe in an entirely deterministic model of the universe, I certainly
@@ -67,9 +68,9 @@
 
 <h2 id="exceeding my_expectations">Exceeding My Expectations <a class="permalink" href="#exceeding my_expectations">#</a></h2>
 <p>Admittedly, I had pictured Ada’s syntax resembling the uncompromising verbosity and rigid construction of COBOL, or
-	perhaps the Lovecraftian hieroglyphics of Fortran’s various eldritch incarnations. Turning the pages, I was pleasantly
+	perhaps the Lovecraftian hieroglyphics of APL’s various eldritch incarnations. Turning the pages, I was pleasantly
 	surprised by modern constructs associated with modern high-level languages such as ranges, slicing and
-	exception-handling. The syntax — Admittedly verbose by modern standards<sup><a href="#footnote_3">3</a></sup> — seemed deliberately and purposefully
+	exception-handling. The syntax — Admittedly verbose by modern standards<sup><a id="footnote_3_link" href="#footnote_3">3</a></sup> — seemed deliberately and purposefully
 	constructed to make the language comprehensible at a glance.</p>
 <p>The fact that Ada was designed with embedded-software in mind was of particular interest to me. I already had some
 	limited experience with bare-metal development on the x86 and ARM platforms using C and assembly, so the prospect of
@@ -77,12 +78,12 @@
 
 <h2 id="not_the_camel_you_expected">Not the Camel You Expected <a class="permalink" href="#not_the_camel_you_expected">#</a></h2>
 <p>A common pejorative refrain directed at Ada by its many detractors is that it is a language “designed by committee”,
-	or even worse, a language “designed by committee <i>for the military</i>”<sup><a href="#footnote_1">1</a></sup>. The implication of which being that (so-called)
+	or even worse, a language “designed by committee <i>for the military</i>”<sup><a id="footnote_1_link" href="#footnote_1">1</a></sup>. The implication of which being that (so-called)
 	design by committee precludes it from any real-world practicality. I contend that it is better to design a language to fit an
 	existing problem domain than to pick your weapon of choice and set out in search of new problem domains to apply it
-	to<sup><a href="#footnote_2">2</a></sup>. I will spare readers a detailed retelling of Ada’s conception within the Department of Defence’s <a href="http://archive.adaic.com/pol-hist/history/holwg-93/holwg-93.htm">‘High Order
+	to<sup><a id="footnote_2_link" href="#footnote_2">2</a></sup>. I will spare readers a detailed retelling of Ada’s conception within the Department of Defence’s <a href="http://archive.adaic.com/pol-hist/history/holwg-93/holwg-93.htm" target="_blank">‘High Order
 	Language Working Group’</a>, save to say that the Ada programming language was born of the need for single, unified
-	higher-level language suitable for use in the multitude of Real-Time Embedded systems developed by the DoD<sup><a href="#footnote_4">4</a></sup>. In the
+	higher-level language suitable for use in the multitude of Real-Time Embedded systems developed by the DoD<sup><a id="footnote_4_link" href="#footnote_4">4</a></sup>. In the
 	wise words of the working-group’s chair, Colonel William A. Whitaker: “It was concluded that no existing language
 	could be adopted as a single common high order language for the DoD, but that a single language meeting essentially
 	all the requirements was both feasible and desirable.”. If such a thing was indeed feasible, the DoD’s deep pockets
@@ -208,7 +209,7 @@
 
 <p>
 	The following example, and accompanying comparison with C, demonstrates the configuration of a hypothetical UART device by interfacing with an 8-bit memory-mapped configuration register. 
-	This example has been adapted from a presentation by AdaCore viewable <a href="https://www.youtube.com/watch?v=qvmDqbuQe-M">here</a>.
+	This example has been adapted from a presentation by AdaCore viewable <a href="https://www.youtube.com/watch?v=qvmDqbuQe-M" target="_blank">here</a>.
 </p>
 
 <div class="code-block"><pre><span></span><span class="kn">with</span> <span class="nn">System.Storage_Elements</span><span class="p">;</span> <span class="kn">use</span> <span class="nn">System.Storage_Elements</span><span class="p">;</span>
@@ -283,7 +284,7 @@
 	Contrast this with the same functionality implemented in C. Despite being shorter in length, the register cannot be altered without using bitwise operators to manipulate the individual fields. 
 	This approach is generally considered more error-prone than using a record in Ada overlaid at the register’s memory-mapped address. 
 	It is possible to define a struct type in C with bit-fields for the individual elements, however the C standard does not guarantee the layout 
-	and order of the individual fields<sup><a href="#footnote_6">6</a></sup>.
+	and order of the individual fields<sup><a id="footnote_6_link" href="#footnote_6">6</a></sup>.
 </p>
 
 
@@ -326,7 +327,8 @@
 	<b>Poor pointer semantics</b> – The requirement to declare a pointer-to-type as a new type feels especially onerous.
 	However contextually intuitive the act of declaring a distinct pointer type may be to the compiler, it provides an
 	unnecessary burden to the programmer. Conversion to and from — and subsequent dereferencing of — pointers is
-	unnecessarily cumbersome. Needing to instantiate the generic library <a href="https://www.adaic.org/resources/add_content/standards/05rm/html/RM-13-7-2.html"><code>Address_To_Access_Conversions</code></a> to 
+	unnecessarily cumbersome. Needing to instantiate the generic library 
+	<a href="https://www.adaic.org/resources/add_content/standards/05rm/html/RM-13-7-2.html" target="_blank"><code>Address_To_Access_Conversions</code></a> to 
 	do something as simple as
 	creating a pointer from an arbitrary address seems like unnecessary overkill.
 	All this being said, I like the semantic intuitiveness of Ada’s <i>access types</i>, in contrast to C’s pointers. The
@@ -343,7 +345,7 @@
 	language constructs on a platform.
 	I will admit being unaccustomed to being concerned with a language’s runtime library when targeting bare-metal. I
 	found the process of implementing my own runtime library for a bare-metal target
-	to be particularly unintuitive. When beginning the <a href="https://github.com/ajxs/cxos">CXOS</a> project, my
+	to be particularly unintuitive. When beginning the <a href="https://github.com/ajxs/cxos" target="_blank">CXOS</a> project, my
 	compiler did not ship with a
 	suitable <i>zero-footprint</i> runtime library for the x86 platform. As a result I was forced to learn the process of
 	implementing a bare-metal x86 runtime for myself. The equivalent process of putting together the build
@@ -353,7 +355,7 @@
 	to uptake that other language’s may not have. This
 	is by no means an insurmountable problem, albeit one that I found particular time consuming.
 	I put together a comprehensive guide to setting up an Ada runtime library suitable for operating system development on
-	the x86 platform, which can be viewed <a href="https://wiki.osdev.org/Ada_Runtime_Library">here</a>.
+	the x86 platform, which can be viewed <a href="https://wiki.osdev.org/Ada_Runtime_Library" target="_blank">here</a>.
 </p>
 
 <p>
@@ -367,11 +369,12 @@
 </p>
 
 <h2 id="whats_next">What’s Next, and What Have We Learned? <a class="permalink" href="#whats_next">#</a></h2>
-<p>Rumors of Ada’s demise remain exaggerated, decades later. Mere years after the DoD Ada mandate had been lifted<sup><a href="#footnote_7">7</a></sup>, Lockheed Martin’s
+<p>Rumors of Ada’s demise remain exaggerated, decades later. Mere years after the DoD Ada mandate had been lifted<sup><a id="footnote_7_link" href="#footnote_7">7</a></sup>, Lockheed Martin’s
 	choice to forgo Ada as the language of choice for the development of
-	the benighted F-35 Joint Strike Fighter in lieu of a heavily abridged dialect of C++<sup><a href="#footnote_5">5</a></sup>  was for many the definitive sign that the bell tolled for Ada. John H. Robb,
+	the benighted F-35 Joint Strike Fighter in lieu of a heavily abridged dialect of C++<sup><a id="footnote_5_link" href="#footnote_5">5</a></sup>  was for many the definitive sign that the bell tolled for Ada. John H. Robb,
 	the Senior Manager of the F-35 Joint Strike Fighter Air Vehicle Software team at Lockheed Martin Aeronautics Fort
-	Worth <a href="https://web.archive.org/web/20111219004314/http://journal.thedacs.com:80/issue/53/158">writes on the subject</a>: “Ada was seen as the technically superior and more robust language, but
+	Worth <a href="https://web.archive.org/web/20111219004314/http://journal.thedacs.com:80/issue/53/158" target="_blank">writes on the subject</a>: 
+	“Ada was seen as the technically superior and more robust language, but
 	concern over the ability to successfully staff the software engineers required to develop the massive amounts of
 	safety critical software caused the F-35 team to carefully look and finally to choose C and C++ for the implementation
 	of safety critical software.” For Ada fans this statement is bittersweet indeed. The proof of
@@ -380,21 +383,22 @@
 
 <p>
 	For all the water-cooler chatter of obsolescence, Ada enjoys serious respect in industries where failure is not an option. Nvidia <a href="https://www.adacore.com/company/partners/nvidia">recently</a> chose 
-	Ada and its SPARK subset<sup><a href="#footnote_8">8</a></sup> as their language of choice for development of safety-critical firmware in their embedded-systems. 
-	Some other notable users of Ada include the European Space Agency<sup><a href="#footnote_9">9</a></sup>, BAE Systems, Saab, Thales, and <a href="http://archive.adaic.com/projects/atwork/boeing.html">Boeing</a>. 
-	A quick glance at leading Ada compiler manufacturer AdaCore’s <a href="https://www.adacore.com/company/our-customers">customer list</a> demonstrates that the market for Ada is certainly alive and well. 
+	Ada and its SPARK subset<sup><a id="footnote_8_link" href="#footnote_8">8</a></sup> as their language of choice for development of safety-critical firmware in their embedded-systems. 
+	Some other notable users of Ada include the European Space Agency<sup><a id="footnote_9_link" href="#footnote_9">9</a></sup>, BAE Systems, Saab, Thales, and <a href="http://archive.adaic.com/projects/atwork/boeing.html">Boeing</a>. 
+	A quick glance at leading Ada compiler manufacturer AdaCore’s <a href="https://www.adacore.com/company/our-customers" target="_blank">customer list</a> demonstrates that the market for Ada is certainly alive and well. 
 	The verdict is in: <i>Ada is here to stay</i>.
 </p>
 
 <p>
-	Many developers point to Rust as the systems programming language of the future. Rust is a language that markets itself on its focus on <i>safety</i><sup><a href="#footnote_10">10</a></sup>, which 
+	Many developers point to Rust as the systems programming language of the future. Rust is a language that markets itself on its focus on <i>safety</i><sup><a id="footnote_10_link" href="#footnote_10">10</a></sup>, which 
 	invites comparisons against both C and Ada (for vastly different reasons). Superficial comparisons aside, Rust seems like a language that has neither
 	learned much from C’s failures, nor from Ada’s successes. Despite what the Rust community may say (or the algal bloom of osdev projects in Rust), Rust does not seem well adapted to low-level programming: 
 	It lacks basic features necessary for the task, like bitfields, and data structure packing. Its foreign function interface seems particularly poorly implemented. The <a href="https://doc.rust-lang.org/nomicon/ffi.html">official Rust documentation</a> suggests 
 	the use of the external third-party <code>libc</code> library (called a 'crate' in Rust parlance) 
-	to provide the type definitions necessary to interface with C programs. As of the time of writing, this crate has had <a href="https://crates.io/crates/libc/versions">95 releases</a><sup><a href="#footnote_11">11</a></sup>. 
+	to provide the type definitions necessary to interface with C programs. As of the time of writing, this crate has 
+	had <a href="https://crates.io/crates/libc/versions" target="_blank">95 releases</a><sup><a id="footnote_11_link" href="#footnote_11">11</a></sup>. 
 	Contrast this with Ada’s <code>Interfaces.C</code> package, which was added the language in Ada 95 and hasn’t needed to change in any fundamental way since.
-	Despite Rust’s present shortcomings, it could prove to be a capable language that has much to offer if it can manage to standardise itself and evolve in a sensible way<sup><a href="#footnote_12">12</a></sup>.
+	Despite Rust’s present shortcomings, it could prove to be a capable language that has much to offer if it can manage to standardise itself and evolve in a sensible way<sup><a id="footnote_12_link" href="#footnote_12">12</a></sup>.
 </p>
 
 <p>I am nothing if not an idealist. For better or worse, I have been willing to pick for myself the smallest hills to
@@ -404,13 +408,13 @@
 	safety-critical] domain are persistence, determination, and good software engineering discipline”. This is of course
 	true, however the qualities he mentions are valuable commodities indeed. If persistence, determination, and discipline
 	are to be requirements, then why not choose a language that requires less of such rigor in order to achieve the same high-quality results? 
-	After all, software is certainly easier to <a href="https://en.wikipedia.org/wiki/Morris_worm">get</a> 
-	<a href="https://nvd.nist.gov/vuln/detail/CVE-2019-3568">wrong</a> than it is to get right.</p>
+	After all, software is certainly easier to <a href="https://en.wikipedia.org/wiki/Morris_worm" target="_blank">get</a> 
+	<a href="https://nvd.nist.gov/vuln/detail/CVE-2019-3568" target="_blank">wrong</a> than it is to get right.</p>
 
 <hr />
 <h2 id="references">References <a class="permalink" href="#references">#</a></h2>
 
-<p>Flightglobal (2016) F-35 locked and loaded with improved Block 3i software. Retrieved 12 Jan, 2021, from <a href="https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article">https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article</a></p>
+<p>Flightglobal (2016) F-35 locked and loaded with improved Block 3i software. Retrieved 12 Jan, 2021, from <a href="https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article" target="_blank">https://www.flightglobal.com/f-35-locked-and-loaded-with-improved-block-3i-software/120527.article</a></p>
 <p>William A. Whitaker (1993). Ada - The Project, The DoD High Order Language Working Group. <i>ACM SIGPLAN Notices</i> Vol. 28, No. 3, March 1993.</p>
 
 <hr />
@@ -419,26 +423,27 @@
 		It is worth noting that in the days of Ada’s conception the United States military, or at very least their
 		government, could have very well been the chief developer and consumer of high-assurance embedded systems worldwide.
 		If there was to be any paradigm shift in the developmental methodology of such systems, it would seem likely that it
-		would come from this sector.
+		would come from this sector. <a href="#footnote_1_link">↲</a>
 	</li>
 	<li id="footnote_2">
-		A la Javascript.
+		à la Javascript. <a href="#footnote_2_link">↲</a>
 	</li>
 	<li id="footnote_3">
-		In comparison to the plethora of modern languages that count C as an ancestor.
+		In comparison to the plethora of modern languages that count C as an ancestor. <a href="#footnote_3_link">↲</a>
 	</li>
 	<li id="footnote_4">
 		The oft-repeated claim that embedded development within the DoD was plagued by a troublesome and mountainous plurality
 		of different languages has been anecdotally disputed online, usually by Ada’s detractors. Even if this were not true, I
-		find it hard to believe that JOVIAL would be a more ideal standardised language for future projects.
+		find it hard to believe that JOVIAL would be a more ideal standardised language for future projects. <a href="#footnote_4_link">↲</a>
 	</li>
 	<li id="footnote_5">
 		The Joint Strike Fighter Air Vehicle (AV) C++ Rules were developed by Lockheed Martin to create a dialect of C++
 		compatible with safety-critical software engineering. Bjarne Stroustrup hosts a copy of the guidelines on his
 		website: <a href="https://www.stroustrup.com/JSF-AV-rules.pdf">https://www.stroustrup.com/JSF-AV-rules.pdf</a>.
+		<a href="#footnote_5_link">↲</a>
 	</li>
 	<li id="footnote_6">
-		Refer to section 6.7.2.1 paragraph 11 of the C1X standard.
+		Refer to section 6.7.2.1 paragraph 11 of the C1X standard. <a href="#footnote_6_link">↲</a>
 	</li>
 	<li id="footnote_7">
 		It is worth mentioning that a common criticism of the DoD’s Ada mandate was the technical difficulty of writing and compiling Ada in its early days. 
@@ -447,11 +452,11 @@
 		Ada's early development tell of long compilation times on expensive proprietary compiler infrastructure. The high cost of said 
 		compilers were ostensibly another barrier to Ada's mainstream adoption. It's also worth noting that by the time the DoD’s mandate on Ada was lifted the DoD
 		had largely shifted its focus towards the use of <a href="https://en.wikipedia.org/wiki/Commercial_off-the-shelf"><i>COTS</i></a> (Commercial Off The Shelf) software. As a result, the
-		lifting of the mandate probably had a much lesser impact than people suppose.
+		lifting of the mandate probably had a much lesser impact than people suppose. <a href="#footnote_7_link">↲</a>
 	</li>
 	<li id="footnote_8">
 		<a href="https://en.wikipedia.org/wiki/SPARK_(programming_language)">SPARK</a> is a formally-provable subset of Ada. SPARK reduces the scope of the language to
-		a strict subset for which formal verification of lack of runtime errors is possible.
+		a strict subset for which formal verification of lack of runtime errors is possible. <a href="#footnote_8_link">↲</a>
 	</li>
 	<li id="footnote_9">
 		Whenever the topic of Ada arises on Hacker News, there's inevitably someone smugly bringing up the 
@@ -459,25 +464,27 @@
 		Without delving unnecessarily far into a subject about which a <a href="https://www.bugsnag.com/blog/bug-day-ariane-5-disaster">wealth</a> <a href="https://www.dropbox.com/s/tr02fmo4xzytzhv/Bashar-Ariane5.pdf?dl=0">of</a> 
 		<a href="http://sunnyday.mit.edu/accidents/Ariane5accidentreport.html">material</a> has already been written, it is suffice say that Ada can be spared the blame for this accident.
 		Evidence supports the crash having been caused by <em>poor design practices</em>, the end. 
-		Despite the wealth of evidence exonerating the language, <a href="https://news.ycombinator.com/item?id=20935953">some people</a> will simply never get it, and conjecture persists in the face of common sense.
+		Despite the wealth of evidence exonerating the language, <a href="https://news.ycombinator.com/item?id=20935953">some people</a> will simply never get it, and 
+		conjecture persists in the face of common sense. <a href="#footnote_9_link">↲</a>
 	</li>
 	<li id="footnote_10">
 		<i>Safety</i> is a different concept than being suitable for <i>safety-critical</i> applications. Rust is designed principally around the elimination of the kind of memory bugs associated 
-		with the C programming language, such as <i>use after free</i>, <i>buffer overflow</i> and <i>memory leaking</i>, among others.
+		with the C programming language, such as <i>use after free</i>, <i>buffer overflow</i> and <i>memory leaking</i>, among others. <a href="#footnote_10_link">↲</a>
 	</li>
 	<li id="footnote_11">
 		This begs the question: <i>what about an C interface requires this much work?</i> Admittedly the <code>libc</code> crate ostensibly provides a very broad scope of functionality.
 		Their <a href="https://github.com/rust-lang/rfcs/blob/master/text/1291-promote-libc.md">official RFC</a> states the opposite: “The primary purpose of this crate is to provide all of the 
 		definitions necessary to easily interoperate with C code (or “C-like“ code) on each of the platforms that Rust supports.“, indicating a narrow scope of requirements.
 		However browsing the <a href="https://github.com/rust-lang/libc/issues">Issues</a> section their Github gives the opposite impression. Either way, interoperability (in my experience) 
-		remains dysfunctional at best.
+		remains dysfunctional at best. <a href="#footnote_11_link">↲</a>
 	</li>
 	<li id="footnote_12">
 		Rust, which as of the time of writing has yet to be formally standardised, seems to have a very wide variety of hands on the wheel. Rust’s core community ostensibly appears to be a collection of refugees
 		from the Node.js and Golang communities. It enjoys an active and enthusiastic community. Despite my misgivings about some of Rust’s design decisions, I can see its benefits. For companies such as Mozilla,
-		migrating their products from C++ to Rust seems like a great idea.
+		migrating their products from C++ to Rust seems like a great idea. <a href="#footnote_12_link">↲</a>
 	</li>
 </ol>
+
 	</div>
 </article>
 
