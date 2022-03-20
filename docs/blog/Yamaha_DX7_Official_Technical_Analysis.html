@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="author" content="ajxs">
+		<meta name="description" content="A chance discovery on eBay has surfaced some of Yamaha's original technical documentation for the DX7 synthesiser.">
+		<meta name="robots" content="index, follow">
+		<meta name="keywords" content="DX7, Musical Equipment, Synthesizers">
+		<meta name="reply-to" content="ajxs@panoptic.online">
+		<meta name="owner" content="ajxs">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>~ajxs/Yamaha DX7 Official Technical Analysis</title>
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+	</head>
+	<body>
+		<header>
+			<a href="/">~ajxs</a>
+		</header>
+		<article class="blog-entry">
+	<header>
+		<h1>Yamaha DX7 Official Technical Analysis</h1>
+		<div class="date">2022.03.20</div>
+		<div class="short">A chance discovery on eBay has surfaced some of Yamaha's original technical documentation for the DX7 synthesiser.</div>
+		<div class="tags">
+	<span>Tagged as: </span>
+	<ul class="tag-list">
+		<li><a href="/blog/tag/DX7.html">DX7</a></li><li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li><li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+	</ul>
+</div>
+
+	</header>
+	<div class="entry-body">
+		<div class="tldr">
+	<span class="tldr-heading">TL;DR:</span>
+	Previously unseen official technical documentation of the DX7 has surfaced, which is now available <a href="https://archive.org/details/yamaha-dx-7-technical-analysis">here</a>.
+</div>
+
+<p>
+	In the closing remarks of my <a href="/blog/Yamaha_DX7_Technical_Analysis.html">original DX7 article</a> 
+	I wrote the only way that we could learn more about the DX7 from
+	here was to <a href="https://github.com/ajxs/yamaha_dx7_rom_disassembly">disassemble the firmware</a>, 
+	<a href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html">decapsulate the internal sound chips</a>, 
+	and to obtain Yamaha's official internal
+	documentation. In the intervening year since then the first two of those things have come to fruition. With this
+	update, I am happy to announce that the final thing I listed has now been realised: Some of Yamaha's original technical documentation
+	of the DX7 has surfaced!
+</p>
+<p>
+	The fantastic Grant of <a href="http://musictechnologiesgroup.com">
+	Music Technologies Group</a>, was kind enough to forward to me an
+	interesting eBay auction he found for a document titled 
+	<i>Yamaha DX7 Technical Analysis</i><sup><a id="footnote_1_link" href="#footnote_1">1</a></sup>. 
+	Obviously this piqued my interest. A few
+	weeks, and some exorbitant shipping costs later the document was in my hands. It was
+	definitely worth the wait.
+</p>
+<p>
+	The 90-page booklet is certainly the real deal<sup><a id="footnote_2_link" href="#footnote_2">2</a></sup>. 
+	Laser-printed on high-quality glossy paper (slightly yellowed over the
+	decades), it's clear that this is authentic Yamaha documentation. It's extremely well written, complete with many amazing diagrams and
+	illustrations. As well as numerous interesting details of the DX7's engineering.
+</p>
+<p>
+	During the research for my <a href="/blog/Yamaha_DX7_Technical_Analysis.html">original DX7 article</a> 
+	I scoured the internet for any available technical material.
+	I spent many nights sifting through Yamaha's voluminous patent literature, and poring over monochrome scans of
+	service manuals, and schematics. In all my searching, I never encountered even a mention of this document anywhere.
+	So rather than attempt to summarise, or re-print the document's information, I present it to you in its entirety.
+</p>
+<p>
+	I've scanned all of the individual pages<sup><a id="footnote_3_link" href="#footnote_3">3</a></sup>, and uploaded the compiled document to archive.org. 
+	It's now freely available <a href="https://archive.org/details/yamaha-dx-7-technical-analysis">here</a>. I ask
+	that readers please forgive the document quality. Archive.org perform their own re-compression of the uploaded PDF.
+	Converting it from the original high-quality greyscale scan into a different format, giving the PDF document an unfortunate brown tinge.
+	I also have no control over archive.org's automatic uploading of useless OCR text scraped from the PDF.<br/>
+	If you would like to host the original high-quality scan somewhere, please get in touch.
+</p>
+<p>
+	The descriptions of the individual internal circuits are detailed, and extremely informative. Among many other details, the documentation
+	features an interesting classification of the data transferred between the CPU, and the EGS/OPS into three categories:
+	<code>EVENT</code>, <code>DATA</code>, and <code>TIME</code>. This hints at a possible naming scheme used in the original firmware assembly to classify the
+	data.
+</p>
+<p>
+	The technical details seem oddly specific in some areas, yet many of the most interesting technical details are
+	conspicuously absent in others. For instance, the operation of the sub-CPU's communication with the main CPU is
+	described in gruelling detail, including a detailed description of its internal data exchange format. However no
+	details are provided of the internal implementation of the synth's sound chips.
+</p>
+<p>
+	After having disassembled the firmware, there is not much information here that is not already available. However for
+	anyone interested in doing any serious firmware hacking, or reverse-engineering of their own this would be an amazing
+	resource.
+</p>
+<p>
+	I was unfortunately not able to discover any details about the document's provenance. The seller was not from a technical
+	background, and couldn't tell me more than that he had purchased it himself in an online auction some time ago. 
+	He was selling a wealth of other service manuals, so perhaps he had come into its possession by way of a
+	technician liquidating their collection.
+</p>
+<p>
+	One particularly interesting detail is that the booklet is written in perfect English. Yamaha would not
+	have gone to the trouble of having their technical material professionally translated without a good reason. The text
+	accompanying the cartoons in the margin appear to be hand written. Does this hint that the booklet was originally written in
+	English?<br />
+	Also, who was the book's intended audience? Was it for the benefit of Yamaha's international engineering teams,
+	or their international service centres? Yamaha would certainly not have published such a thing for the sake of the
+	general public's curiosity. Could this have been documentation provided to the Canadian team responsible for the v1.9
+	<i>"Special Edition"</i> ROM? Who knows. If anyone has any extra details about the history of this book, I would love to
+	know.
+</p>
+<p>
+	When I wrote my original technical analysis of the DX7, I really did not expect that any of the original technical
+	documentation would ever surface. Needless to say, this has been a great surprise. Unfortunately I do not have high
+	hopes for any more original technical literature surfacing. One can only wonder what kind of material Yamaha
+	themselves would still have in their possession at this point. With the DX7 itself rapidly approaching four decades old,
+	and the golden jubilee around the corner for many of Yamaha's original FM patents, I would imagine that as much
+	information has become public as ever will. At any rate, I hope that making this document public provides some
+	interesting reading for synth hackers for many years to come.
+</p>
+
+<hr />
+<ol class="footnotes">
+	<li id="footnote_1">
+		I'd picked the title of my original blog post tentatively on the basis that I couldn't think of anything more
+		appropriate. It's a very strange coincidence indeed that this piece of official technical literature bears the same
+		name! <a href="#footnote_1_link">↲</a>
+	</li>
+	<li id="footnote_2">
+		I'm not sure how to interpret the numerical codes in the bottom margin of the front cover. The format of which matches
+		that of the DX7's better known technical literature. It likely indicates the document was printed in October of 1984.
+		The book itself is light on details of its authorship, instead it gets straight down to business. <a href="#footnote_2_link">↲</a>
+	</li>
+	<li id="footnote_3">
+		The book also included the synth's schematics in an A1 fold-out, which is not included in my scans. The schematics have been freely
+		available online for some time as part of the DX7/9 service manual. I may at some point find a way to scan the full schematic
+		in its entirety, as the existing version available online has been split into A4 size chunks. <a href="#footnote_3_link">↲</a>
+	</li>
+</ol>
+
+	</div>
+</article>
+
+		<footer>
+				© 2022 AJXS
+		</footer>
+	</body>
+</html>

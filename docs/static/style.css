@@ -449,12 +449,14 @@ article.blog-entry .entry-body .table-of-contents ol > li > ol {
 }
 
 article.blog-entry .entry-body .tldr {
+  background-color: #17170c;
   font-size: 0.8rem;
   margin-bottom: 0.8rem;
   padding: 0.8rem 0.4rem;
 }
 
 article.blog-entry .entry-body .tldr .tldr-heading {
+  color: #dfdfd3;
   font-weight: bold;
 }
 
