@@ -35,7 +35,8 @@ ORDER BY e.date_created DESC;
 LOAD_ENTRY_TAGS_QUERY = """
 SELECT t.* FROM tagged_entry k
 LEFT JOIN tag t ON t.tag_id = k.tag_id
-WHERE k.entry_id = ?;
+WHERE k.entry_id = ?
+ORDER BY t.name ASC;
 """
 
 # Database query used to load the tags.
