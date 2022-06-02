@@ -208,17 +208,16 @@ h4 {
 
 
 section {
+	@include colour_light;
+
 	margin-bottom: 1.4rem;
+	font-size: 1rem;
+	padding: 0px;
+	text-align: left;
 }
 
 
 section#contact-info {
-	@include colour_light;
-
-	font-size: 1rem;
-	padding: 0px;
-	text-align: left;
-
 	#contact-info-list {
 		font-family: $font-mono;
 		list-style: none;
