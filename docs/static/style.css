@@ -9,6 +9,7 @@
  *     Anthony <ajxs [at] panoptic.online>
  */
 html {
+  font-size: 12;
   background-color: #050505;
 }
 
@@ -67,6 +68,42 @@ h1, h2, h3, h4 {
   font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 }
 
+h1 {
+  font-size: 2rem;
+  line-height: 3rem;
+  font-weight: 700;
+  letter-spacing: initial;
+  margin: 1.25rem 0;
+  text-transform: none;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  letter-spacing: initial;
+  margin: 1.25rem 0 0.85rem;
+  text-transform: none;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+  font-weight: 700;
+  letter-spacing: initial;
+  margin: 1.25rem 0 0.85rem;
+  text-transform: none;
+}
+
+h4 {
+  font-size: 1.17rem;
+  line-height: 1.755rem;
+  font-weight: 700;
+  letter-spacing: initial;
+  margin: 0.8rem 0;
+  text-transform: none;
+}
+
 section {
   margin-bottom: 1.4rem;
 }
@@ -107,10 +144,8 @@ section#contact-info #contact-info-list li .icon {
 
 section#blog h1 {
   color: #dfdfd3;
-  font-size: 1.478rem;
-  font-weight: 700;
-  margin: 0.8rem 0 0.8rem;
   letter-spacing: 0.2rem;
+  margin: 0 0 0.8rem;
   text-transform: uppercase;
 }
 
@@ -123,14 +158,23 @@ section#blog h1 a:hover {
 }
 
 section#blog h2 {
-  font-size: 1.157rem;
-  font-weight: 700;
-  margin: 0 0 0.4rem;
-  text-transform: none;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+  color: #dfdfd3;
+  margin: 0;
+}
+
+section#blog h2 a {
+  color: #dfdfd3;
+}
+
+section#blog h2 a:hover {
+  color: #c1c1c1;
 }
 
 section#blog #tag-heading {
   color: #dfdfd3;
+  letter-spacing: normal;
   text-transform: none;
 }
 
@@ -157,85 +201,73 @@ section#blog #tag-heading span#tag-index-name a:hover {
 section#blog ul#blog-entries {
   list-style: none;
   padding: 0;
-  font-size: 0.8rem;
-  line-height: 1.184rem;
+  font-size: 0.9rem;
+  line-height: 1.35rem;
 }
 
-section#blog ul#blog-entries > li {
+section#blog ul#blog-entries li {
   background-color: #17170c;
   margin-bottom: 0.8rem;
 }
 
-section#blog ul#blog-entries > li a.entry-link {
+section#blog ul#blog-entries li a.entry-link {
   display: block;
   padding: 0.4rem;
   text-decoration: none;
 }
 
-section#blog ul#blog-entries > li a.entry-link h2 {
-  color: #dfdfd3;
-}
-
-section#blog ul#blog-entries > li a.entry-link h2 a {
-  color: #dfdfd3;
-}
-
-section#blog ul#blog-entries > li a.entry-link h2 a:hover {
-  color: #c1c1c1;
-}
-
-section#blog ul#blog-entries > li .date {
+section#blog ul#blog-entries li .date {
   color: #848478;
   margin: 0 0 0.4rem;
 }
 
-section#blog ul#blog-entries > li .date a {
+section#blog ul#blog-entries li .date a {
   color: #848478;
 }
 
-section#blog ul#blog-entries > li .date a:hover {
+section#blog ul#blog-entries li .date a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li .short {
+section#blog ul#blog-entries li .short {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .short a {
+section#blog ul#blog-entries li .short a {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .short a:hover {
+section#blog ul#blog-entries li .short a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li .tags {
+section#blog ul#blog-entries li .tags {
   color: #848478;
   font-size: 0.75rem;
   padding: 0 0.4rem 0.4rem 0.4rem;
 }
 
-section#blog ul#blog-entries > li .tags a {
+section#blog ul#blog-entries li .tags a {
   color: #848478;
 }
 
-section#blog ul#blog-entries > li .tags a:hover {
+section#blog ul#blog-entries li .tags a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list {
+section#blog ul#blog-entries li .tags ul.tag-list {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list a {
+section#blog ul#blog-entries li .tags ul.tag-list a {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list a:hover {
+section#blog ul#blog-entries li .tags ul.tag-list a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li:hover {
+section#blog ul#blog-entries li:hover {
   background-color: #282813;
 }
 
@@ -272,12 +304,11 @@ article.blog-entry a:hover {
 article.blog-entry header {
   background-color: #17170c;
   text-align: left;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
   padding: 0.8rem 0.4rem;
 }
 
 article.blog-entry header h1 {
-  font-size: 2rem;
   margin: 0 0 0.6rem;
   letter-spacing: initial;
   text-transform: none;
@@ -285,7 +316,6 @@ article.blog-entry header h1 {
 
 article.blog-entry header .date {
   color: #848478;
-  font-size: 1rem;
   margin: 0 0 0.4rem;
 }
 
@@ -299,7 +329,6 @@ article.blog-entry header .date a:hover {
 
 article.blog-entry header .short {
   color: #c1c1c1;
-  font-size: 0.8rem;
 }
 
 article.blog-entry header .short a {
@@ -312,7 +341,7 @@ article.blog-entry header .short a:hover {
 
 article.blog-entry header .tags {
   color: #848478;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   margin-top: 0.6rem;
 }
 
@@ -339,8 +368,8 @@ article.blog-entry header .tags .tag-list a:hover {
 article.blog-entry .entry-body {
   color: #f0f0f0;
   color: #d7d7d7;
-  font-size: 0.9rem;
-  line-height: 1.332rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   padding: 0 0.4rem 0 0.4rem;
 }
 
@@ -360,41 +389,6 @@ article.blog-entry .entry-body a.permalink {
 
 article.blog-entry .entry-body a.permalink:hover {
   color: #585853;
-}
-
-article.blog-entry .entry-body h1 {
-  font-size: 2.37rem;
-  line-height: 3.5076rem;
-  letter-spacing: initial;
-  margin: 1.25rem 0;
-  text-transform: none;
-}
-
-article.blog-entry .entry-body h2 {
-  font-size: 1.863rem;
-  line-height: 2.75724rem;
-  font-weight: 700;
-  letter-spacing: initial;
-  margin: 1.25rem 0 0.85rem;
-  text-transform: none;
-}
-
-article.blog-entry .entry-body h3 {
-  font-size: 1.47rem;
-  line-height: 2.1756rem;
-  font-weight: 700;
-  letter-spacing: initial;
-  margin: 1rem 0 0.85rem;
-  text-transform: none;
-}
-
-article.blog-entry .entry-body h4 {
-  font-size: 1.15rem;
-  line-height: 1.702rem;
-  font-weight: 700;
-  letter-spacing: initial;
-  margin: 0.8rem 0;
-  text-transform: none;
 }
 
 article.blog-entry .entry-body figure {
@@ -450,8 +444,7 @@ article.blog-entry .entry-body .table-of-contents ol > li > ol {
 
 article.blog-entry .entry-body .tldr {
   background-color: #17170c;
-  font-size: 0.8rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
   padding: 0.8rem 0.4rem;
 }
 
