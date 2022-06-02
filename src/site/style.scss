@@ -13,17 +13,20 @@
 $font-body: Arial, "Liberation sans", sans-serif;
 $font-mono: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 
-$line-height-scale: 1.48;
+$line-height-scale: 1.5;
 
-$blog-index-h1-font-size: 1.478rem;
-$blog-index-h2-font-size: 1.157rem;
-$blog-index-font-size: 0.8rem;
+$font-size-base: 12;
+$font-size-body: 1rem;
+$font-size-title: 3rem;
 
-$entry-body-h1-font-size: 2.37rem;
-$entry-body-h2-font-size: 1.863rem;
-$entry-body-h3-font-size: 1.47rem;
-$entry-body-h4-font-size: 1.15rem;
-$entry-body-font-size: 0.9rem;
+// https://stackoverflow.com/questions/2325850/h1-h6-font-sizes-in-html
+$font-size-h1: 2rem;
+$font-size-h2: 1.5rem;
+$font-size-h3: 1.25rem;
+$font-size-h4: 1.17rem;
+
+$font-size-index-entry: 0.9rem;
+$font-size-index-title: 1.25rem;
 
 $entry-body-text-colour: #d7d7d7;
 $entry-body-text-colour-permalink: #41413e;
@@ -121,6 +124,7 @@ $table-of-contents-border-colour: #000000;
 
 
 html {
+	font-size: $font-size-base;
 	background-color: $background-colour-page;
 }
 
@@ -167,6 +171,41 @@ h1, h2, h3, h4 {
 	font-family: $font-mono;
 }
 
+h1 {
+	font-size: $font-size-h1;
+	line-height: $font-size-h1 * $line-height-scale;	font-weight: 700;
+	letter-spacing: initial;
+	margin: 1.25rem 0;
+	text-transform: none;
+}
+
+h2 {
+	font-size: $font-size-h2;
+	line-height: $font-size-h2 * $line-height-scale;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 1.25rem 0 0.85rem;
+	text-transform: none;
+}
+
+h3 {
+	font-size: $font-size-h3;
+	line-height: $font-size-h3 * $line-height-scale;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 1.25rem 0 0.85rem;
+	text-transform: none;
+}
+
+h4 {
+	font-size: $font-size-h4;
+	line-height: $font-size-h4 * $line-height-scale;
+	font-weight: 700;
+	letter-spacing: initial;
+	margin: 0.8rem 0;
+	text-transform: none;
+}
+
 
 section {
 	margin-bottom: 1.4rem;
@@ -204,25 +243,22 @@ section#contact-info {
 section#blog {
 	h1 {
 		@include colour_light;
-
-		font-size: $blog-index-h1-font-size;
-		font-weight: 700;
-		margin: 0.8rem 0 0.8rem;
 		letter-spacing: 0.2rem;
+		margin: 0 0 0.8rem;
 		text-transform: uppercase;
 	}
 	
-	
 	h2 {
-		font-size: $blog-index-h2-font-size;
-		font-weight: 700;
-		margin: 0 0 0.4rem;
-		text-transform: none;
+		font-size: $font-size-index-title;
+		line-height: $font-size-index-title * $line-height-scale;
+		@include colour_light;
+		margin: 0;
 	}
 
 	#tag-heading {
 		@include colour_light;
 
+		letter-spacing: normal;
 		text-transform: none;
 
 		span#tag-index-name {
@@ -234,10 +270,10 @@ section#blog {
 		list-style: none;
 		padding: 0;
 
-		font-size: $blog-index-font-size;
-		line-height: $blog-index-font-size * $line-height-scale;
+		font-size: $font-size-index-entry;
+		line-height: $font-size-index-entry * $line-height-scale;
 
-		& > li {
+		& li {
 			background-color: $background-colour-dark;
 			margin-bottom: 0.8rem;
 	
@@ -245,10 +281,6 @@ section#blog {
 				display: block;
 				padding: 0.4rem;
 				text-decoration: none;
-
-				h2 {
-					@include colour_light;
-				}
 			}
 	
 			.date {
@@ -305,11 +337,10 @@ article.blog-entry {
 	header {
 		background-color: $background-colour-dark;
 		text-align: left;
-		margin-bottom: 0.8rem;
+		margin-bottom: 1rem;
 		padding: 0.8rem 0.4rem;
 	
 		h1 {
-			font-size: 2rem;
 			margin: 0 0 0.6rem;
 			letter-spacing: initial;
 			text-transform: none;
@@ -317,21 +348,17 @@ article.blog-entry {
 	
 		.date {
 			@include colour_mid_dark;
-
-			font-size: 1rem;
 			margin: 0 0 0.4rem;
 		}
 	
 		.short {
 			@include colour_mid;
-
-			font-size: 0.8rem;
 		}
 	
 		.tags {
 			@include colour_mid_dark;
 
-			font-size: 0.75rem;
+			font-size: 0.8rem;
 			margin-top: 0.6rem;
 
 			.tag-list {
@@ -344,8 +371,8 @@ article.blog-entry {
 		@include colour_mid_light;
 	
 		color: $entry-body-text-colour;
-		font-size: $entry-body-font-size;
-		line-height: $entry-body-font-size * $line-height-scale;;
+		font-size: $font-size-body;
+		line-height: $font-size-body * $line-height-scale;;
 		padding: 0 0.4rem 0 0.4rem;
 
 		a.permalink {
@@ -356,41 +383,6 @@ article.blog-entry {
 			&:hover {
 				color: $entry-body-text-colour-permalink-hover;
 			}
-		}
-
-		h1 {
-			font-size: $entry-body-h1-font-size;
-			line-height: $entry-body-h1-font-size * $line-height-scale;
-			letter-spacing: initial;
-			margin: 1.25rem 0;
-			text-transform: none;
-		}
-
-		h2 {
-			font-size: $entry-body-h2-font-size;
-			line-height: $entry-body-h2-font-size * $line-height-scale;
-			font-weight: 700;
-			letter-spacing: initial;
-			margin: 1.25rem 0 0.85rem;
-			text-transform: none;
-		}
-
-		h3 {
-			font-size: $entry-body-h3-font-size;
-			line-height: $entry-body-h3-font-size * $line-height-scale;
-			font-weight: 700;
-			letter-spacing: initial;
-			margin: 1rem 0 0.85rem;
-			text-transform: none;
-		}
-
-		h4 {
-			font-size: $entry-body-h4-font-size;
-			line-height: $entry-body-h4-font-size * $line-height-scale;
-			font-weight: 700;
-			letter-spacing: initial;
-			margin: 0.8rem 0;
-			text-transform: none;
 		}
 
 		figure {
@@ -446,8 +438,7 @@ article.blog-entry {
 
 		.tldr {
 			background-color: $background-colour-dark;
-			font-size: 0.8rem;
-			margin-bottom: 0.8rem;
+			margin-bottom: 1rem;
 			padding: 0.8rem 0.4rem;
 		
 			.tldr-heading {
