@@ -9,36 +9,35 @@
  *     Anthony <ajxs [at] panoptic.online>
  */
 html {
-  font-size: 12;
+  font-size: 16px;
   background-color: #050505;
 }
 
 body {
+  color: #dfdfd3;
   background-color: #0d0d0a;
   box-sizing: border-box;
   font-family: Arial, "Liberation sans", sans-serif;
   margin: 0 auto;
-  padding: 0.4rem;
-  width: 800px;
+  padding: 1.4rem 0.8rem 0.4rem 0.8rem;
+  width: 42rem;
+}
+
+body a {
+  color: #dfdfd3;
+}
+
+body a:hover {
+  color: #c1c1c1;
 }
 
 body > header {
-  color: #dfdfd3;
   text-align: center;
   font-family: "Trebuchet MS", "DejaVu Sans Mono", monospace;
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  padding: 1rem 0 0 0;
   letter-spacing: 0.25rem;
-}
-
-body > header a {
-  color: #dfdfd3;
-}
-
-body > header a:hover {
-  color: #c1c1c1;
 }
 
 body > header a:visited, body > header a:link, body > header a:active {
@@ -105,19 +104,13 @@ h4 {
 }
 
 section {
-  color: #dfdfd3;
-  margin-bottom: 1.4rem;
-  font-size: 1rem;
-  padding: 0px;
-  text-align: left;
+  margin-bottom: 1.6rem;
 }
 
-section a {
-  color: #dfdfd3;
-}
-
-section a:hover {
-  color: #c1c1c1;
+section h1 {
+  letter-spacing: 0.2rem;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
 }
 
 section#contact-info #contact-info-list {
@@ -139,48 +132,15 @@ section#contact-info #contact-info-list li .icon {
   vertical-align: middle;
 }
 
-section#blog h1 {
-  color: #dfdfd3;
-  letter-spacing: 0.2rem;
-  margin: 0 0 0.8rem;
-  text-transform: uppercase;
-}
-
-section#blog h1 a {
-  color: #dfdfd3;
-}
-
-section#blog h1 a:hover {
-  color: #c1c1c1;
-}
-
 section#blog h2 {
   font-size: 1.25rem;
   line-height: 1.875rem;
-  color: #dfdfd3;
   margin: 0;
 }
 
-section#blog h2 a {
-  color: #dfdfd3;
-}
-
-section#blog h2 a:hover {
-  color: #c1c1c1;
-}
-
 section#blog #tag-heading {
-  color: #dfdfd3;
   letter-spacing: normal;
   text-transform: none;
-}
-
-section#blog #tag-heading a {
-  color: #dfdfd3;
-}
-
-section#blog #tag-heading a:hover {
-  color: #c1c1c1;
 }
 
 section#blog #tag-heading span#tag-index-name {
@@ -367,7 +327,6 @@ article.blog-entry .entry-body {
   color: #d7d7d7;
   font-size: 1rem;
   line-height: 1.5rem;
-  padding: 0 0.4rem 0 0.4rem;
 }
 
 article.blog-entry .entry-body a {
