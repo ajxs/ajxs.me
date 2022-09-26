@@ -15,9 +15,11 @@ $font-mono: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 
 $line-height-scale: 1.5;
 
-$font-size-base: 12;
+$font-size-base: 16px;
 $font-size-body: 1rem;
 $font-size-title: 3rem;
+
+$body-width: 42rem;
 
 // https://stackoverflow.com/questions/2325850/h1-h6-font-sizes-in-html
 $font-size-h1: 2rem;
@@ -130,22 +132,21 @@ html {
 
 
 body {
+	@include colour_light;
+
 	background-color: $background-colour-body;
 	box-sizing: border-box;
 	font-family: $font-body;
 	margin: 0 auto;
-	padding: 0.4rem;
-	width: 800px;
+	padding: 1.4rem 0.8rem 0.4rem 0.8rem;
+	width: $body-width;
 
 	& > header {
-		@include colour_light;
-
 		text-align: center;
 		font-family: $font-mono;
 		font-size: 3rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
-		padding: 1rem 0 0 0;
 		letter-spacing: 0.25rem;
 
 		a:visited, a:link, a:active {
@@ -173,7 +174,8 @@ h1, h2, h3, h4 {
 
 h1 {
 	font-size: $font-size-h1;
-	line-height: $font-size-h1 * $line-height-scale;	font-weight: 700;
+	line-height: $font-size-h1 * $line-height-scale;
+	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0;
 	text-transform: none;
@@ -208,12 +210,13 @@ h4 {
 
 
 section {
-	@include colour_light;
+	margin-bottom: 1.6rem;
 
-	margin-bottom: 1.4rem;
-	font-size: 1rem;
-	padding: 0px;
-	text-align: left;
+	h1 {
+		letter-spacing: 0.2rem;
+		margin: 0 0 1rem;
+		text-transform: uppercase;
+	}
 }
 
 
@@ -240,23 +243,13 @@ section#contact-info {
 
 
 section#blog {
-	h1 {
-		@include colour_light;
-		letter-spacing: 0.2rem;
-		margin: 0 0 0.8rem;
-		text-transform: uppercase;
-	}
-	
 	h2 {
 		font-size: $font-size-index-title;
 		line-height: $font-size-index-title * $line-height-scale;
-		@include colour_light;
 		margin: 0;
 	}
 
 	#tag-heading {
-		@include colour_light;
-
 		letter-spacing: normal;
 		text-transform: none;
 
@@ -371,8 +364,7 @@ article.blog-entry {
 	
 		color: $entry-body-text-colour;
 		font-size: $font-size-body;
-		line-height: $font-size-body * $line-height-scale;;
-		padding: 0 0.4rem 0 0.4rem;
+		line-height: $font-size-body * $line-height-scale;
 
 		a.permalink {
 			text-decoration: none;
