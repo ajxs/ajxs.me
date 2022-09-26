@@ -27,14 +27,13 @@ DIST_CSS            := ${DIST_FOLDER}/static/style.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 ADA_ARTICLE_SYMLINK := ${DIST_BLOG_FOLDER}/Giving_Ada_a_chance.html
 
-all: site
+all: site ${ADA_ARTICLE_SYMLINK}
 
 clean:
 	rm -rf ${DIST_FOLDER}
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
-	${DIST_STATIC_CONTENT} ${DIST_RSS} ${DIST_CSS} ${GITHUB_DNS_RECORD} \
-	${ADA_ARTICLE_SYMLINK}
+	${DIST_STATIC_CONTENT} ${DIST_RSS} ${DIST_CSS} ${GITHUB_DNS_RECORD}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -65,4 +64,4 @@ ${ADA_ARTICLE_SYMLINK}:
 	cd ${DIST_BLOG_FOLDER} && ln -s Giving_Ada_a_Chance.html Giving_Ada_a_chance.html
 
 emu: site
-	cd "${DIST_FOLDER}" && python -m SimpleHTTPServer
+	cd "${DIST_FOLDER}" && python3 -m http.server
