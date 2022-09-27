@@ -64,6 +64,11 @@ def parse_footnotes(file_text):
         for child_element in footnote_body.iterchildren():
             footnote_body_element.append(child_element)
 
+        # Create the 'return' link, which will take the user back to the original footnote.
+        footnote_return_link = etree.SubElement(footnote_body_element, "a")
+        footnote_return_link.set("href", f"#footnote_{current_footnote_number}_link")
+        footnote_return_link.text = "↲"
+
         # Append the final body element, and remove the text definition.
         footnote_list[0].append(footnote_body_element)
         footnote_list[0].remove(footnote_body)
@@ -72,6 +77,7 @@ def parse_footnotes(file_text):
         footnote_link = etree.Element("sup")
         footnote_link_anchor = etree.SubElement(footnote_link, "a")
         footnote_link_anchor.set("href", f"#footnote_{current_footnote_number}")
+        footnote_link_anchor.set("id", f"footnote_{current_footnote_number}_link")
         footnote_link_anchor.text = f"{current_footnote_number}"
 
         # Add the newly created footnote link _after_ the marker, then delete the marker.
