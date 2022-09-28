@@ -435,8 +435,9 @@ article.blog-entry .entry-body .formula {
   body {
     width: unset;
     margin: 0;
+    padding: 0.5rem;
   }
-  body header {
+  body > header {
     font-size: 2rem;
     margin-bottom: 1rem;
     letter-spacing: 0.25rem;

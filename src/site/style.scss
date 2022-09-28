@@ -471,8 +471,9 @@ article.blog-entry {
 	body {
 		width: unset;
 		margin: 0;
+		padding: 0.5rem;
 
-		header {
+		& > header {
 			font-size: 2rem;
 			margin-bottom: 1rem;
 			letter-spacing: 0.25rem;
