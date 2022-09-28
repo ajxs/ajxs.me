@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+"""
+Creates the FM Synthesis diagram used in the 'Yamaha DX7 Technical Analysis' article.
+"""
+
+import math
+import matplotlib.pyplot as plt
+
+__author__ = "AJXS"
+__copyright__ = "Copyright 2022, AJXS"
+__credits__ = ["AJXS"]
+__license__ = "GPL"
+__version__ = "1.0"
+__maintainer__ = "AJXS"
+__email__ = "ajxs [at] panoptic.online"
+__status__ = "Production"
+
+SAMPLE_RATE = 50000
+TIMESTEP = 1.0 / SAMPLE_RATE
+PLOT_SAMPLES = int(SAMPLE_RATE / 2)
+SCALE = 1.0
+
+FREQ_MODULATOR = 4.0
+FREQ_CARRIER = 40.0
+
+samples_modulator = []
+samples_carrier = []
+samples_fm = []
+
+time = 0
+for i in range(PLOT_SAMPLES):
+    time += TIMESTEP
+    samples_modulator.append(math.sin(2.0 * math.pi * FREQ_MODULATOR * time))
+    samples_carrier.append(math.sin(2.0 * math.pi * FREQ_CARRIER * time))
+    samples_fm.append(math.sin(2.0 * math.pi * ((FREQ_CARRIER * time) + samples_modulator[i])))
+
+fig, ax = plt.subplots(3, tight_layout=True)
+
+ax[0].title.set_text("Modulator")
+ax[0].plot(samples_modulator)
+ax[0].set_xticks([])
+ax[0].set_yticks([])
+
+ax[1].title.set_text("Carrier")
+ax[1].plot(samples_carrier)
+ax[1].set_xticks([])
+ax[1].set_yticks([])
+
+
+ax[2].title.set_text("Modulated Carrier")
+ax[2].plot(samples_fm)
+ax[2].set_xticks([])
+ax[2].set_yticks([])
+
+plt.savefig("frequency_modulation.png", dpi=400, pad_inches=1)

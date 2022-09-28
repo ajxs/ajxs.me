@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+
+"""
+Creates the KCS diagram used in the 'Yamaha FM Synth Cassette Interface' article.
+"""
+
+import math
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+
+__author__ = "AJXS"
+__copyright__ = "Copyright 2022, AJXS"
+__credits__ = ["AJXS"]
+__license__ = "GPL"
+__version__ = "1.0"
+__maintainer__ = "AJXS"
+__email__ = "ajxs [at] panoptic.online"
+__status__ = "Production"
+
+FREQ_BASE = 100
+
+COLOUR_PILOT_TONE = "#5cd65c"
+COLOUR_FRAME_START = "#4dffb8"
+COLOUR_FRAME_END = "#4dff4d"
+COLOUR_DATA_ONE = "#ff8566"
+COLOUR_DATA_ZERO = "#ffebe6"
+SHADING_ALPHA = 0.5
+
+samples_zero = []
+samples_one = []
+
+i = 0
+while i < 2.0 * math.pi:
+    samples_zero.append(math.sin(i))
+    i += 1.0 / FREQ_BASE
+
+i = 0
+while i < 4.0 * math.pi:
+    samples_one.append(math.sin(i))
+    i += 1.0 / (FREQ_BASE / 2)
+
+
+full_sequence = []
+
+# Pilot tone
+full_sequence += samples_one
+full_sequence += samples_one
+
+# frame start
+full_sequence += samples_zero
+
+# byte 10110101
+full_sequence += samples_one
+full_sequence += samples_zero
+full_sequence += samples_one
+full_sequence += samples_zero
+full_sequence += samples_one
+full_sequence += samples_one
+full_sequence += samples_zero
+full_sequence += samples_one
+
+# frame end
+full_sequence += samples_one
+full_sequence += samples_one
+
+fig, ax = plt.subplots(1, tight_layout=True)
+
+ax.title.set_text("Yamaha FM Synth Cassette Data Example")
+ax.plot(full_sequence)
+ax.set_xticks([])
+ax.set_yticks([])
+
+cycle_length = len(samples_zero)
+
+pilot_tone_start = 0
+pilot_tone_end = cycle_length * 2
+
+frame_start_start = pilot_tone_end
+frame_start_end = frame_start_start + cycle_length
+
+bit_1_end = frame_start_end + cycle_length
+bit_2_end = bit_1_end + cycle_length
+bit_3_end = bit_2_end + cycle_length
+bit_4_end = bit_3_end + cycle_length
+bit_5_end = bit_4_end + (cycle_length * 2)
+bit_6_end = bit_5_end + cycle_length
+bit_7_end = bit_6_end + cycle_length
+
+frame_end_start = bit_7_end
+frame_end_end = frame_end_start + (cycle_length * 2)
+
+# https://stackoverflow.com/questions/3681872/shading-an-area-between-two-points-in-a-matplotlib-plot
+plt.axvspan(pilot_tone_start, pilot_tone_end, color=COLOUR_PILOT_TONE, alpha=SHADING_ALPHA)
+plt.axvspan(frame_start_start, frame_start_end, color=COLOUR_FRAME_START, alpha=SHADING_ALPHA)
+
+plt.axvspan(frame_start_end, bit_1_end, color=COLOUR_DATA_ONE, alpha=SHADING_ALPHA)
+plt.axvspan(bit_1_end, bit_2_end, color=COLOUR_DATA_ZERO, alpha=SHADING_ALPHA)
+plt.axvspan(bit_2_end, bit_3_end, color=COLOUR_DATA_ONE, alpha=SHADING_ALPHA)
+plt.axvspan(bit_3_end, bit_4_end, color=COLOUR_DATA_ZERO, alpha=SHADING_ALPHA)
+plt.axvspan(bit_4_end, bit_5_end, color=COLOUR_DATA_ONE, alpha=SHADING_ALPHA)
+plt.axvspan(bit_5_end, bit_6_end, color=COLOUR_DATA_ZERO, alpha=SHADING_ALPHA)
+plt.axvspan(bit_6_end, bit_7_end, color=COLOUR_DATA_ONE, alpha=SHADING_ALPHA)
+
+plt.axvspan(frame_end_start, frame_end_end, color=COLOUR_FRAME_END, alpha=SHADING_ALPHA)
+
+# https://www.geeksforgeeks.org/how-to-manually-add-a-legend-with-a-color-box-on-a-matplotlib-figure/
+plot_handles = [
+    mpatches.Patch(color=COLOUR_PILOT_TONE, label='Pilot Tone'),
+    mpatches.Patch(color=COLOUR_FRAME_START, label='Frame Start Marker'),
+    mpatches.Patch(color=COLOUR_FRAME_END, label='Frame End Marker'),
+    mpatches.Patch(color=COLOUR_DATA_ZERO, label='Data Bit Zero'),
+    mpatches.Patch(color=COLOUR_DATA_ONE, label='Data Bit One'),
+]
+
+plt.legend(
+    handles=plot_handles,
+    bbox_to_anchor=(0, 0),
+    loc="upper left",
+    frameon=False
+)
+
+plt.savefig("yamaha_dx_kcs_data_frame.png", dpi=400)

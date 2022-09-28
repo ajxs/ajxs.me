@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+jpg_quality="80"
+
+argument_string="-quality "${jpg_quality}" -resize 800x600 -density 72 -units PixelsPerInch"
+
+convert ${argument_string} ./yamaha_dx_kcs_data_frame.png ./yamaha_dx_kcs_data_frame.jpg
