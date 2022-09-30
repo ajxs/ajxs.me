@@ -13,11 +13,8 @@
 $font-body: Arial, "Liberation sans", sans-serif;
 $font-mono: "Trebuchet MS", "DejaVu Sans Mono", monospace;
 
-$line-height-scale: 1.5;
-
-$font-size-base: 16px;
-$font-size-body: 1rem;
-$font-size-title: 3rem;
+$font-size-body: 16px;
+$font-size-body-line-height: 1.5;
 
 $body-width: 42rem;
 
@@ -30,34 +27,43 @@ $font-size-h4: 1.17rem;
 $font-size-index-entry: 0.9rem;
 $font-size-index-title: 1.25rem;
 
-$entry-body-text-colour: #d7d7d7;
-$entry-body-text-colour-permalink: #41413e;
-$entry-body-text-colour-permalink-hover: #585853;
-
 $background-colour-body: #0d0d0a;
 $background-colour-page: #050505;
+
+$text-colour-body: #d7d7d7;
+$text-colour-body-link: #f0f0f0;
+$text-colour-body-link-hover: #c1c1c1;
+$text-colour-body-permalink: #41413e;
+$text-colour-body-permalink-hover: #585853;
 
 $background-colour-dark: #17170c;
 $background-colour-dark-hover: #282813;
 $background-colour-mid: #242414;
 
-$text-colour-light: #dfdfd3;
+$text-colour-light: #f0f0f0;
 $text-colour-light-hover: #c1c1c1;
 
 $text-colour-mid: #c1c1c1;
-$text-colour-mid-hover: #b5b5b5;
+$text-colour-mid-hover: #eee;
 
-$text-colour-mid-light: #f0f0f0;
-$text-colour-mid-light-hover: #c1c1c1;
-
-$text-colour-mid-dark: #848478;
-$text-colour-mid-dark-hover: #b5b5b5;
-
-$text-colour-dark: #282814;
-$text-colour-dark-hover: #848478;
+$text-colour-dark: #848478;
+$text-colour-dark-hover: #b5b5b5;
 
 $table-of-contents-outline-colour: #242414;
 $table-of-contents-border-colour: #000000;
+
+
+@mixin colour_body {
+	color: $text-colour-body;
+
+	a {
+		color: $text-colour-body-link;
+
+		&:hover {
+			color: $text-colour-body-link-hover;
+		}
+	}
+}
 
 
 @mixin colour_light {
@@ -86,32 +92,6 @@ $table-of-contents-border-colour: #000000;
 }
 
 
-@mixin colour_mid_light {
-	color: $text-colour-mid-light;
-
-	a {
-		color: $text-colour-mid-light;
-
-		&:hover {
-			color: $text-colour-mid-light-hover;
-		}
-	}
-}
-
-
-@mixin colour_mid_dark {
-	color: $text-colour-mid-dark;
-
-	a {
-		color: $text-colour-mid-dark;
-
-		&:hover {
-			color: $text-colour-mid-dark-hover;
-		}
-	}
-}
-
-
 @mixin colour_dark {
 	color: $text-colour-dark;
 
@@ -126,19 +106,21 @@ $table-of-contents-border-colour: #000000;
 
 
 html {
-	font-size: $font-size-base;
+	font-size: $font-size-body;
+	line-height: $font-size-body-line-height;
+
 	background-color: $background-colour-page;
 }
 
 
 body {
-	@include colour_light;
+	@include colour_body;
 
 	background-color: $background-colour-body;
 	box-sizing: border-box;
 	font-family: $font-body;
 	margin: 0 auto;
-	padding: 1.4rem 0.8rem 0.4rem 0.8rem;
+	padding: 0.8rem;
 	width: $body-width;
 
 	& > header {
@@ -162,7 +144,7 @@ body {
 		@include colour_dark;
 
 		font-size: 0.8rem;
-		padding: 0.4rem 0 0.4rem;
+		padding: 0.4rem;
 		text-align: center;
 	}
 }
@@ -174,7 +156,6 @@ h1, h2, h3, h4 {
 
 h1 {
 	font-size: $font-size-h1;
-	line-height: $font-size-h1 * $line-height-scale;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0;
@@ -183,7 +164,6 @@ h1 {
 
 h2 {
 	font-size: $font-size-h2;
-	line-height: $font-size-h2 * $line-height-scale;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0 0.85rem;
@@ -192,7 +172,6 @@ h2 {
 
 h3 {
 	font-size: $font-size-h3;
-	line-height: $font-size-h3 * $line-height-scale;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1.25rem 0 0.85rem;
@@ -201,7 +180,6 @@ h3 {
 
 h4 {
 	font-size: $font-size-h4;
-	line-height: $font-size-h4 * $line-height-scale;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 0.8rem 0;
@@ -245,7 +223,6 @@ section#contact-info {
 section#blog {
 	h2 {
 		font-size: $font-size-index-title;
-		line-height: $font-size-index-title * $line-height-scale;
 		margin: 0;
 	}
 
@@ -263,20 +240,20 @@ section#blog {
 		padding: 0;
 
 		font-size: $font-size-index-entry;
-		line-height: $font-size-index-entry * $line-height-scale;
 
-		& li {
+		& > li {
 			background-color: $background-colour-dark;
 			margin-bottom: 0.8rem;
+			padding: 0.4rem;
 	
 			a.entry-link {
 				display: block;
-				padding: 0.4rem;
 				text-decoration: none;
+				margin-bottom: 0.4rem;
 			}
 	
 			.date {
-				@include colour_mid_dark;
+				@include colour_dark;
 
 				margin: 0 0 0.4rem;
 			}
@@ -286,10 +263,9 @@ section#blog {
 			}
 	
 			.tags {
-				@include colour_mid_dark;
+				@include colour_dark;
 
 				font-size: 0.75rem;
-				padding: 0 0.4rem 0.4rem 0.4rem;
 
 				ul.tag-list {
 					@include colour_mid;
@@ -324,8 +300,6 @@ ul.tag-list {
 
 
 article.blog-entry {
-	@include colour_mid_light;
-
 	header {
 		background-color: $background-colour-dark;
 		text-align: left;
@@ -333,13 +307,14 @@ article.blog-entry {
 		padding: 0.8rem 0.4rem;
 	
 		h1 {
+			@include colour_light;
 			margin: 0 0 0.6rem;
 			letter-spacing: initial;
 			text-transform: none;
 		}
 	
 		.date {
-			@include colour_mid_dark;
+			@include colour_dark;
 			margin: 0 0 0.4rem;
 		}
 	
@@ -348,31 +323,25 @@ article.blog-entry {
 		}
 	
 		.tags {
-			@include colour_mid_dark;
+			@include colour_dark;
 
 			font-size: 0.8rem;
 			margin-top: 0.6rem;
 
 			.tag-list {
-				@include colour_mid_light;
+				@include colour_light;
 			}
 		}
 	}
 
 	.entry-body {
-		@include colour_mid_light;
-	
-		color: $entry-body-text-colour;
-		font-size: $font-size-body;
-		line-height: $font-size-body * $line-height-scale;
-
 		a.permalink {
 			text-decoration: none;
 			font-style: italic;
-			color: $entry-body-text-colour-permalink;
+			color: $text-colour-body-permalink;
 	
 			&:hover {
-				color: $entry-body-text-colour-permalink-hover;
+				color: $text-colour-body-permalink-hover;
 			}
 		}
 
