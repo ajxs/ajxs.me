@@ -475,6 +475,23 @@ article.blog-entry {
 	}
 }
 
+abbr {
+	color: $text-colour-body-link;
+	text-decoration: underline dotted;
+
+	&:hover {
+		color: $text-colour-body-link-hover;
+	}
+
+	&::after {
+		color: $text-colour-body;
+		content: '[?]';
+		font-size: 70%;
+		vertical-align: super;
+		background-color: $background-colour-mid;
+	}
+}
+
 
 .code-block { 
 	background: #f0f3f3; 
