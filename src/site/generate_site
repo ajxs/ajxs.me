@@ -46,12 +46,14 @@ BLOG_ENTRY_TAGS_TEMPLATE = None
 BLOG_ENTRY_INDEX_TEMPLATE = None
 # Blog entry index link tags template.
 BLOG_ENTRY_INDEX_TAGS_TEMPLATE = None
+# The template for a particular blog index.
+BLOG_INDEX_TEMPLATE = None
 # The main site index template.
 INDEX_TEMPLATE = None
 # The main page template.
 MAIN_PAGE_TEMPLATE = None
-# The index template for a particular tag.
-TAG_INDEX_TEMPLATE = None
+# The number of the latest blog posts to show on the main site index.
+MAIN_INDEX_BLOG_POST_LENGTH = 10
 
 # Open and parse each of the template HTML files.
 with open(f"{TEMPLATE_FOLDER}/entry.html", mode='r') as template_file:
@@ -72,8 +74,8 @@ with open(f"{TEMPLATE_FOLDER}/index_entry_tags.html", mode='r') as template_file
 with open(f"{TEMPLATE_FOLDER}/main_page.html", mode='r') as template_file:
     MAIN_PAGE_TEMPLATE = Template(template_file.read())
 
-with open(f"{TEMPLATE_FOLDER}/tag_index.html", mode='r') as template_file:
-    TAG_INDEX_TEMPLATE = Template(template_file.read())
+with open(f"{TEMPLATE_FOLDER}/blog_index.html", mode='r') as template_file:
+    BLOG_INDEX_TEMPLATE = Template(template_file.read())
 
 
 def create_blog_entry_file(entry):
@@ -134,13 +136,10 @@ def create_blog_entry_file(entry):
     print(f"Wrote blog entry file: {blog_entry_filename}")
 
 
-def create_tag_pages():
+def create_tag_pages(tags):
     """
     Creates all of the individual tag index pages.
     """
-
-    # All of the tags used in the blog.
-    tags = load_tags()
 
     for tag in tags:
         # All of the entries tagged with this specific tag.
@@ -163,9 +162,9 @@ def create_tag_pages():
             )
 
         # Create the index HTML.
-        index_html = TAG_INDEX_TEMPLATE.substitute(
-            tag_name=tag["name"],
-            tagged_entries=index_entries_html
+        index_html = BLOG_INDEX_TEMPLATE.substitute(
+            heading=f"Entries tagged as '<span id=\"tag-index-name\">{tag['name']}</span>'",
+            entries=index_entries_html
         )
 
         # The page meta description.
@@ -190,9 +189,46 @@ def create_tag_pages():
         print(f"Wrote tag index file: {tag_index_filename}")
 
 
-def create_index(entries):
+def create_index_entry_html(entry):
+    """
+    Creates the HTML for an individual blog post entry in a blog index list.
+    """
+
+    # The link to the blog entry.
+    entry_link = f"blog/{entry['filename']}.html"
+    # The HTML to display the entry tags.
+    entry_tag_list_html = ""
+    # The HTML to display the entry tag list.
+    entry_tags_html = ""
+
+    # If there are tags in this entry, create the tag HTML.
+    if entry["tags"]:
+        for tag in entry["tags"]:
+            entry_tag_link = f"blog/tag/{tag['filename']}.html"
+            entry_tag_list_html += f"<li><a href=\"{entry_tag_link}\">{tag['name']}</a></li>"
+
+        entry_tags_html = BLOG_ENTRY_INDEX_TAGS_TEMPLATE.substitute(
+            entry_tag_list=entry_tag_list_html
+        )
+
+    # The formatted creation date.
+    date_created = entry["date_created"].strftime("%Y.%m.%d")
+
+    # For each entry generate the blog entry HTML and add this to the index entries
+    # HTML string.
+    return BLOG_ENTRY_INDEX_TEMPLATE.substitute(
+        entry_link=entry_link,
+        date=date_created,
+        title=entry["title"],
+        short=entry["short"],
+        entry_tags=entry_tags_html
+    )
+
+
+def create_index(entries, tags):
     """
     Creates the site index.
+    This will include only the specified number of 'latest' blog posts.
     """
 
     # The HTML for the blog entries in the index.
@@ -200,39 +236,24 @@ def create_index(entries):
     # The HTML for the site index.
     index_html = ""
 
-    for entry in entries:
-        # The link to the blog entry.
-        entry_link = f"blog/{entry['filename']}.html"
-        # The HTML to display the entry tags.
-        entry_tag_list_html = ""
-        # The HTML to display the entry tag list.
-        entry_tags_html = ""
+    # For each entry generate the blog entry HTML and add this to the index entries HTML string.
+    for entry in entries[0:MAIN_INDEX_BLOG_POST_LENGTH]:
+        index_entries_html += create_index_entry_html(entry)
 
-        # If there are tags in this entry, create the tag HTML.
-        if entry["tags"]:
-            for tag in entry["tags"]:
-                entry_tag_link = f"blog/tag/{tag['filename']}.html"
-                entry_tag_list_html += f"<li><a href=\"{entry_tag_link}\">{tag['name']}</a></li>"
+    # All of the tags used in the blog.
+    tags = load_tags()
+    # The HTML string used for the index tag list.
+    index_tags_html = ""
 
-            entry_tags_html = BLOG_ENTRY_INDEX_TAGS_TEMPLATE.substitute(
-                entry_tag_list=entry_tag_list_html
-            )
-
-        # The formatted creation date.
-        date_created = entry["date_created"].strftime("%Y.%m.%d")
-
-        # For each entry generate the blog entry HTML and add this to the index entries
-        # HTML string.
-        index_entries_html += BLOG_ENTRY_INDEX_TEMPLATE.substitute(
-            entry_link=entry_link,
-            date=date_created,
-            title=entry["title"],
-            short=entry["short"],
-            entry_tags=entry_tags_html
-        )
+    # Sort the tags by name, and create the tag link for each.
+    for tag in sorted(tags, key=lambda tag: tag['name']):
+        index_tags_html += f"<li><a href='/blog/tag/{tag['filename']}.html'>{tag['name']}</a></li>"
 
     # Create the index HTML.
-    index_html = INDEX_TEMPLATE.substitute(blog_entries=index_entries_html)
+    index_html = INDEX_TEMPLATE.substitute(
+        blog_entries=index_entries_html,
+        index_tag_links=index_tags_html
+    )
 
     # The full page HTML. This is the Index HTML baked in to the main page template.
     full_file_html = MAIN_PAGE_TEMPLATE.substitute(
@@ -249,6 +270,45 @@ def create_index(entries):
         index_file.write(full_file_html)
 
     print("Wrote index.html")
+
+
+def create_all_entry_index(entries):
+    """
+    Creates the 'All Blog Entries' page.
+    """
+
+    # The HTML for the blog entries in the index.
+    index_entries_html = ""
+    # The HTML for the site index.
+    index_html = ""
+
+    # For each entry generate the blog entry HTML and add this to the index entries HTML string.
+    for entry in entries:
+        index_entries_html += create_index_entry_html(entry)
+
+    # Create the index HTML.
+    index_html = BLOG_INDEX_TEMPLATE.substitute(
+        heading="All Blog Entries",
+        entries=index_entries_html
+    )
+
+    # The full page HTML. This is the Index HTML baked in to the main page template.
+    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
+        page_title=f"{MAIN_PAGE_TITLE}/All Entries",
+        page_html=index_html,
+        copyright_text=COPYRIGHT_TEXT,
+        page_meta_description="All Blog Entries",
+        page_meta_author=PAGE_META_AUTHOR,
+        page_meta_email=PAGE_META_EMAIL,
+        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
+    )
+
+    # The final filename of the tag index HTML file.
+    tag_index_filename = f"{DIST_FOLDER}/blog/all.html"
+    with open(tag_index_filename, 'x') as index_file:
+        index_file.write(full_file_html)
+
+    print(f"Wrote all blog entries index file: {tag_index_filename}")
 
 
 def create_static_page(page):
@@ -286,9 +346,9 @@ def are_templates_loaded():
         BLOG_ENTRY_TAGS_TEMPLATE,
         BLOG_ENTRY_INDEX_TEMPLATE,
         BLOG_ENTRY_INDEX_TAGS_TEMPLATE,
+        BLOG_INDEX_TEMPLATE,
         INDEX_TEMPLATE,
         MAIN_PAGE_TEMPLATE,
-        TAG_INDEX_TEMPLATE,
     ]
 
     for template in templates:
@@ -311,15 +371,19 @@ def main():
     # Load all of the individual blog entries from the database.
     blog_entries = load_blog_entries()
 
+    # All of the tags used in the blog.
+    blog_tags = load_tags()
+
     # Create all of the individual blog entry files.
     for entry in blog_entries:
         create_blog_entry_file(entry)
 
     # Creates the tag index pages.
-    create_tag_pages()
-
+    create_tag_pages(blog_tags)
     # Creates the site index.
-    create_index(blog_entries)
+    create_index(blog_entries, blog_tags)
+    #Create the 'All Blog Entries' page
+    create_all_entry_index(blog_entries)
 
     static_pages = load_static_pages()
     for page in static_pages:

@@ -104,10 +104,16 @@ section {
   margin-bottom: 1.6rem;
 }
 
+section h1, section h2 {
+  text-transform: uppercase;
+}
+
 section h1 {
   letter-spacing: 0.2rem;
-  margin: 0 0 1rem;
-  text-transform: uppercase;
+}
+
+section h2 {
+  letter-spacing: 0.1rem;
 }
 
 section#contact-info #contact-info-list {
@@ -129,98 +135,121 @@ section#contact-info #contact-info-list li .icon {
   vertical-align: middle;
 }
 
-section#blog h2 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-
-section#blog #tag-heading {
+section#blog #blog-heading {
   letter-spacing: normal;
   text-transform: none;
 }
 
-section#blog #tag-heading span#tag-index-name {
+section#blog #blog-heading span#tag-index-name {
   color: #c1c1c1;
 }
 
-section#blog #tag-heading span#tag-index-name a {
+section#blog #blog-heading span#tag-index-name a {
   color: #c1c1c1;
 }
 
-section#blog #tag-heading span#tag-index-name a:hover {
+section#blog #blog-heading span#tag-index-name a:hover {
   color: #eee;
 }
 
-section#blog ul#blog-entries {
+section#blog ul#blog-index-entries {
   list-style: none;
   padding: 0;
   font-size: 0.9rem;
 }
 
-section#blog ul#blog-entries > li {
+section#blog ul#blog-index-entries > li {
   background-color: #17170c;
   margin-bottom: 0.8rem;
   padding: 0.4rem;
 }
 
-section#blog ul#blog-entries > li a.entry-link {
+section#blog ul#blog-index-entries > li h2 {
+  font-size: 1.25rem;
+  letter-spacing: normal;
+  text-transform: none;
+  margin: 0;
+}
+
+section#blog ul#blog-index-entries > li a.entry-link {
   display: block;
   text-decoration: none;
   margin-bottom: 0.4rem;
 }
 
-section#blog ul#blog-entries > li .date {
+section#blog ul#blog-index-entries > li .date {
   color: #848478;
   margin: 0 0 0.4rem;
 }
 
-section#blog ul#blog-entries > li .date a {
+section#blog ul#blog-index-entries > li .date a {
   color: #848478;
 }
 
-section#blog ul#blog-entries > li .date a:hover {
+section#blog ul#blog-index-entries > li .date a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li .short {
+section#blog ul#blog-index-entries > li .short {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .short a {
+section#blog ul#blog-index-entries > li .short a {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .short a:hover {
+section#blog ul#blog-index-entries > li .short a:hover {
   color: #eee;
 }
 
-section#blog ul#blog-entries > li .tags {
+section#blog ul#blog-index-entries > li .tags {
   color: #848478;
   font-size: 0.75rem;
 }
 
-section#blog ul#blog-entries > li .tags a {
+section#blog ul#blog-index-entries > li .tags a {
   color: #848478;
 }
 
-section#blog ul#blog-entries > li .tags a:hover {
+section#blog ul#blog-index-entries > li .tags a:hover {
   color: #b5b5b5;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list {
+section#blog ul#blog-index-entries > li .tags ul.tag-list {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list a {
+section#blog ul#blog-index-entries > li .tags ul.tag-list a {
   color: #c1c1c1;
 }
 
-section#blog ul#blog-entries > li .tags ul.tag-list a:hover {
+section#blog ul#blog-index-entries > li .tags ul.tag-list a:hover {
   color: #eee;
 }
 
-section#blog ul#blog-entries > li:hover {
+section#blog ul#blog-index-entries > li:hover {
   background-color: #282813;
+}
+
+section#blog ul#blog-index-tags {
+  list-style: none;
+  padding: 0;
+}
+
+section#blog ul#blog-index-tags li {
+  display: inline-block;
+  background-color: #17170c;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  margin: 0 0.4rem 0.4rem 0;
+}
+
+section#blog ul#blog-index-tags li:hover {
+  background-color: #282813;
+}
+
+section#blog div#blog-view-all-entries {
+  margin: 1.5rem 0;
 }
 
 ul.tag-list {
@@ -438,12 +467,30 @@ article.blog-entry .entry-body .formula {
   }
 }
 
+abbr {
+  color: #f0f0f0;
+  text-decoration: underline dotted;
+}
+
+abbr:hover {
+  color: #c1c1c1;
+}
+
+abbr::after {
+  color: #d7d7d7;
+  content: '[?]';
+  font-size: 70%;
+  vertical-align: super;
+  background-color: #242414;
+}
+
 .code-block {
   background: #f0f3f3;
   border: solid grey;
   border-width: .1em .1em .1em .8em;
   padding: .2em .6em;
   color: black;
+  font-size: 80%;
   /* Comment */
   /* Error */
   /* Keyword */
