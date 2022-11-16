@@ -8,7 +8,9 @@ This script generates all of the page content from the blog SQLite database.
 from string import Template
 from datetime import datetime
 import os
-from site_data import load_blog_entries, load_tags, load_tagged_entries, load_static_pages
+from lxml import etree
+from site_data import load_blog_entries, load_tags, load_tagged_entries, load_static_pages, \
+    load_static_redirect_pages
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -28,6 +30,10 @@ PAGE_META_DEFAULT_DESCRIPTION = "ajxs personal site"
 PAGE_META_DEFAULT_KEYWORDS = "ajxs, synthesisers, programming, dsp"
 PAGE_META_AUTHOR = "ajxs"
 PAGE_META_EMAIL = "ajxs@panoptic.online"
+# The 'delay' before a client-side page redirect occurs.
+# Set this to a reasonable amount due to the negative impact of short
+# redirects on screen-reader software.
+REDIRECT_REFRESH_TIME = 3
 
 # The destination folder for the distributable artifacts.
 DIST_FOLDER = f"{os.getcwd()}/docs"
@@ -336,6 +342,64 @@ def create_static_page(page):
         print(f"Wrote static page file: {full_page_path}")
 
 
+def create_static_redirect_page(page_redirect):
+    """
+    Creates a static redirect page file.
+    These entries represent static redirect HTML files, designed to perform a client-side
+    redirect with a 'refresh' meta directive in the HTML header.
+    These replace the older system of using symlinks to redirect on the server-side due to
+    compatibility issues with non-Linux based webhosts.
+    """
+
+    # The page body for the redirect.
+    # Ordinarily this should not be seen, however this exists as a fallback for
+    # older browsers which do not automatically follow the redirect in the HTML header.
+    page_body = f"""
+        <p>
+            The page you're looking for has moved.<br/>
+            If you are not redirected automatically please
+            <a href=\"{page_redirect['address_to']}\">click here</a>.
+        </p>
+        """
+
+    # Remove the leading/trailing newlines, and replace the implicit spacing introduced
+    # by this file with tabs to match the destination HTML.
+    page_body = page_body.strip().replace('    ', '\t')
+
+    # Create the directory tree for the file path.
+    from_page_path = f"{DIST_FOLDER}/{page_redirect['address_from']}"
+    os.makedirs(os.path.dirname(from_page_path), exist_ok=True)
+
+    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
+        page_title=MAIN_PAGE_TITLE,
+        page_html=page_body,
+        copyright_text=COPYRIGHT_TEXT,
+        page_meta_description=PAGE_META_DEFAULT_DESCRIPTION,
+        page_meta_author=PAGE_META_AUTHOR,
+        page_meta_email=PAGE_META_EMAIL,
+        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
+    )
+
+    # Create the redirect meta element.
+    # https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+    redirect_page_root = etree.HTML(full_file_html)
+    head_element = redirect_page_root.find("head")
+    etree.SubElement(
+        head_element,
+        "meta",
+        attrib={
+            "http-equiv": "refresh",
+            "content": f"{REDIRECT_REFRESH_TIME};url={page_redirect['address_to']}",
+        }
+    )
+
+    # Create the page tree, and write the final redirect file.
+    page_tree = etree.ElementTree(redirect_page_root)
+    page_tree.write(from_page_path, encoding="UTF-8")
+
+    print(f"Wrote static redirect page file: {from_page_path}")
+
+
 def are_templates_loaded():
     """
     Tests whether all templates have been loaded.
@@ -388,6 +452,10 @@ def main():
     static_pages = load_static_pages()
     for page in static_pages:
         create_static_page(page)
+
+    static_redirect_pages = load_static_redirect_pages()
+    for redirect_page in static_redirect_pages:
+        create_static_redirect_page(redirect_page)
 
 if __name__ == "__main__":
     main()

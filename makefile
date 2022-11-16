@@ -25,9 +25,8 @@ DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_RSS            := ${DIST_FOLDER}/site.rss
 DIST_CSS            := ${DIST_FOLDER}/static/style.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
-ADA_ARTICLE_SYMLINK := ${DIST_BLOG_FOLDER}/Giving_Ada_a_chance.html
 
-all: site ${ADA_ARTICLE_SYMLINK}
+all: site
 
 clean:
 	rm -rf ${DIST_FOLDER}
@@ -57,11 +56,5 @@ ${GITHUB_DNS_RECORD}:
 ${DIST_CSS}:
 	sassc --style=expanded ${SRC_FOLDER}/site/style.scss ${DIST_CSS}
 
-# Unfortunately when creating the Ada article, the originally published version had 
-# a mis-capitalised title. This makefile creates a symlink with the incorrectly capitalised
-# filename, pointing to the correct file name.
-${ADA_ARTICLE_SYMLINK}:
-	cd ${DIST_BLOG_FOLDER} && ln -s Giving_Ada_a_Chance.html Giving_Ada_a_chance.html
-
-emu: site
+emu: ${DIST_FOLDER}
 	cd "${DIST_FOLDER}" && python3 -m http.server

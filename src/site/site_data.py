@@ -63,6 +63,12 @@ FROM static_page p
 WHERE p.date_deleted IS NULL;
 """
 
+# Database query used to load static redirect page entries.
+LOAD_STATIC_REDIRECT_PAGES_QUERY = """
+SELECT *
+FROM static_page_redirect p
+WHERE p.date_deleted IS NULL;
+"""
 
 def normalise_entry_name(tag_name):
     """
@@ -264,3 +270,34 @@ def load_static_pages():
                 })
 
     return static_pages
+
+
+def load_static_redirect_pages():
+    """
+    Loads all of the static redirect pages from the database.
+    """
+
+    # The full array of static redirect pages which will be returned.
+    static_redirect_pages = []
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        # The cursor used to fetch entries.
+        cursor = conn.cursor()
+
+        # The cursor used to fetch the entries.
+        cursor.execute(LOAD_STATIC_REDIRECT_PAGES_QUERY)
+
+        # Fetch all page rows.
+        while True:
+            rows = cursor.fetchmany()
+            # Break if all rows read.
+            if not rows:
+                break
+
+            for row in rows:
+                static_redirect_pages.append({
+                    "address_from": row[0],
+                    "address_to": row[1],
+                })
+
+    return static_redirect_pages

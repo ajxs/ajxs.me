@@ -54,4 +54,17 @@ CREATE TABLE static_page (
 	date_deleted DATETIME
 );
 
+-- These entries represent static redirect HTML files, designed to perform a client-side 
+-- redirect with a 'refresh' meta directive in the HTML header.
+-- These replace the older system of using symlinks to redirect on the server-side due to 
+-- compatibility issues with non-Linux based webhosts.
+CREATE TABLE static_page_redirect (
+	address_from TEXT NOT NULL,
+	address_to TEXT NOT NULL,
+	date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	date_modified DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	date_deleted DATETIME,
+	PRIMARY KEY (address_from, address_to)
+);
+
 COMMIT;
