@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		{{! https://stackoverflow.com/questions/19506028/do-you-need-to-close-meta-and-link-tags-in-html }}
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="{{page_meta_author}}">
-		<meta name="description" content="{{page_meta_description}}">
+		<meta name="author" content="{{meta_author}}">
+		<meta name="description" content="{{meta_description}}">
 		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="{{page_meta_keywords}}">
-		<meta name="reply-to" content="{{page_meta_email}}">
-		<meta name="owner" content="{{page_meta_author}}">
+		<meta name="keywords" content="{{meta_keywords}}">
+		<meta name="reply-to" content="{{meta_email}}">
+		<meta name="owner" content="{{meta_author}}">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
 		<title>{{page_title}}</title>
+		{{! Set the redirect time to a reasonable amount due to the negative impact of short values on screen-reader software. }}
 		{{#redirect}}<meta http-equiv="refresh" content="3;url={{redirect}}"/>{{/redirect}}
 	</head>
 	<body>
@@ -20,7 +22,7 @@
 		</header>
 		{{{page_body}}}
 		<footer>
-			{{copyright_text}}
+			{{footer_text}}
 		</footer>
 	</body>
 </html>
