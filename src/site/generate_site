@@ -26,11 +26,6 @@ __status__ = "Production"
 # <title>$page_title</title> elements.
 MAIN_PAGE_TITLE = "~ajxs"
 
-# Page meta tag contents.
-PAGE_META_DEFAULT_DESCRIPTION = "ajxs personal site"
-PAGE_META_DEFAULT_KEYWORDS = "ajxs, synthesisers, programming, dsp"
-PAGE_META_AUTHOR = "ajxs"
-PAGE_META_EMAIL = "ajxs@panoptic.online"
 # The 'delay' before a client-side page redirect occurs.
 # Set this to a reasonable amount due to the negative impact of short
 # redirects on screen-reader software.
@@ -42,39 +37,41 @@ DIST_FOLDER = f"{os.getcwd()}/docs"
 TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.
 DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
-# The copyright text displayed in the page footer.
-COPYRIGHT_TEXT = f"© {datetime.today().year} AJXS"
 
-# The blog entry template.
-BLOG_ENTRY_TEMPLATE = None
 # Blog entry index link template.
 BLOG_INDEX_ENTRY_TEMPLATE = None
 # The template for a particular blog index.
 BLOG_INDEX_TEMPLATE = None
-# The main site index template.
-INDEX_TEMPLATE = None
 # The main page template.
 MAIN_PAGE_TEMPLATE = None
 
 # The number of the latest blog posts to show on the main site index.
 MAIN_INDEX_BLOG_POST_LENGTH = 10
 
-# Open and parse each of the template HTML files.
-with open(f"{TEMPLATE_FOLDER}/entry.mustache", mode='r') as template_file:
-    BLOG_ENTRY_TEMPLATE = template_file.read()
+# The default page keywords.
+PAGE_META_DEFAULT_KEYWORDS = ["ajxs", "synthesisers", "programming", "dsp"]
 
-with open(f"{TEMPLATE_FOLDER}/index.mustache", mode='r') as template_file:
-    INDEX_TEMPLATE = template_file.read()
+# The default page meta information.
+# This object is used when rendering the main page template as the 'default' page meta
+# information. It is overridden with page-specific values.
+MAIN_PAGE_DEFAULT_META_INFO = {
+    "page_title": MAIN_PAGE_TITLE,
+    "copyright_text": f"© {datetime.today().year} AJXS",
+    "page_meta_description": "ajxs personal site",
+    "page_meta_author": "ajxs",
+    "page_meta_email": "ajxs@panoptic.online",
+    "page_meta_keywords": ",".join(PAGE_META_DEFAULT_KEYWORDS)
+}
+
 
 with open(f"{TEMPLATE_FOLDER}/index_entry.mustache", mode='r') as template_file:
     BLOG_INDEX_ENTRY_TEMPLATE = template_file.read()
 
-with open(f"{TEMPLATE_FOLDER}/main_page.html", mode='r') as template_file:
-    MAIN_PAGE_TEMPLATE = Template(template_file.read())
-
 with open(f"{TEMPLATE_FOLDER}/blog_index.mustache", mode='r') as template_file:
     BLOG_INDEX_TEMPLATE = template_file.read()
 
+with open(f"{TEMPLATE_FOLDER}/main.mustache", mode='r') as template_file:
+    MAIN_PAGE_TEMPLATE = template_file.read()
 
 def create_blog_entry_file(entry):
     """
@@ -86,28 +83,27 @@ def create_blog_entry_file(entry):
     # An array of tag names.
     tag_names = list(map(lambda tag: tag['name'], entry['tags']))
     # The meta keywords string.
-    page_keywords_string = ", ".join(tag_names)
+    page_keywords_string = ",".join(PAGE_META_DEFAULT_KEYWORDS + tag_names)
 
     # Create the entry HTML.
-    entry_html = chevron.render(BLOG_ENTRY_TEMPLATE, entry)
+    with open(f"{TEMPLATE_FOLDER}/entry.mustache", mode='r') as template_file:
+        entry_html = chevron.render(template_file, entry)
 
-    # Create the full page HTML.
-    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-        page_title=f"{MAIN_PAGE_TITLE}/{entry['title']}",
-        page_html=entry_html,
-        copyright_text=COPYRIGHT_TEXT,
-        page_meta_description=entry["short"],
-        page_meta_author=PAGE_META_AUTHOR,
-        page_meta_email=PAGE_META_EMAIL,
-        page_meta_keywords=page_keywords_string
-    )
+        # Create the full page HTML.
+        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+            **MAIN_PAGE_DEFAULT_META_INFO,
+            "page_title": f"{MAIN_PAGE_TITLE}/{entry['title']}",
+            "page_meta_description": entry["short"],
+            "page_meta_keywords": page_keywords_string,
+            "page_body": entry_html
+        })
 
-    # The final filename for the blog entry HTML.
-    blog_entry_filename = f"{DIST_BLOG_ENTRIES_FOLDER}/{entry['filename']}.html"
-    with open(blog_entry_filename, 'x') as blog_entry_file:
-        blog_entry_file.write(full_file_html)
+        # The final filename for the blog entry HTML.
+        blog_entry_filename = f"{DIST_BLOG_ENTRIES_FOLDER}/{entry['filename']}.html"
+        with open(blog_entry_filename, 'x') as blog_entry_file:
+            blog_entry_file.write(full_file_html)
 
-    print(f"Wrote blog entry file: {blog_entry_filename}")
+        print(f"Wrote blog entry file: {blog_entry_filename}")
 
 
 def create_tag_pages(tags):
@@ -135,17 +131,17 @@ def create_tag_pages(tags):
 
         # The page meta description.
         tag_page_description = f"Blog entries marked {tag['name']}"
+        # The meta keywords string.
+        tag_page_keywords_string = ",".join(PAGE_META_DEFAULT_KEYWORDS + [tag['name']])
 
         # The full page HTML. This is the Index HTML baked in to the main page template.
-        full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-            page_title=f"{MAIN_PAGE_TITLE}/{tag['name']}",
-            page_html=index_html,
-            copyright_text=COPYRIGHT_TEXT,
-            page_meta_description=tag_page_description,
-            page_meta_author=PAGE_META_AUTHOR,
-            page_meta_email=PAGE_META_EMAIL,
-            page_meta_keywords=tag['name']
-        )
+        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+            **MAIN_PAGE_DEFAULT_META_INFO,
+            "page_title": f"{MAIN_PAGE_TITLE}/{tag['name']}",
+            "page_meta_description": tag_page_description,
+            "page_meta_keywords": tag_page_keywords_string,
+            "page_body": index_html
+        })
 
         # The final filename of the tag index HTML file.
         tag_index_filename = f"{DIST_FOLDER}/blog/tag/{tag['filename']}.html"
@@ -161,36 +157,33 @@ def create_index(entries, tags):
     This will include only the specified number of 'latest' blog posts.
     """
 
-    args = {
-        "template": INDEX_TEMPLATE,
-        "partials_dict": {
-            "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
-        },
-        "data": {
-            "entries": entries[0:MAIN_INDEX_BLOG_POST_LENGTH],
-            "index_tag_links": sorted(tags, key=lambda tag: tag['name']),
-            "show_tag_list": True
+    # Open and parse each of the template HTML files.
+    with open(f"{TEMPLATE_FOLDER}/index.mustache", mode='r') as index_template_file:
+        args = {
+            "template": index_template_file,
+            "partials_dict": {
+                "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
+            },
+            "data": {
+                "entries": entries[0:MAIN_INDEX_BLOG_POST_LENGTH],
+                "index_tag_links": sorted(tags, key=lambda tag: tag['name']),
+                "show_tag_list": True
+            }
         }
-    }
 
-    # Create the index HTML.
-    index_html = chevron.render(**args)
+        # Create the index HTML.
+        index_html = chevron.render(**args)
 
-    # The full page HTML. This is the Index HTML baked in to the main page template.
-    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-        page_title=MAIN_PAGE_TITLE,
-        page_html=index_html,
-        copyright_text=COPYRIGHT_TEXT,
-        page_meta_description=PAGE_META_DEFAULT_DESCRIPTION,
-        page_meta_author=PAGE_META_AUTHOR,
-        page_meta_email=PAGE_META_EMAIL,
-        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
-    )
+        # The full page HTML. This is the Index HTML baked in to the main page template.
+        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+            **MAIN_PAGE_DEFAULT_META_INFO,
+            "page_body": index_html
+        })
 
-    with open(f"{DIST_FOLDER}/index.html", 'x') as index_file:
-        index_file.write(full_file_html)
+        with open(f"{DIST_FOLDER}/index.html", 'x') as index_file:
+            index_file.write(full_file_html)
 
-    print("Wrote index.html")
+        print("Wrote index.html")
 
 
 def create_all_entry_index(entries):
@@ -214,15 +207,12 @@ def create_all_entry_index(entries):
     index_html = chevron.render(**args)
 
     # The full page HTML. This is the Index HTML baked in to the main page template.
-    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-        page_title=f"{MAIN_PAGE_TITLE}/All Entries",
-        page_html=index_html,
-        copyright_text=COPYRIGHT_TEXT,
-        page_meta_description="All Blog Entries",
-        page_meta_author=PAGE_META_AUTHOR,
-        page_meta_email=PAGE_META_EMAIL,
-        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
-    )
+    full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+        **MAIN_PAGE_DEFAULT_META_INFO,
+        "page_meta_description": "All Blog Entries",
+        "page_title": f"{MAIN_PAGE_TITLE}/All Entries",
+        "page_body": index_html
+    })
 
     # The final filename of the tag index HTML file.
     tag_index_filename = f"{DIST_FOLDER}/blog/all.html"
@@ -242,15 +232,12 @@ def create_static_page(page):
     os.makedirs(os.path.dirname(full_page_path), exist_ok=True)
 
     with open(full_page_path, "w+") as page_file:
-        full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-            page_title=page["title"],
-            page_html=page["body"],
-            copyright_text=COPYRIGHT_TEXT,
-            page_meta_description=page["description"],
-            page_meta_author=PAGE_META_AUTHOR,
-            page_meta_email=PAGE_META_EMAIL,
-            page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
-        )
+        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+            **MAIN_PAGE_DEFAULT_META_INFO,
+            "page_meta_description": page["description"],
+            "page_title": page["title"],
+            "page_body": page["body"]
+        })
 
         page_file.write(full_file_html)
 
@@ -285,15 +272,10 @@ def create_static_redirect_page(page_redirect):
     from_page_path = f"{DIST_FOLDER}/{page_redirect['address_from']}"
     os.makedirs(os.path.dirname(from_page_path), exist_ok=True)
 
-    full_file_html = MAIN_PAGE_TEMPLATE.substitute(
-        page_title=MAIN_PAGE_TITLE,
-        page_html=page_body,
-        copyright_text=COPYRIGHT_TEXT,
-        page_meta_description=PAGE_META_DEFAULT_DESCRIPTION,
-        page_meta_author=PAGE_META_AUTHOR,
-        page_meta_email=PAGE_META_EMAIL,
-        page_meta_keywords=PAGE_META_DEFAULT_KEYWORDS
-    )
+    full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+        **MAIN_PAGE_DEFAULT_META_INFO,
+        "page_body": page_body
+    })
 
     # Create the redirect meta element.
     # https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
@@ -315,35 +297,10 @@ def create_static_redirect_page(page_redirect):
     print(f"Wrote static redirect page file: {from_page_path}")
 
 
-def are_templates_loaded():
-    """
-    Tests whether all templates have been loaded.
-    """
-
-    templates = [
-        BLOG_ENTRY_TEMPLATE,
-        BLOG_INDEX_ENTRY_TEMPLATE,
-        BLOG_INDEX_TEMPLATE,
-        INDEX_TEMPLATE,
-        MAIN_PAGE_TEMPLATE,
-    ]
-
-    for template in templates:
-        if not template:
-            return False
-
-    return True
-
-
-
 def main():
     """
     Main program.
     """
-
-    # Exit in a failure condition if the templates have not been loaded.
-    if not are_templates_loaded():
-        raise ValueError("Templates are not loaded")
 
     # Load all of the individual blog entries from the database.
     blog_entries = load_blog_entries()

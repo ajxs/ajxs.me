@@ -2,24 +2,24 @@
 <html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="$page_meta_author">
-		<meta name="description" content="$page_meta_description">
+		<meta name="author" content="{{page_meta_author}}">
+		<meta name="description" content="{{page_meta_description}}">
 		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="$page_meta_keywords">
-		<meta name="reply-to" content="$page_meta_email">
-		<meta name="owner" content="$page_meta_author">
+		<meta name="keywords" content="{{page_meta_keywords}}">
+		<meta name="reply-to" content="{{page_meta_email}}">
+		<meta name="owner" content="{{page_meta_author}}">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<title>$page_title</title>
+		<title>{{page_title}}</title>
 	</head>
 	<body>
 		<header>
 			<a href="/">~ajxs</a>
 		</header>
-		$page_html
+		{{{page_body}}}
 		<footer>
-				$copyright_text
+			{{copyright_text}}
 		</footer>
 	</body>
 </html>
