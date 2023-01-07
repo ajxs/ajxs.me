@@ -56,5 +56,5 @@ ${GITHUB_DNS_RECORD}:
 ${DIST_CSS}:
 	sassc --style=expanded ${SRC_FOLDER}/site/style.scss ${DIST_CSS}
 
-emu: ${DIST_FOLDER}
+emu: site
 	cd "${DIST_FOLDER}" && python3 -m http.server

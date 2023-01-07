@@ -1,8 +1,10 @@
 <section id="blog">
 	<h1 id="blog-heading">
-		$heading
+		{{{heading}}}
 	</h1>
 	<ul id="blog-index-entries">
-		$entries
+		{{#entries}}
+			{{> index_entry}}
+		{{/entries}}
 	<ul>
 </section>
