@@ -8,7 +8,6 @@ This script generates all of the page content from the blog SQLite database.
 from string import Template
 from datetime import datetime
 import os
-from lxml import etree
 import chevron
 from site_data import load_blog_entries, load_tags, load_tagged_entries, load_static_pages, \
     load_static_redirect_pages
@@ -272,29 +271,16 @@ def create_static_redirect_page(page_redirect):
     from_page_path = f"{DIST_FOLDER}/{page_redirect['address_from']}"
     os.makedirs(os.path.dirname(from_page_path), exist_ok=True)
 
-    full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
-        **MAIN_PAGE_DEFAULT_META_INFO,
-        "page_body": page_body
-    })
+    with open(from_page_path, "w+") as page_file:
+        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+            **MAIN_PAGE_DEFAULT_META_INFO,
+            "page_body": page_body,
+            "redirect": page_redirect['address_to']
+        })
 
-    # Create the redirect meta element.
-    # https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
-    redirect_page_root = etree.HTML(full_file_html)
-    head_element = redirect_page_root.find("head")
-    etree.SubElement(
-        head_element,
-        "meta",
-        attrib={
-            "http-equiv": "refresh",
-            "content": f"{REDIRECT_REFRESH_TIME};url={page_redirect['address_to']}",
-        }
-    )
+        page_file.write(full_file_html)
 
-    # Create the page tree, and write the final redirect file.
-    page_tree = etree.ElementTree(redirect_page_root)
-    page_tree.write(from_page_path, encoding="UTF-8")
-
-    print(f"Wrote static redirect page file: {from_page_path}")
+        print(f"Wrote static redirect page file: {from_page_path}")
 
 
 def main():
