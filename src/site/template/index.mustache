@@ -1,14 +1,20 @@
 <section id="blog">
 	<h1>Blog</h1>
 	<ul id="blog-index-entries">
-		$blog_entries
+		{{#entries}}
+			{{> index_entry}}
+		{{/entries}}
 	</ul>
 	<div id="blog-view-all-entries">
 		<a href="/blog/all.html">View All Entries</a>
 	</div>
 	<h2>Tags</h2>
 	<ul id="blog-index-tags">
-		$index_tag_links
+		{{#index_tag_links}}
+			<li>
+				<a href='/blog/tag/{{filename}}.html'>{{name}}</a>
+			</li>
+		{{/index_tag_links}}
 	</ul>
 </section>
 <section id="contact-info">
