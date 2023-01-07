@@ -167,6 +167,8 @@ def parse_entry_row(entry_row):
         "date_created": date_created,
         "date_modified": date_modified,
         "date_deleted": date_deleted,
+        # The publicly displayed date, in human readable format.
+        "date": date_created.strftime("%Y.%m.%d"),
         "filename": entry_filename,
         "tags": []
     }
