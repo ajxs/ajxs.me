@@ -5,7 +5,6 @@ Generates all of the static content for the site, as part of the full deployment
 This script generates all of the page content from the blog SQLite database.
 """
 
-from string import Template
 from datetime import datetime
 import os
 import chevron
@@ -31,12 +30,16 @@ TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.
 DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
 
+# Blog entry index list template.
+BLOG_INDEX_ENTRIES_TEMPLATE = None
 # Blog entry index link template.
 BLOG_INDEX_ENTRY_TEMPLATE = None
 # The template for a particular blog index.
 BLOG_INDEX_TEMPLATE = None
 # The main page template.
 MAIN_PAGE_TEMPLATE = None
+# The entry tag list template.
+TAG_LIST_TEMPLATE = None
 
 # The number of the latest blog posts to show on the main site index.
 MAIN_INDEX_BLOG_POST_LENGTH = 10
@@ -60,11 +63,17 @@ MAIN_PAGE_DEFAULT_META_INFO = {
 with open(f"{TEMPLATE_FOLDER}/index_entry.mustache", mode='r') as template_file:
     BLOG_INDEX_ENTRY_TEMPLATE = template_file.read()
 
+with open(f"{TEMPLATE_FOLDER}/blog_index_entries.mustache", mode='r') as template_file:
+    BLOG_INDEX_ENTRIES_TEMPLATE = template_file.read()
+
 with open(f"{TEMPLATE_FOLDER}/blog_index.mustache", mode='r') as template_file:
     BLOG_INDEX_TEMPLATE = template_file.read()
 
 with open(f"{TEMPLATE_FOLDER}/main.mustache", mode='r') as template_file:
     MAIN_PAGE_TEMPLATE = template_file.read()
+
+with open(f"{TEMPLATE_FOLDER}/tag_list.mustache", mode='r') as template_file:
+    TAG_LIST_TEMPLATE = template_file.read()
 
 
 def create_blog_entry_file(entry):
@@ -80,8 +89,16 @@ def create_blog_entry_file(entry):
     page_keywords_string = ",".join(PAGE_META_DEFAULT_KEYWORDS + tag_names)
 
     # Create the entry HTML.
-    with open(f"{TEMPLATE_FOLDER}/entry.mustache", mode='r') as template_file:
-        entry_html = chevron.render(template_file, entry)
+    with open(f"{TEMPLATE_FOLDER}/entry.mustache", mode='r') as article_template_file:
+        render_arguments = {
+            "template": article_template_file,
+            "partials_dict": {
+                "tag_list": TAG_LIST_TEMPLATE,
+            },
+            "data": entry
+        }
+
+        entry_html = chevron.render(**render_arguments)
 
         # Create the full page HTML.
         full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
@@ -112,6 +129,7 @@ def create_tag_pages(tags):
         render_arguments = {
             "template": BLOG_INDEX_TEMPLATE,
             "partials_dict": {
+                "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
                 "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
             },
             "data": {
@@ -151,7 +169,9 @@ def create_index(entries, tags):
         render_arguments = {
             "template": index_template_file,
             "partials_dict": {
-                "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
+                "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
+                "index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
+                "tag_list": TAG_LIST_TEMPLATE
             },
             "data": {
                 "entries": entries[0:MAIN_INDEX_BLOG_POST_LENGTH],

@@ -5,11 +5,7 @@
 		<div class="short">{{short}}</div>
 		<div class="tags">
 			<span>Tagged as: </span>
-			<ul class="tag-list">
-				{{#tags}}
-					<li><a href="/blog/tag/{{filename}}.html">{{name}}</a></li>
-				{{/tags}}
-			</ul>
+			{{> tag_list}}
 		</div>
 	</header>
 	<div class="entry-body">
