@@ -188,7 +188,7 @@ section#blog ul#blog-index-entries > li h2 {
   margin: 0 0 0.4rem;
 }
 
-section#blog ul#blog-index-entries > li a.entry-link {
+section#blog ul#blog-index-entries > li .entry-link {
   display: block;
   text-decoration: none;
   margin-bottom: 0.4rem;
@@ -482,6 +482,16 @@ article.blog-entry .entry-body .formula {
   }
   section#blog #tag-heading {
     font-size: 1.1rem;
+  }
+  section#blog ul#blog-index-entries > li .entry-link {
+    margin: 0;
+  }
+  section#blog ul#blog-index-entries > li .tags {
+    display: none;
+  }
+  section#blog ul#blog-index-tags li {
+    padding: 0.43rem 0.8rem;
+    margin: 0 0.6rem 0.6rem 0;
   }
 }
 

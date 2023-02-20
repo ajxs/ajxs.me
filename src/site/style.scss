@@ -238,7 +238,7 @@ section#blog {
 				margin: 0 0 0.4rem;
 			}
 
-			a.entry-link {
+			.entry-link {
 				display: block;
 				text-decoration: none;
 				margin-bottom: 0.4rem;
@@ -484,8 +484,30 @@ article.blog-entry {
 		}
 	}
 	
-	section#blog #tag-heading {
-		font-size: 1.1rem;
+	section#blog {
+		#tag-heading {
+			font-size: 1.1rem;
+		}
+
+		ul#blog-index-entries {
+			& > li {
+				.entry-link {
+					margin: 0;
+				}
+
+				.tags {
+					display: none;
+				}
+			}
+		}
+
+		ul#blog-index-tags {
+			li {
+				padding: 0.43rem 0.8rem;
+				margin: 0 0.6rem 0.6rem 0;
+			}
+		}
+
 	}
 }
 
