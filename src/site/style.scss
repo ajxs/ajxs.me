@@ -528,6 +528,12 @@ abbr {
 	}
 }
 
+blockquote {
+	@include colour_mid;
+	font-style: italic;
+	margin: 0.6rem 1rem;
+}
+
 
 .code-block { 
 	background: #f0f3f3; 

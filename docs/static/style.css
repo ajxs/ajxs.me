@@ -512,6 +512,20 @@ abbr::after {
   background-color: #242414;
 }
 
+blockquote {
+  color: #c1c1c1;
+  font-style: italic;
+  margin: 0.6rem 1rem;
+}
+
+blockquote a {
+  color: #c1c1c1;
+}
+
+blockquote a:hover {
+  color: #eee;
+}
+
 .code-block {
   background: #f0f3f3;
   border: solid grey;
