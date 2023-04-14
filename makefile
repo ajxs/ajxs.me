@@ -25,6 +25,7 @@ DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_RSS            := ${DIST_FOLDER}/site.rss
 DIST_CSS            := ${DIST_FOLDER}/static/style.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
+FAVICON             := ${DIST_FOLDER}/favicon.ico
 
 all: site
 
@@ -32,7 +33,7 @@ clean:
 	rm -rf ${DIST_FOLDER}
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
-	${DIST_STATIC_CONTENT} ${DIST_RSS} ${DIST_CSS} ${GITHUB_DNS_RECORD}
+	${DIST_STATIC_CONTENT} ${DIST_RSS} ${DIST_CSS} ${GITHUB_DNS_RECORD} ${FAVICON}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -55,6 +56,9 @@ ${GITHUB_DNS_RECORD}:
 
 ${DIST_CSS}:
 	sassc --style=expanded ${SRC_FOLDER}/site/style.scss ${DIST_CSS}
+
+${FAVICON}:
+	cp ${SRC_FOLDER}/site/favicon.ico ${DIST_FOLDER}
 
 emu: site
 	cd "${DIST_FOLDER}" && python3 -m http.server
