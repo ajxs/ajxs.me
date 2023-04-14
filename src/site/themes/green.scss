@@ -9,28 +9,32 @@
  *     Anthony <ajxs [at] panoptic.online>
  */
 
+$hue: 60;
+$text-saturation: 5%;
 
-$background-colour-body: #0b0b0a;
-$background-colour-page: #050505;
+$background-colour-body: hsl($hue, 5%, 4%);
 
-$text-colour-body: #d7d7d7;
-$text-colour-body-link: #f0f0f0;
-$text-colour-body-link-hover: #c1c1c1;
-$text-colour-body-permalink: #41413e;
-$text-colour-body-permalink-hover: #585853;
+$background-colour-dark: hsl($hue, 31%, 7%);
+$background-colour-dark-hover: hsl($hue, 35%, 12%);
 
-$background-colour-dark: #17170c;
-$background-colour-dark-hover: #282813;
-$background-colour-mid: #242414;
+$background-colour-mid: hsl($hue, 29%, 11%);
 
-$text-colour-light: #f0f0f0;
-$text-colour-light-hover: #c1c1c1;
+$text-colour-body: hsl($hue, $text-saturation, 85%);
 
-$text-colour-mid: #c1c1c1;
-$text-colour-mid-hover: #eee;
+$text-colour-light: hsl($hue, $text-saturation, 95%);
+$text-colour-light-hover: hsl($hue, $text-saturation, 75%);
 
-$text-colour-dark: #848478;
-$text-colour-dark-hover: #b5b5b5;
+$text-colour-mid: $text-colour-light-hover;
+$text-colour-mid-hover: hsl($hue, $text-saturation, 95%);
 
-$table-of-contents-outline-colour: #242414;
-$table-of-contents-border-colour: #000000;
+$text-colour-body-link: $text-colour-light;
+$text-colour-body-link-hover: $text-colour-light-hover;
+
+$text-colour-body-permalink: hsl($hue, $text-saturation, 25%);
+$text-colour-body-permalink-hover: hsl($hue, $text-saturation, 33%);
+
+$text-colour-dark: hsl($hue, $text-saturation, 50%);
+$text-colour-dark-hover: hsl($hue, $text-saturation, 71%);
+
+$table-of-contents-outline-colour: $background-colour-mid;
+$table-of-contents-border-colour: $background-colour-body;
