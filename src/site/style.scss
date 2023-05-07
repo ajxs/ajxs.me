@@ -374,6 +374,11 @@ article.blog-entry {
 			}
 		}
 
+		img {
+			display: block;
+			margin: 1rem 0;
+		}
+
 		.table-of-contents {
 			background-color: $background-colour-mid;
 			margin: 1.25rem 0;
@@ -526,6 +531,10 @@ abbr {
 		vertical-align: super;
 		background-color: $background-colour-mid;
 	}
+}
+
+code {
+	@include colour_mid;
 }
 
 blockquote {

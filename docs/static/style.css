@@ -386,6 +386,11 @@ article.blog-entry .entry-body figure figcaption {
   font-size: 0.8rem;
 }
 
+article.blog-entry .entry-body img {
+  display: block;
+  margin: 1rem 0;
+}
+
 article.blog-entry .entry-body .table-of-contents {
   background-color: #242414;
   margin: 1.25rem 0;
@@ -510,6 +515,18 @@ abbr::after {
   font-size: 70%;
   vertical-align: super;
   background-color: #242414;
+}
+
+code {
+  color: #c2c2bc;
+}
+
+code a {
+  color: #c2c2bc;
+}
+
+code a:hover {
+  color: #f3f3f2;
 }
 
 blockquote {
