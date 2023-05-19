@@ -203,7 +203,9 @@ def create_all_entry_index(entries):
     render_arguments = {
         "template": BLOG_INDEX_TEMPLATE,
         "partials_dict": {
-            "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
+            "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
+            "index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
+            "tag_list": TAG_LIST_TEMPLATE
         },
         "data": {
             "heading": "All Blog Entries",
@@ -223,12 +225,12 @@ def create_all_entry_index(entries):
         "page_body": index_html
     })
 
-    # The final filename of the tag index HTML file.
-    tag_index_filename = f"{DIST_FOLDER}/blog/all.html"
-    with open(tag_index_filename, 'x') as index_file:
+    # The final filename of the all entries index HTML file.
+    all_entries_index_filename = f"{DIST_FOLDER}/blog/all.html"
+    with open(all_entries_index_filename, 'x') as index_file:
         index_file.write(full_file_html)
 
-    print(f"Wrote all blog entries index file: {tag_index_filename}")
+    print(f"Wrote all blog entries index file: {all_entries_index_filename}")
 
 
 def create_static_page(page):
