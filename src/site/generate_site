@@ -28,7 +28,7 @@ DIST_FOLDER = f"{os.getcwd()}/docs"
 # The base template folder.
 TEMPLATE_FOLDER = f"{os.getcwd()}/src/site/template"
 # The destination folder for generated blog entries.
-DIST_BLOG_ENTRIES_FOLDER = DIST_FOLDER + "/blog"
+DIST_BLOG_ENTRIES_FOLDER = f"{DIST_FOLDER}/blog"
 
 # Blog entry index list template.
 BLOG_INDEX_ENTRIES_TEMPLATE = None

@@ -7,6 +7,7 @@ Contains all of the functionality necessary for loading data from the site datab
 
 from datetime import datetime
 import os
+import re
 import sqlite3
 import pytz
 
@@ -70,15 +71,16 @@ FROM static_page_redirect p
 WHERE p.date_deleted IS NULL;
 """
 
-def normalise_entry_name(tag_name):
+def create_filename_from_entity(name):
     """
     Creates a filename from an entry or tag name.
     """
 
-    filename = tag_name.replace(" ", "_")
-    filename = filename.replace("?", "")
-    filename = filename.replace(".", "")
-    filename = filename.replace(",", "")
+    filename = name.replace(" ", "_")
+    # This removes all non-legal characters.
+    # Refer to: https://www.ietf.org/rfc/rfc3986.txt
+    #   Section 2.3: Unreserved Characters.
+    filename = re.sub(r"[^\w\-.~]", "", filename)
 
     return filename
 
@@ -157,7 +159,7 @@ def parse_entry_row(entry_row):
         date_deleted = local_timezone.localize(datetime.strptime(entry_row[6], "%Y-%m-%d %H:%M:%S"))
 
     # The final filename for the entry.
-    entry_filename = normalise_entry_name(entry_row[1])
+    entry_filename = create_filename_from_entity(entry_row[1])
 
     return {
         "entry_id": entry_row[0],
@@ -180,7 +182,7 @@ def parse_tag_row(tag_row):
     """
 
     # The filename for this tag.
-    tag_filename = normalise_entry_name(tag_row[1])
+    tag_filename = create_filename_from_entity(tag_row[1])
 
     return {
         "tag_id": tag_row[0],
