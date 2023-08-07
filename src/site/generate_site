@@ -106,7 +106,8 @@ def create_blog_entry_file(entry):
             "page_title": f"{MAIN_PAGE_TITLE}/{entry['title']}",
             "meta_description": entry["short"],
             "meta_keywords": page_keywords_string,
-            "page_body": entry_html
+            "page_body": entry_html,
+            "contains_code_blocks": entry["contains_code_blocks"] == 1
         })
 
         # The final filename for the blog entry HTML.
@@ -125,6 +126,7 @@ def create_tag_pages(tags):
     for tag in tags:
         # All of the entries tagged with this specific tag.
         tagged_entries = load_tagged_entries(tag)
+        indexed_entries = filter_unlisted_entries (tagged_entries)
 
         render_arguments = {
             "template": BLOG_INDEX_TEMPLATE,
@@ -134,7 +136,7 @@ def create_tag_pages(tags):
             },
             "data": {
                 "heading": f"Entries tagged as '<span id=\"tag-index-name\">{tag['name']}</span>'",
-                "entries": tagged_entries,
+                "entries": indexed_entries,
                 "show_tag_list": False
             }
         }
@@ -147,7 +149,8 @@ def create_tag_pages(tags):
             "page_title": f"{MAIN_PAGE_TITLE}/{tag['name']}",
             "meta_description": f"Blog entries marked {tag['name']}",
             "meta_keywords": ",".join(PAGE_META_DEFAULT_KEYWORDS + [tag['name']]),
-            "page_body": index_html
+            "page_body": index_html,
+            "contains_code_blocks": False
         })
 
         # The final filename of the tag index HTML file.
@@ -158,11 +161,21 @@ def create_tag_pages(tags):
         print(f"Wrote tag index file: {tag_index_filename}")
 
 
+def filter_unlisted_entries(entries):
+    """
+    Filters out 'unlisted' entries that are not supposed to be listed in the
+    site's blog entry indexes.
+    """
+    return [entry for entry in entries if entry["unlisted"] != 1]
+
+
 def create_index(entries, tags):
     """
     Creates the site index.
     This will include only the specified number of 'latest' blog posts.
     """
+
+    indexed_entries = filter_unlisted_entries(entries)
 
     # Open and parse each of the template HTML files.
     with open(f"{TEMPLATE_FOLDER}/index.mustache", mode='r') as index_template_file:
@@ -174,7 +187,7 @@ def create_index(entries, tags):
                 "tag_list": TAG_LIST_TEMPLATE
             },
             "data": {
-                "entries": entries[0:MAIN_INDEX_BLOG_POST_LENGTH],
+                "entries": indexed_entries[0:MAIN_INDEX_BLOG_POST_LENGTH],
                 "index_tag_links": sorted(tags, key=lambda tag: tag['name']),
                 "show_tag_list": True
             }
@@ -222,7 +235,8 @@ def create_all_entry_index(entries):
         **MAIN_PAGE_DEFAULT_META_INFO,
         "meta_description": "All Blog Entries",
         "page_title": f"{MAIN_PAGE_TITLE}/All Entries",
-        "page_body": index_html
+        "page_body": index_html,
+        "contains_code_blocks": False
     })
 
     # The final filename of the all entries index HTML file.
@@ -247,7 +261,8 @@ def create_static_page(page):
             **MAIN_PAGE_DEFAULT_META_INFO,
             "meta_description": page["description"],
             "page_title": page["title"],
-            "page_body": page["body"]
+            "page_body": page["body"],
+            "contains_code_blocks": page["contains_code_blocks"] == 1
         })
 
         page_file.write(full_file_html)

@@ -23,7 +23,8 @@ DIST_BLOG_FOLDER    := ${DIST_FOLDER}/blog
 DIST_TAGS_FOLDER    := ${DIST_FOLDER}/blog/tag
 DIST_STATIC_CONTENT := ${DIST_FOLDER}/static
 DIST_RSS            := ${DIST_FOLDER}/site.rss
-DIST_CSS            := ${DIST_FOLDER}/static/style.css
+SITE_CSS            := ${DIST_FOLDER}/static/style.css
+CODE_CSS            := ${DIST_FOLDER}/static/code.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 FAVICON             := ${DIST_FOLDER}/favicon.ico
 
@@ -33,7 +34,8 @@ clean:
 	rm -rf ${DIST_FOLDER}
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
-	${DIST_STATIC_CONTENT} ${DIST_RSS} ${DIST_CSS} ${GITHUB_DNS_RECORD} ${FAVICON}
+	${DIST_STATIC_CONTENT} ${DIST_RSS} ${SITE_CSS} ${CODE_CSS} \
+	${GITHUB_DNS_RECORD} ${FAVICON}
 	${SRC_FOLDER}/site/generate_site
 
 ${DIST_FOLDER}:
@@ -54,8 +56,11 @@ ${DIST_RSS}:
 ${GITHUB_DNS_RECORD}:
 	cp ${SRC_FOLDER}/CNAME ${GITHUB_DNS_RECORD}
 
-${DIST_CSS}:
-	sassc --style=expanded ${SRC_FOLDER}/site/style.scss ${DIST_CSS}
+${SITE_CSS}:
+	sassc --style=compressed ${SRC_FOLDER}/site/style.scss ${SITE_CSS}
+
+${CODE_CSS}:
+	sassc --style=compressed ${SRC_FOLDER}/site/code.scss ${CODE_CSS}
 
 ${FAVICON}:
 	cp ${SRC_FOLDER}/site/favicon.ico ${DIST_FOLDER}

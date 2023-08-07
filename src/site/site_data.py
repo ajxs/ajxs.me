@@ -172,6 +172,8 @@ def parse_entry_row(entry_row):
         # The publicly displayed date, in human readable format.
         "date": date_created.strftime("%Y.%m.%d"),
         "filename": entry_filename,
+        "contains_code_blocks": entry_row[7],
+        "unlisted": entry_row[8],
         "tags": []
     }
 
@@ -271,6 +273,7 @@ def load_static_pages():
                     "description": row[2],
                     "path": row[3],
                     "body": row[4],
+                    "contains_code_blocks": row[8],
                 })
 
     return static_pages
