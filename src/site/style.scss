@@ -24,7 +24,7 @@ $font-size-index-entry: 0.9rem;
 $font-size-index-title: 1.25rem;
 
 // Include the current site colour theme.
-@import "themes/green";
+@import "themes/pine";
 
 @mixin colour_body {
 	color: $text-colour-body;
@@ -412,6 +412,7 @@ article.blog-entry {
 		}
 
 		.tldr {
+			@include colour_mid;
 			background-color: $background-colour-dark;
 			margin-bottom: 1rem;
 			padding: 1rem;
