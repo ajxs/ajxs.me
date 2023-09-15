@@ -138,7 +138,7 @@ h1 {
 	font-size: $font-size-h1;
 	font-weight: 700;
 	letter-spacing: initial;
-	margin: 1.25rem 0;
+	margin: 1.5rem 0;
 	text-transform: none;
 }
 
@@ -146,7 +146,7 @@ h2 {
 	font-size: $font-size-h2;
 	font-weight: 700;
 	letter-spacing: initial;
-	margin: 1.25rem 0 0.85rem;
+	margin: 1.5rem 0;
 	text-transform: none;
 }
 
@@ -154,7 +154,7 @@ h3 {
 	font-size: $font-size-h3;
 	font-weight: 700;
 	letter-spacing: initial;
-	margin: 1.25rem 0 0.85rem;
+	margin: 1.5rem 0;
 	text-transform: none;
 }
 
@@ -162,7 +162,7 @@ h4 {
 	font-size: $font-size-h4;
 	font-weight: 700;
 	letter-spacing: initial;
-	margin: 0.8rem 0;
+	margin: 1rem 0;
 	text-transform: none;
 }
 
@@ -345,6 +345,8 @@ article.blog-entry {
 	}
 
 	.entry-body {
+		font-size: 18px;
+
 		a.permalink {
 			text-decoration: none;
 			font-style: italic;
