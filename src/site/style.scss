@@ -454,6 +454,34 @@ article.blog-entry {
 }
 
 
+abbr {
+	color: $text-colour-body-link;
+	text-decoration: underline dotted;
+
+	&:hover {
+		color: $text-colour-body-link-hover;
+	}
+
+	&::after {
+		color: $text-colour-body;
+		content: '[?]';
+		font-size: 70%;
+		vertical-align: super;
+		background-color: $background-colour-mid;
+	}
+}
+
+code {
+	@include colour_mid;
+}
+
+blockquote {
+	@include colour_mid;
+	font-style: italic;
+	margin: 0.6rem 1rem;
+}
+
+
 @media screen and (max-width: 640px) {
 	body {
 		width: unset;
@@ -465,6 +493,10 @@ article.blog-entry {
 			margin-bottom: 1rem;
 			letter-spacing: 0.25rem;
 			padding: 0.5rem 0 0;
+
+			a {
+				margin-top: 0;
+			}
 		}
 	}
 
@@ -477,14 +509,15 @@ article.blog-entry {
 			}
 		}
 
-		.table-of-contents {
-			width: unset;
-		}
-	
-	
-		ol.footnotes {
-			padding-left: 1rem;
-			font-size: 0.8rem;
+		.entry-body {
+			.table-of-contents {
+				width: unset;
+			}
+		
+		
+			ol.footnotes {
+				padding-left: 1rem;
+			}
 		}
 	}
 	
@@ -513,31 +546,4 @@ article.blog-entry {
 		}
 
 	}
-}
-
-abbr {
-	color: $text-colour-body-link;
-	text-decoration: underline dotted;
-
-	&:hover {
-		color: $text-colour-body-link-hover;
-	}
-
-	&::after {
-		color: $text-colour-body;
-		content: '[?]';
-		font-size: 70%;
-		vertical-align: super;
-		background-color: $background-colour-mid;
-	}
-}
-
-code {
-	@include colour_mid;
-}
-
-blockquote {
-	@include colour_mid;
-	font-style: italic;
-	margin: 0.6rem 1rem;
 }
