@@ -8,8 +8,8 @@ This script generates all of the page content from the blog SQLite database.
 from datetime import datetime
 import os
 import chevron
-from site_data import load_blog_entries, load_tags, load_tagged_entries, load_static_pages, \
-    load_static_redirect_pages
+from site_data import filter_unlisted_entries, load_blog_entries, load_tags, \
+    load_tagged_entries, load_static_pages, load_static_redirect_pages
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -159,14 +159,6 @@ def create_tag_pages(tags):
             index_file.write(full_file_html)
 
         print(f"Wrote tag index file: {tag_index_filename}")
-
-
-def filter_unlisted_entries(entries):
-    """
-    Filters out 'unlisted' entries that are not supposed to be listed in the
-    site's blog entry indexes.
-    """
-    return [entry for entry in entries if entry["unlisted"] != 1]
 
 
 def create_index(entries, tags):

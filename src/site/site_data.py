@@ -308,3 +308,11 @@ def load_static_redirect_pages():
                 })
 
     return static_redirect_pages
+
+
+def filter_unlisted_entries(entries):
+    """
+    Filters out 'unlisted' entries that are not supposed to be listed in the
+    site's blog entry indexes.
+    """
+    return [entry for entry in entries if entry["unlisted"] != 1]

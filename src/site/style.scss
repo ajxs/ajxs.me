@@ -357,12 +357,17 @@ article.blog-entry {
 			}
 		}
 
+		img {
+			max-width: 100%;
+			max-height: 360px;
+			display: block;
+			margin: 1rem 0;
+		}
+
 		figure {
 			margin: 1rem 0.4rem;
 
 			img {
-				max-width: 100%;
-				max-height: 360px;
 				margin-bottom: 0.5rem;
 			}
 
@@ -370,11 +375,6 @@ article.blog-entry {
 				font-style: italic;
 				font-size: 0.8rem;
 			}
-		}
-
-		img {
-			display: block;
-			margin: 1rem 0;
 		}
 
 		.table-of-contents {
