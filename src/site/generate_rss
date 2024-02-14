@@ -9,7 +9,7 @@ import os
 import email.utils
 from lxml import etree
 import pytz
-from site_data import load_blog_entries
+from site_data import filter_unlisted_entries, load_blog_entries
 
 __author__ = "AJXS"
 __copyright__ = "Copyright 2020, AJXS"
@@ -76,8 +76,10 @@ def main():
     # All blog entries.
     blog_entries = load_blog_entries()
 
+    indexed_entries = filter_unlisted_entries(blog_entries)
+
     # The latest article publish date.
-    publish_date = email.utils.format_datetime(blog_entries[0]["date_created"])
+    publish_date = email.utils.format_datetime(indexed_entries[0]["date_created"])
     # The last build date, typically 'now'.
     last_build_date = email.utils.format_datetime(datetime.now(pytz.timezone('Australia/Sydney')))
 
@@ -113,7 +115,7 @@ def main():
     )
 
     # Add XML for each individual entry.
-    for entry in blog_entries:
+    for entry in indexed_entries:
         entry_xml = generate_entry_item(entry)
         channel_el.insert(len(channel_el), entry_xml)
 
