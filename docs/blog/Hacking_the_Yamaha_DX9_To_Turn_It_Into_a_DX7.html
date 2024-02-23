@@ -48,11 +48,23 @@
 	<a href="https://github.com/ajxs/yamaha_dx97" target="_blank">here</a>.
 </div>
 
+<h2 id="updates">Updates <a class="permalink" href="#updates">#</a></h2>
+<p>
+	In light of reaching the milestone of releasing 
+	<a href="https://github.com/ajxs/yamaha_dx97/releases/tag/v1.0.0" target="_blank"> Version 1.0</a>
+	of the DX9/7 firmware,
+	I've made a few updates to this article.
+	The most significant update is the addition is about some interesting
+	<a href="#leftover_data">leftover data</a>
+	found in the Yamaha DX9 ROM.
+</p>
+
+<h2 id="foreword">Foreward <a class="permalink" href="#foreword">#</a></h2>
 <p>
 	Like many vintage synth enthusiasts,
 	I keep a keen eye on the local classified sites for the odd bargain that might pop up.
 	Late last year, amidst the usual sea of second-hand Roland grooveboxes,
-	and Korg Volca synths was something I'd never seen before: <i>A Yamaha DX9</i>.
+	and Korg Volca synths was something I'd never seen before: <em>A Yamaha DX9</em>.
 </p>
 <p>
 	After my 2021 project creating a detailed
@@ -63,10 +75,10 @@
 	I figured there wasn't too much more I needed to know about the inside of the DX7...
 	Seeing the DX9 &#8212;advertised at half the price of a DX7, no less&#8212;
 	an interesting thought crossed my mind:
-	<i>Could the DX9 firmware be hacked to restore its missing features?</i>
+	<em>Could the DX9 firmware be hacked to restore its missing features?</em>
 </p>
 
-<h2>Background</h2>
+<h2 id="background">Background <a class="permalink" href="#background">#</a></h2>
 <p>
 	In 1983, Yamaha released the groundbreaking DX7 synthesiser.
 	It featured a revolutionary new sound generation technology which would change the course of popular music, 
@@ -91,20 +103,19 @@
 	<a href="/blog/How_the_Yamaha_FM_Synth_Cassette_Interface_Works.html" target="_blank">cassette tape interface</a>.
 </p>
 
-<h2>Reverse-Engineering the DX9</h2>
+<h2 id="reverse_engineering">Reverse-Engineering the DX9 <a class="permalink" href="#reverse_engineering">#</a></h2>
 <p>
 	A common misconception exists that under the hood the DX9's hardware is identical to the DX7.
 	While the DX9 <i>does</i> use the same FM voice chips, and CPU as the DX7,
 	that's about where the similarities end.
 	This misunderstanding seems to have been exacerbated by an incomplete copy of the DX7/9 service manual
-	without the DX9 board schematics having been widely circulated online,
-	leading people to assume that without having its own schematics, 
-	the two synths must be identical inside.
+	without the DX9 board schematics having circulated widely online,
+	leading people to assume that without having its own schematics the two synths must be identical inside.
 	It was this very misconception that led me to purchase one and see for myself...
 </p>
 <p>
 	A single look inside the DX9 told me that simply dropping the DX7 firmware in wasn't going to cut it.
-	My first step to hacking the DX9 would then have to be disassembling it's firmware.
+	My first step to hacking the DX9 would then have to be disassembling its firmware.
 </p>
 
 <p>
@@ -114,7 +125,7 @@
 	Only the code for working with the serial interface,
 	and a few common utility routines.
 	I tried to look for a common ancestor that both synths might have inherited this code from,
-	but the DX series appear to be Yamaha's first devices to use the 6303 CPU architecture<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup>.
+	but the DX7/9 appear to be Yamaha's first devices to use the 6303 CPU architecture<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup>.
 </p>
 <p>
 	The DX9 has only 4 kilobytes of RAM compared to the DX7's 6.
@@ -137,7 +148,7 @@
 <h3>MIDI</h3>
 <p>
 	A great place to start reverse-engineering any synthesiser's firmware is to track down the code for handling incoming MIDI messages.
-	From here you can identify a broad range of internal functionality
+	From here you can identify a broad cross-section of internal functionality
 	&#8212;such as note on/off handlers, parameter changes, and patch functions&#8212;
 	by tracing how the software handles the associated MIDI status messages.
 </p>
@@ -220,7 +231,7 @@
 	<a href="https://github.com/ajxs/yamaha_dx97/blob/master/src/string.asm#L231" target="_blank">here</a>.
 </p>
 
-<h2>Creating the New Firmware</h2>
+<h2 id="new_firmware">Creating the New Firmware <a class="permalink" href="#new_firmware">#</a></h2>
 <p>
 	<i>
 		The full task of reverse-engineering the original firmware and writing the new one was too large to exhaustively detail in writing here.
@@ -239,16 +250,17 @@
 <p>
 	Creating a 'vertical slice' of the ROMs functionality turned out to be more involved than I'd anticipated:
 	Unsurprisingly, getting from zero to handling to MIDI events and assigning notes to voices requires a considerable amount of code,
-	leaving plenty of surface area for things to go wrong...
+	leaving plenty of surface area for things to go wrong... 
+	And go wrong they did.
 </p>
 <p>
 	My initial attempt at writing the firmware from scratch was not exactly a roaring success.
 	However, for what it was worth,
 	I did manage to squeeze some <em>never before heard</em> sounds from the poor EGS and OPS chips as my buggy code hammered the pitch-modulation registers with invalid data.
-	You can hear the machine cry out in pain for yourself <a href="/static/yamaha_dx9_egs_glitch.mp3" target="_blank">here</a><sup><a href="#footnote_5" id="footnote_5_link">5</a></sup>.
+	You can hear the machine crying out in pain for yourself <a href="/static/yamaha_dx9_egs_glitch.mp3" target="_blank">here</a><sup><a href="#footnote_5" id="footnote_5_link">5</a></sup>.
 </p>
 <p>
-	Around this point I figured it would be wise to rethink my strategy for creating the new firmware.
+	Around this point I decided to rethink my strategy.
 </p>
 <p>
 	My first step hacking the <i>existing</i> DX9 firmware to restore the missing functionality was to change the patch initialisation,
@@ -303,6 +315,7 @@
 	As a result, the new firmware ended up featuring the DX7's 'glissando' functionality,
 	which was a nice bonus.
 </p>
+
 <h3>MIDI and Note Handling</h3>
 <p>
 	I decided to rewrite the synth's MIDI processing routine and individual MIDI event handlers.
@@ -326,10 +339,12 @@
 	this restored the synth's sensitivity to the velocity of incoming MIDI notes.
 </p>
 
-<h2>Current Status</h2>
+<h2 id="current_status">Current Status <a class="permalink" href="#current_status">#</a></h2>
 <p>
-	The source code for the new firmware has been released publicly,
-	and is ready for use by the public.<br/>
+	The new ROM binary, and full source code can be found here:
+	<a href="https://github.com/ajxs/yamaha_dx97" target="_blank">https://github.com/ajxs/yamaha_dx97</a>
+</p>
+<p>
 	The main new features added are as follows:
 	</p><ul>
 		<li>Makes the DX9 able to load and play DX7 patches.</li>
@@ -340,18 +355,8 @@
 		<li>Implements DX7 style portamento/glissando.</li>
 	</ul>
 
-<p>
-	The full source code, and instructions for building the firmware can be found here:
-	<a href="https://github.com/ajxs/yamaha_dx97" target="_blank">https://github.com/ajxs/yamaha_dx97</a>
-</p>
-<p>
-	At the time of writing, the main features are all fully working, 
-	however testing and bugfixing are ongoing. 
-	Installing the firmware for everyday general use isn't recommended just yet. 
-	This situation will improve over time as additional testing is performed. 
-</p>
 
-<h2>Afterword</h2>
+<h2 id="afterword">Afterword <a class="permalink" href="#afterword">#</a></h2>
 <p>
 	Since releasing the project online, 
 	I've been extremely fortunate to receive a positive response from not only the synth hacking community,
@@ -400,28 +405,146 @@
 	and the staggering divergence of their prices in the polar opposite directions.
 </p>
 <p>
-	My personal theory about the DX9's design is that manufacturing the FM LSI chips themselves incurred
-	such a high up-front cost that Yamaha needed to get them moving off shelves by any means necessary<sup><a href="#footnote_10" id="footnote_10_link">10</a></sup>.
-	The DX9 being their somewhat misguided attempt at cornering a more price conscious market.
-	Maybe a budget FM synth offering was always part of Yamaha's plan,
-	but high manufacturing costs limited what discount they could offer?
-	Whatever the case, the DX9 was out of production by mid-1985.
+	My personal theory about the DX9's design is that developing the FM sound chips incurred such a high up-front cost that 
+	Yamaha needed to get them moving off shelves by any means necessary<sup><a href="#footnote_10" id="footnote_10_link">10</a></sup>.
+	Maybe a budget FM synth was always part of Yamaha's plan,
+	but high manufacturing costs limited what kind of discount they could offer?
+	Whatever the case, the DX9 couldn't match the breakaway success of the DX7,
+	and was out of production by mid-1985.
 	By this point Yamaha evidently weren't too concerned with their first-generation FM chips,
-	having since moved on to producing a new line of 4-operator synthesisers built on an entirely new technological
+	having since moved on to producing a new line of 4-operator synths built on an entirely new technological
 	foundation.
 </p>
 <p>
-	Yamaha had bet the house on their new chip manufacturing base.
-	A bold gamble that would by all accounts pay off spectacularly
-	&#8212;Despite the DX9's relative lack of success&#8212;
+	Yamaha had bet the house on their new chip manufacturing technology.
+	A bold gamble that 
+	&#8212;In spite of the DX9's lack of success&#8212;
+	had paid off spectacularly,
 	catapulting Yamaha to the head of the pack for years to come.
+</p>
+
+<h2 id="leftover_data">Appendix: Leftover Development Artifacts in the DX9 ROM <a class="permalink" href="#leftover_data">#</a></h2>
+<p>
+	During my work reverse-engineering the DX9 ROM binary,
+	I noticed something unusual:
+	The DX9 mask ROM contains several blocks of unused data:
+	A large block of orphaned 6303 code located at offset <code>0xC84D</code>, 
+	and two fragments of strange ASCII data,
+	located at <code>0xEE7E</code>, and <code>0xFF85</code>.
+</p>
+
+<p>
+	The block of orphaned, unreferenced code at <code>0xC84D</code> definitely doesn't belong to the DX9.
+	All of the DX9's functionality is accounted for in the <em>reachable</em> ROM code,
+	and this unknown code references addresses in the <code>0x4000 - 0x6000</code> range,
+	which is outside of the DX9's physical address space.
+	As far as I can tell, 
+	none of the other Yamaha devices with a 6800-series processor have an address space with low enough addresses for this code either.
+</p>
+
+<p>
+	The two fragments of ASCII data appear in conspicuous places, 
+	one at the end of the ROM's main string table,
+	and the other between the end of the code and the start of the vector table,
+	located at the end of the binary.
+	The data seemed to consist of a series of strings,
+	with each entry starting with a '`' character (ASCII 0x60, backtick),
+	followed by a six character string of valid ASCII, 
+	two non-ASCII bytes, and a terminating '0'<sup><a href="#footnote_11" id="footnote_11_link">11</a></sup>.
+</p>
+<p>
+	At first I didn't think much of the data.
+	My initial suspicion was that the unprintable characters were part of an alternate character encoding,
+	possibly to render Kanji (The DX9 predating unicode by several years).
+	I dismissed it as being a remnant of the development system and moved on.
+	I had plenty of work left to do on the DX9/7 ROM, after all.
+	Much later, I was doing a cleanup of my disassembly, 
+	and I noticed something funny about those unprintable characters... 
+	Suddenly it dawned on me that the two trailing non-ASCII bytes weren't part of the string at all...
+	My disassembler had been rendering each block as a single garbled, null-terminated string,
+	but the two trailing bytes were actually an offset into the ROM's address space,
+	and the preceding 6 character strings actually described what they pointed to...<br/>
+	I was looking at a symbol table!
+	<figure>
+		<a href="/static/img/articles/dx97/symbol_table.png" target="_blank">
+			<img src="/static/img/articles/dx97/symbol_table_thumbnail.jpg"/>
+		</a>
+		<figcaption>
+			The symbol table fragment located at <code>0xEE7E</code>, as seen in Ghidra.<br/>
+			Note that the labels such as <code>"`CASS2 "</code> are the ASCII labels contained in the binary,
+			while the accompanying symbol <code>ui_yes_no_cassette_functions::.exit</code> is my own label.
+		</figcaption>
+	</figure>
+</p>
+<p>
+	How did this get here?
+	These fragments of the symbol table give us a little bit of insight into the synth's development.
+	Potentially even a clue as to what tools the developers used.
+	It's no coincidence that all the symbol names are 6 characters in length.
+	The 
+	<a href="http://www.bitsavers.org/components/hitachi/_dataBooks/U24_Hitachi_6301_6801_Assembler_Text_Editor_Users_Manual.pdf" target="_blank">
+		<i>6301/6801 Assembler Text Editor User's Manual</i>
+	</a>
+	states that labels are limited to 6 characters.
+</p>
+<p>
+	The Hitachi cross-assemblers used various different formats for serialising binary data to 
+	<a href="https://en.wikipedia.org/wiki/Punched_tape" target="_blank">punched tape</a>,
+	such as 
+	<a href="https://en.wikipedia.org/wiki/Intel_HEX" target="_blank">Intel HEX</a>, 
+	<a href="https://en.wikipedia.org/wiki/SREC_(file_format)">Motorola SREC</a>,
+	and the Intel 
+	<a href="https://web.archive.org/web/20170627062910/http://www.nj7p.org/Manuals/PDFs/Intel/9800183B.pdf" target="_blank">Absolute Object Module Format</a>,
+	among others.
+	This data doesn't match any of these, or any other format I'm aware of.
+</p>
+<p>
+	The <a href="http://bitsavers.org/components/motorola/6800/exorciser/M68MASR_Macro_Assemblers_Reference_6800_6801_6805_6809_Sep1979.pdf">
+		Motorola M68MASR Macro Assemblers Reference Manual
+	</a>
+	mentions ten byte symbol table entries:
+	<figure>
+		<blockquote>
+			'Each unique label, undefined symbol, and external reference symbol in a program
+			is allocated a ten-byte block in the symbol table. In addition, a ten-byte
+			block is allocated for every four references to a symbol, if the cross reference
+			option (paragraph 4,20) is in effect.'
+		</blockquote>
+		<figcaption>
+			Motorola M68MASR Macro Assemblers Reference Manual, 2-2
+		</figcaption>
+	</figure>
+
+	The entries in this mysterious DX9 symbol table are also ten bytes.
+	This <em>could</em> just be a coincidence.
+	After all, it's unlikely that Yamaha used this exact cross-assembler.
+	However whatever they did use could very well be built on the same codebase?
+	I'd love to check for myself,
+	but I wouldn't even know where to start looking for this software.
+</p>
+<p>
+	I've checked the ROM of pretty much every other Yamaha device that uses the 6303 looking for a similar leftover symbol table,
+	but as far as I'm aware this is the only device where this has happened.
+</p>
+<p>
+	My guess is that the orphaned 6303 code and this symbol table were in the working memory of whatever development system Yamaha were using,
+	and somehow ended up mixed in with the actual code before being sent off to create the mask ROM.
+	It's anyone's guess how something like this would happen.
+	It's clear that the DX9 binary was written <em>over</em> this data,
+	so maybe it was just what happened to be in the development system's memory before?
+	Maybe they took a snapshot of the whole memory space of their development system after running their final tests?
+</p>
+<p>
+	If you have any ideas, 
+	or have any insight to share about what tools Yamaha might have used, 
+	please reach out! I'd love to hear any theories you might have.
 </p>
 
 <hr/>
 <ol class="footnotes">
 	<li id="footnote_1">
 		The DX9 is built around the same two proprietary LSI chips as the DX7:
-		The <i>YM21290 EGS</i>, which handles note events, and envelope generation;
+		The <i>YM21290 EGS</i>, which handles note events and envelope generation;
 		and the <i>YM21280 OPS</i>, which is responsible for tone generation.<br/>
 		For more information regarding the DX7's hardware, please refer to
 		<a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank">this article</a>.
@@ -463,14 +586,14 @@
 		The HD63B03RP has built in divide-by-4 circuitry, so the synth's actual clock rate is 0.9425MHz.
 		The DX7's OCF interrupt resets the CPU's 'Output Compare' register to '3140'.
 		From this we can use the following formula to calculate the rate of the periodic interrupt:
-		<code>((3.77 / 4) &#8901; 10^6) / 3140 = 300.15924Hz</code>
+		<code>((3.77 / 4) &#8901; 10<sup>6</sup>) / 3140 = 300.15924Hz</code>
 	<a href="#footnote_7_link">&#8626;</a></li><li id="footnote_8">
 		Yamaha's <a href="https://download.yamaha.com/files/tcm:39-331945" target="_blank">contemporary marketing literature</a>
 		for the DX9 seems comically tragic in retrospect:
 		<blockquote>
-			"If you're used to conventional synthesizers, one look at the DX9 will tell you something unique has happened.
+			'If you're used to conventional synthesizers, one look at the DX9 will tell you something unique has happened.
 			There are no knobs, just two linear controls, and a small liquid-crystal digital display panel,
-			and a number of flat-panel touch switches."
+			and a number of flat-panel touch switches.'
 		</blockquote>
 		Today this control scheme is foremost among the synth community's many criticisms.
 		It's likely that Yamaha experimented with a more conventional interface,
@@ -480,18 +603,20 @@
 		Steve Howell, in a
 		<a href="http://www.muzines.co.uk/articles/nine-times-out-of-ten/7914" target="_blank">contemporary article</a>
 		published in the July 1984 issue of <i>Electronics &amp; Music Maker</i>,
-		noted that: <i>"the difference in price between the two could buy you a second MIDI synthesiser"</i>.
-		Going on to say that that he <i>"bought a JX3P with the money I saved [opting for a DX9 over the DX7]"</i>.
+		noted that: <i>'the difference in price between the two could buy you a second MIDI synthesiser'</i>.
+		Going on to say that that he <i>'bought a JX3P with the money I saved [opting for a DX9 over the DX7]'</i>.
 		Again, like the aforementioned Juno 106,
 		this is highly amusing considering the prices these iconic Roland polysynths fetch today.<br/>
 		Mind you, the Roland Jupiter-6, also released in 1983, had the hefty price tag of USD$2995.
 		Considerably more than the DX7.
 	<a href="#footnote_9_link">&#8626;</a></li><li id="footnote_10">
-		After the DX9's lack of commercial success, the TX7 &#8212;released a year after the DX9 ceased production&#8212;
-		could potentially have been an attempt by Yamaha to continue profiting on their stockpile of first-generation FM chips.
+		Another theory of mine is that the TX7 &#8212;released a year after the DX9 ceased production&#8212;
+		was a clever business move by Yamaha to continue profiting from their stockpile of first-generation FM chips.
 		Who knows?
 		I'd love to know more folklore about Yamaha's product development from this era.
-	<a href="#footnote_10_link">&#8626;</a></li></ol>
+	<a href="#footnote_10_link">&#8626;</a></li><li id="footnote_11">
+		For all I know, the '0' byte might actually be the <em>start</em> of an entry.
+	<a href="#footnote_11_link">&#8626;</a></li></ol>
 	</div>
 </article>
 
