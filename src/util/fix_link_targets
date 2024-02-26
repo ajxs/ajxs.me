@@ -37,7 +37,10 @@ def parse_links(file_text):
         link_href = link.get('href')
 
         if link_href and not link_href.startswith("#") and not link.get("target"):
-            print(f"Fixing link target attribute for link with href '{link_href}'")
+            print(
+                f"Fixing link target attribute for link with href '{link_href}'",
+                file=sys.stderr
+            )
             link.set("target", "_blank")
 
     return etree.tostring(root)
@@ -52,12 +55,18 @@ def main():
 
     try:
         # Note that these two 'open' statements need to be separate,
-        # as unlike the footnote script, the input and output files may be identical.
-        with open(INPUT_FILE, 'r') as input_file:
-            transformed_html = parse_links(input_file.read())
+        # as the input and output files may be identical.
+        if INPUT_FILE is None:
+            transformed_html = parse_links(sys.stdin.read())
+        else:
+            with open(INPUT_FILE, 'r') as input_file:
+                transformed_html = parse_links(input_file.read())
 
-        with open(OUTPUT_FILE, 'wb+') as output_file:
-            output_file.write(transformed_html)
+        if OUTPUT_FILE == None:
+            print(transformed_html.decode("utf-8"))
+        else:
+            with open(OUTPUT_FILE, 'wb+') as output_file:
+                output_file.write(transformed_html)
 
     except FileNotFoundError:
         print("Error: Unable to open files. Exiting.", file=sys.stderr)
@@ -68,7 +77,8 @@ def print_usage():
     """Prints script usage to STDOUT."""
 
     print(
-        "Usage: fix_link_targets --input_file <string> --output_file <string>"
+        "Usage: fix_link_targets --input_file <string> --output_file <string>",
+        file=sys.stderr
     )
 
 
@@ -93,13 +103,5 @@ if __name__ == "__main__":
             INPUT_FILE = arg
         elif opt == "--output_file":
             OUTPUT_FILE = arg
-
-    if INPUT_FILE is None:
-        print("Invalid input file provided! Exiting.")
-        exit(1)
-
-    if OUTPUT_FILE is None:
-        print("Invalid output file provided! Exiting.")
-        exit(1)
 
     main()

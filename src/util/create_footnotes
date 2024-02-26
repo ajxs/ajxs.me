@@ -39,14 +39,14 @@ def parse_footnotes(file_text):
     # The footnote 'list' at the end of the article.
     footnote_list = root.xpath("//ol[@class='footnotes']")
     if not footnote_list:
-        raise ValueError("Unable to find footnote list.")
+        return etree.tostring(root)
 
     # The footnote 'marker' elements found in the text body.
     footnote_markers = root.xpath("//footnote")
     for footnote_marker in footnote_markers:
         # The unique id of the current footnote being parsed.
         footnote_id = footnote_marker.get("id")
-        print(f"Parsing footnote id: {footnote_id}")
+        print(f"Parsing footnote id: {footnote_id}", file=sys.stderr)
 
         # The placeholder 'body' associated with this footnote, in the 'footnotes' element.
         footnote_body = footnote_list[0].find(f"footnote_body[@id='{footnote_id}']")
@@ -95,13 +95,24 @@ def main():
     Main footnote parsing program.
     """
 
-    if INPUT_FILE == OUTPUT_FILE:
-        raise ValueError("Input and output cannot be the same file")
+    if INPUT_FILE and OUTPUT_FILE:
+        if INPUT_FILE == OUTPUT_FILE:
+            raise ValueError("Input and output cannot be the same file")
+
+    transformed_html = None
 
     try:
-        with open(INPUT_FILE, 'r') as input_file, open(OUTPUT_FILE, 'wb+') as output_file:
-            transformed_html = parse_footnotes(input_file.read())
-            output_file.write(transformed_html)
+        if INPUT_FILE is None:
+            transformed_html = parse_footnotes(sys.stdin.read())
+        else:
+            with open(INPUT_FILE, 'r') as input_file:
+                transformed_html = parse_footnotes(input_file.read())
+
+        if OUTPUT_FILE == None:
+            print(transformed_html.decode("utf-8"))
+        else:
+            with open(OUTPUT_FILE, 'wb+') as output_file:
+                output_file.write(transformed_html)
 
     except FileNotFoundError:
         print("Error: Unable to open files. Exiting.", file=sys.stderr)
@@ -137,13 +148,5 @@ if __name__ == "__main__":
             INPUT_FILE = arg
         elif opt == "--output_file":
             OUTPUT_FILE = arg
-
-    if INPUT_FILE is None:
-        print("Invalid input file provided! Exiting.")
-        exit(1)
-
-    if OUTPUT_FILE is None:
-        print("Invalid output file provided! Exiting.")
-        exit(1)
 
     main()
