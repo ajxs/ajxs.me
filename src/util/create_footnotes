@@ -95,6 +95,9 @@ def main():
     Main footnote parsing program.
     """
 
+    if INPUT_FILE == OUTPUT_FILE:
+        raise ValueError("Input and output cannot be the same file")
+
     try:
         with open(INPUT_FILE, 'r') as input_file, open(OUTPUT_FILE, 'wb+') as output_file:
             transformed_html = parse_footnotes(input_file.read())
