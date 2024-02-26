@@ -413,13 +413,13 @@ article.blog-entry {
 			}
 		}
 
-		.tldr {
+		.note {
 			@include colour_mid;
 			background-color: $background-colour-dark;
 			margin-bottom: 1rem;
 			padding: 1rem;
 		
-			.tldr-heading {
+			.heading {
 				color: $text-colour-light;
 				font-weight: bold;
 			}
