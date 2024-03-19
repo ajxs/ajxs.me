@@ -252,7 +252,7 @@ def create_static_page(page):
         full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
             **MAIN_PAGE_DEFAULT_META_INFO,
             "meta_description": page["description"],
-            "page_title": page["title"],
+            "page_title": f"{MAIN_PAGE_TITLE}/{page['title']}",
             "page_body": page["body"],
             "contains_code_blocks": page["contains_code_blocks"] == 1
         })
