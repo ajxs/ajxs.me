@@ -451,6 +451,16 @@ article.blog-entry {
 			font-family: monospace;
 		}
 	}
+
+	ol, ul {
+		li {
+			margin-bottom: 0.6rem;
+		}
+	}
+
+	td {
+		padding: 0.2rem;
+	}
 }
 
 
@@ -550,4 +560,42 @@ blockquote {
 
 .donation-option-logo {
 	max-height: 1.25rem;
+}
+
+.active-low {
+	text-decoration: overline;
+}
+
+.ghidra-keyboard-command {
+	font-weight: bold;
+	color: $text-colour-emphasis;
+}
+
+.assembly-label {
+	font-family: monospace;
+	color: $text-colour-emphasis;
+}
+
+.assembly-label.invalid-assembly-label {
+	color: red;
+}
+
+.hex-address {
+	font-family: monospace;
+	color: $text-colour-emphasis;
+}
+
+.register-name {
+	font-family: monospace;
+	font-weight: bold;
+	color: $text-colour-emphasis;
+}
+
+.assembly-instruction {
+	font-family: monospace;
+	color: $text-colour-emphasis;
+}
+
+.disassembly-writeup li {
+	margin-bottom: 0.6rem;
 }

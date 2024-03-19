@@ -96,7 +96,7 @@ def main():
     channel_desc_el = etree.SubElement(channel_el, "description")
     channel_desc_el.text = CHANNEL_DESC
     channel_lang_el = etree.SubElement(channel_el, "language")
-    channel_lang_el.text = "en-us"
+    channel_lang_el.text = "en"
     channel_pub_date_el = etree.SubElement(channel_el, "pubDate")
     channel_pub_date_el.text = publish_date
     channel_build_date_el = etree.SubElement(channel_el, "lastBuildDate")

@@ -126,7 +126,7 @@ def create_tag_pages(tags):
     for tag in tags:
         # All of the entries tagged with this specific tag.
         tagged_entries = load_tagged_entries(tag)
-        indexed_entries = filter_unlisted_entries (tagged_entries)
+        indexed_entries = filter_unlisted_entries(tagged_entries)
 
         render_arguments = {
             "template": BLOG_INDEX_TEMPLATE,
