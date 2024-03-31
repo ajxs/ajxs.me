@@ -57,9 +57,11 @@
 	The most significant update is the addition is about some interesting
 	<a href="#leftover_data">leftover data</a>
 	found in the Yamaha DX9 ROM.
+	Also, a big thanks to the amazing <a href="https://yehar.com" target="_blank">Olli Niemitalo</a>
+	for correcting an error in how I was calculating the DX7/9's voice update frequency!
 </p>
 
-<h2 id="foreword">Foreward <a class="permalink" href="#foreword">#</a></h2>
+<h2 id="foreword">Foreword <a class="permalink" href="#foreword">#</a></h2>
 <p>
 	Like many vintage synth enthusiasts,
 	I keep a keen eye on the local classified sites for the odd bargain that might pop up.
@@ -68,9 +70,9 @@
 </p>
 <p>
 	After my 2021 project creating a detailed
-	<a href="/blog/Yamaha_DX7_Technical_Analysis.html">technical analysis</a>
+	<a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank">technical analysis</a>
 	of the DX7, and my subsequent
-	<a href="/blog/Yamaha_DX7_Firmware_ROM_Disassembly.html">disassembly</a>
+	<a href="/blog/Yamaha_DX7_Firmware_ROM_Disassembly.html" target="_blank">disassembly</a>
 	of its firmware,
 	I figured there wasn't too much more I needed to know about the inside of the DX7...
 	Seeing the DX9 &#8212;advertised at half the price of a DX7, no less&#8212;
@@ -281,11 +283,11 @@
 <h3>Portamento and Pitch EG</h3>
 <p>
 	The synth's portamento processing routine is run as part of the system's periodic interrupt handler.
-	This routine is responsible for 'transitioning' the frequency of each voice<sup><a href="#footnote_6" id="footnote_6_link">6</a></sup> from its 
-	<i>current</i> frequency towards its final <i>target</i> frequency.
+	This routine is responsible for 'transitioning' the frequency of each voice<sup><a href="#footnote_6" id="footnote_6_link">6</a></sup> 
+	from its <i>current</i> frequency towards its final <i>target</i> frequency.
 	The updated voice frequency is then written to the EGS chip.
 	The routine alternates between updating voices 1-8, and 9-16 with each interrupt, 
-	updating each voice's pitch at a rate of roughly 150Hz<sup><a href="#footnote_7" id="footnote_7_link">7</a></sup>.
+	updating each voice's pitch at a rate of roughly 187Hz<sup><a href="#footnote_7" id="footnote_7_link">7</a></sup>.
 	Similarly, the DX7's pitch EG is updated once every two periodic interrupts.
 </p>
 <p>
@@ -455,7 +457,7 @@
 <p>
 	At first I didn't think much of the data.
 	My initial suspicion was that the unprintable characters were part of an alternate character encoding,
-	possibly to render Kanji (The DX9 predating unicode by several years).
+	possibly to render Kanji (The DX9 predating Unicode by several years).
 	I dismissed it as being a remnant of the development system and moved on.
 	I had plenty of work left to do on the DX9/7 ROM, after all.
 	Much later, I was doing a cleanup of my disassembly, 
@@ -492,14 +494,14 @@
 	<a href="https://en.wikipedia.org/wiki/Punched_tape" target="_blank">punched tape</a>,
 	such as 
 	<a href="https://en.wikipedia.org/wiki/Intel_HEX" target="_blank">Intel HEX</a>, 
-	<a href="https://en.wikipedia.org/wiki/SREC_(file_format)">Motorola SREC</a>,
+	<a href="https://en.wikipedia.org/wiki/SREC_(file_format)" target="_blank">Motorola SREC</a>,
 	and the Intel 
 	<a href="https://web.archive.org/web/20170627062910/http://www.nj7p.org/Manuals/PDFs/Intel/9800183B.pdf" target="_blank">Absolute Object Module Format</a>,
 	among others.
 	This data doesn't match any of these, or any other format I'm aware of.
 </p>
 <p>
-	The <a href="http://bitsavers.org/components/motorola/6800/exorciser/M68MASR_Macro_Assemblers_Reference_6800_6801_6805_6809_Sep1979.pdf">
+	The <a href="http://bitsavers.org/components/motorola/6800/exorciser/M68MASR_Macro_Assemblers_Reference_6800_6801_6805_6809_Sep1979.pdf" target="_blank">
 		Motorola M68MASR Macro Assemblers Reference Manual
 	</a>
 	mentions ten byte symbol table entries:
@@ -582,11 +584,15 @@
 		using words such as <i>'job'</i>, and <i>'routine'</i> interchangeably.
 		I use the terms <i>'routine'</i>, and <i>'subroutine'</i> throughout to stay consistent with Hitachi's official HD6303 documentation.
 	<a href="#footnote_6_link">&#8626;</a></li><li id="footnote_7">
-		According to the schematics, the CPU in the DX7 and DX9 is clocked with a 3.77MHz crystal.
-		The HD63B03RP has built in divide-by-4 circuitry, so the synth's actual clock rate is 0.9425MHz.
+		According to the schematics, the CPU in the DX7 is clocked by a 9.4265 MHz crystal,
+		which is halved by IC48.
+		The HD63B03RP has built in <i>divide-by-4</i> circuitry, so the synth's actual clock rate is 1.178 MHz.
 		The DX7's OCF interrupt resets the CPU's 'Output Compare' register to '3140'.
-		From this we can use the following formula to calculate the rate of the periodic interrupt:
-		<code>((3.77 / 4) &#8901; 10<sup>6</sup>) / 3140 = 300.15924Hz</code>
+		From this we can calculate the rate of the periodic interrupt:
+		<code>9.4265 MHz / 2 / 4 / 3140 = 375.258758 Hz</code>.<br/>
+		The DX9's CPU is clocked by a 3.77 MHz crystal,
+		and the OCF interrupt resets the CPU's 'Output Compare' register to '2500'.
+		<code>3.77 MHz / 4 / 2500 = 377 Hz</code>.
 	<a href="#footnote_7_link">&#8626;</a></li><li id="footnote_8">
 		Yamaha's <a href="https://download.yamaha.com/files/tcm:39-331945" target="_blank">contemporary marketing literature</a>
 		for the DX9 seems comically tragic in retrospect:
@@ -604,7 +610,7 @@
 		<a href="http://www.muzines.co.uk/articles/nine-times-out-of-ten/7914" target="_blank">contemporary article</a>
 		published in the July 1984 issue of <i>Electronics &amp; Music Maker</i>,
 		noted that: <i>'the difference in price between the two could buy you a second MIDI synthesiser'</i>.
-		Going on to say that that he <i>'bought a JX3P with the money I saved [opting for a DX9 over the DX7]'</i>.
+		Going on to say that he <i>'bought a JX3P with the money I saved [opting for a DX9 over the DX7]'</i>.
 		Again, like the aforementioned Juno 106,
 		this is highly amusing considering the prices these iconic Roland polysynths fetch today.<br/>
 		Mind you, the Roland Jupiter-6, also released in 1983, had the hefty price tag of USD$2995.
@@ -617,6 +623,7 @@
 	<a href="#footnote_10_link">&#8626;</a></li><li id="footnote_11">
 		For all I know, the '0' byte might actually be the <em>start</em> of an entry.
 	<a href="#footnote_11_link">&#8626;</a></li></ol>
+
 	</div>
 </article>
 
