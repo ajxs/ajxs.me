@@ -63,4 +63,4 @@ ${FAVICON}:
 	cp ${SRC_FOLDER}/site/favicon.ico ${DIST_FOLDER}
 
 emu: site
-	cd "${DIST_FOLDER}" && python3 -m http.server
+	cd "${DIST_FOLDER}" && python3 -m http.server 8321

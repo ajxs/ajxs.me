@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-FILE_PATH="ada/example.c"
-OUTPUT="ada_output.html"
-
-pygmentize -f html -o ${OUTPUT} ${FILE_PATH}
-# pygmentize -S manni -f html -a .code-block

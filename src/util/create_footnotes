@@ -105,13 +105,13 @@ def main():
         if INPUT_FILE is None:
             transformed_html = parse_footnotes(sys.stdin.read())
         else:
-            with open(INPUT_FILE, 'r') as input_file:
+            with open(INPUT_FILE, "r", encoding="utf-8") as input_file:
                 transformed_html = parse_footnotes(input_file.read())
 
-        if OUTPUT_FILE == None:
+        if OUTPUT_FILE is None:
             print(transformed_html.decode("utf-8"))
         else:
-            with open(OUTPUT_FILE, 'wb+') as output_file:
+            with open(OUTPUT_FILE, "wb+", encoding="utf-8") as output_file:
                 output_file.write(transformed_html)
 
     except FileNotFoundError:
