@@ -226,7 +226,7 @@ section#blog {
 			background-color: $background-colour-dark;
 			margin-bottom: 0.8rem;
 			padding: 1rem;
-	
+
 			h2 {
 				font-size: $font-size-index-title;
 				letter-spacing: normal;
@@ -239,17 +239,17 @@ section#blog {
 				text-decoration: none;
 				margin-bottom: 0.4rem;
 			}
-	
+
 			.date {
 				@include colour_dark;
 
 				margin: 0 0 0.4rem;
 			}
-	
+
 			.short {
 				@include colour_mid;
 			}
-	
+
 			.tags {
 				@include colour_dark;
 
@@ -315,23 +315,23 @@ article.blog-entry {
 		text-align: left;
 		margin-bottom: 1rem;
 		padding: 1rem;
-	
+
 		h1 {
 			@include colour_light;
 			margin: 0 0 0.6rem;
 			letter-spacing: initial;
 			text-transform: none;
 		}
-	
+
 		.date {
 			@include colour_dark;
 			margin: 0 0 0.4rem;
 		}
-	
+
 		.short {
 			@include colour_mid;
 		}
-	
+
 		.tags {
 			@include colour_dark;
 
@@ -351,7 +351,7 @@ article.blog-entry {
 			text-decoration: none;
 			font-style: italic;
 			color: $text-colour-body-permalink;
-	
+
 			&:hover {
 				color: $text-colour-body-permalink-hover;
 			}
@@ -367,11 +367,8 @@ article.blog-entry {
 		figure {
 			margin: 1rem 0.4rem;
 
-			img {
-				margin-bottom: 0.5rem;
-			}
-
 			figcaption {
+				margin-top: 0.5rem;
 				font-style: italic;
 				font-size: 0.8rem;
 			}
@@ -384,27 +381,27 @@ article.blog-entry {
 			width: 50%;
 			outline: 2px solid $table-of-contents-outline-colour;
 			border: 1px solid $table-of-contents-border-colour;
-		
+
 			.table-of-contents-title {
 				font-weight: bold;
 				font-size: 1.157rem;
 				margin-bottom: 0.6rem;
 			}
-		
+
 			ol {
 				margin: 0 0 0.25rem 0;
 				padding-left: 1rem;
 				counter-reset: heading;
 				list-style: none;
-		
+
 				& > li {
 					margin: 0 0 0.15rem 0;
-		
-					&::before { 
+
+					&::before {
 						content: counters(heading, ".") ". ";
 						counter-increment: heading;
 					}
-		
+
 					/** Sub-list. **/
 					& > ol {
 						margin: 0.25rem 0;
@@ -418,34 +415,34 @@ article.blog-entry {
 			background-color: $background-colour-dark;
 			margin-bottom: 1rem;
 			padding: 1rem;
-		
+
 			.heading {
 				color: $text-colour-light;
 				font-weight: bold;
 			}
 		}
-		
-		
+
+
 		ol.footnotes {
 			padding-left: 1.6rem;
-		
+
 			li {
 				margin-bottom: 0.6rem;
 			}
 		}
-		
-		
+
+
 		ul#references-list {
 			list-style: none;
 			padding: 0;
-		
+
 			& > li {
 				margin-bottom: 0.8rem;
 			}
-			
+
 		}
-		
-		
+
+
 		.formula {
 			margin: 0.6rem 0;
 			font-family: monospace;
@@ -482,7 +479,7 @@ abbr {
 }
 
 code {
-	@include colour_mid;
+	color: $text-colour-code;
 }
 
 blockquote {
@@ -523,14 +520,14 @@ blockquote {
 			.table-of-contents {
 				width: unset;
 			}
-		
-		
+
+
 			ol.footnotes {
 				padding-left: 1rem;
 			}
 		}
 	}
-	
+
 	section#blog {
 		#tag-heading {
 			font-size: 1.1rem;
@@ -566,9 +563,20 @@ blockquote {
 	text-decoration: overline;
 }
 
-.ghidra-keyboard-command {
+.keyboard-command {
+	font-family: monospace;
 	font-weight: bold;
 	color: $text-colour-emphasis;
+	font-size: 0.9rem;
+
+	.key {
+		padding: 0rem 0.4rem;
+		border: 1px solid $text-colour-emphasis;
+	}
+
+	.plus {
+		margin: 0 0.2rem;
+	}
 }
 
 .assembly-label {

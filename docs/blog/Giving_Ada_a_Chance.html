@@ -77,14 +77,16 @@
 		Curious, I threw the books in my bag and off I went.
 	</p>
 	
-	<h2 id="exceeding my_expectations">Exceeding My Expectations <a class="permalink" href="#exceeding my_expectations">#</a></h2>
+	<h2 id="exceeding_my_expectations">Exceeding My Expectations <a class="permalink" href="#exceeding_my_expectations">#</a></h2>
 	<p>
 		Admittedly, I had pictured Ada's syntax resembling the uncompromising verbosity and rigid construction of COBOL, 
 		or perhaps the Lovecraftian hieroglyphics of APL's various eldritch incarnations. 
 		Turning the pages, 
 		I was pleasantly surprised to see modern constructs associated with modern high-level languages such as ranges, 
 		slicing, and exception-handling.
-		The syntax &#8212;admittedly verbose by modern standards<sup><a href="#footnote_1" id="footnote_1_link">1</a></sup></p>
+		The syntax &#8212;admittedly verbose by modern standards<sup><a href="#footnote_1" id="footnote_1_link">1</a></sup>&#8212; 
+		seemed carefully constructed to make the language comprehensible at a glance.
+	</p>
 	<p>
 		The fact that Ada was designed with embedded software in mind had me interested. 
 		I already had some limited experience with bare-metal development on the x86 and ARM platforms using C and assembly, 
@@ -94,9 +96,14 @@
 	<h2 id="not_the_camel_you_expected">Not the Camel You Expected <a class="permalink" href="#not_the_camel_you_expected">#</a></h2>
 	<p>
 		A common criticism of Ada is that it's a language 'designed by committee',
-		or even worse, a language 'designed by committee <em>for the military</em>'<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup><em>real-world</em> practicality<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup><a href="http://archive.adaic.com/pol-hist/history/holwg-93/holwg-93.htm" target="_blank">'High Order Language Working Group'</a> (HOLWG), 
+		or even worse, a language 'designed by committee <em>for the military</em>'<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup>. 
+		The implication being that this would preclude it from having any kind of <em>real-world</em> practicality<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>. 
+		I'll spare readers a detailed retelling of Ada's conception within the Department of Defense's 
+		<a href="http://archive.adaic.com/pol-hist/history/holwg-93/holwg-93.htm" target="_blank">'High Order Language Working Group'</a> (HOLWG), 
 		save to say that Ada was born of the need for single, 
-		unified higher-level language suitable for use in the multitude of real-time embedded systems developed by the DoD<sup><a href="#footnote_4" id="footnote_4_link">4</a></sup><i>'It was concluded that no existing language could be adopted as a single common high order language for the DoD, 
+		unified higher-level language suitable for use in the multitude of real-time embedded systems developed by the DoD<sup><a href="#footnote_4" id="footnote_4_link">4</a></sup>. 
+		In the wise words of the working-group's chair, Colonel William A. Whitaker: 
+		<i>'It was concluded that no existing language could be adopted as a single common high order language for the DoD, 
 		but that a single language meeting essentially all the requirements was both feasible and desirable'</i>. 
 		If such a thing was indeed feasible, the DoD's deep pockets would help it bring it into existence. 
 
@@ -127,31 +134,37 @@
 		The use of the subtype directive informs the compiler that other variables of the <code>Natural</code> type are compatible with the newly defined subtype.
 	</p>
 
-	<div class="code-block"><pre><span/><span class="no">VGA_COL_COUNT</span> <span class="p">:</span> <span class="kr">constant</span> <span class="p">:=</span> <span class="mi">80</span><span class="p">;</span>
+	<div class="code-block"><pre><span></span><span class="no">VGA_COL_COUNT</span> <span class="p">:</span> <span class="kr">constant</span> <span class="p">:=</span> <span class="mi">80</span><span class="p">;</span>
 <span class="no">VGA_ROW_COUNT</span> <span class="p">:</span> <span class="kr">constant</span> <span class="p">:=</span> <span class="mi">24</span><span class="p">;</span>
 
 <span class="kd">subtype</span> <span class="kt">Col</span> <span class="kr">is</span> <span class="kt">Natural</span> <span class="kr">range</span> <span class="mi">0</span> <span class="p">..</span> <span class="n">VGA_COL_COUNT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
 <span class="kd">subtype</span> <span class="kt">Row</span> <span class="kr">is</span> <span class="kt">Natural</span> <span class="kr">range</span> <span class="mi">0</span> <span class="p">..</span> <span class="n">VGA_ROW_COUNT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		The below example illustrates the creation of incompatible custom integer types. 
 		While their base type and range constraints are identical, Ada treats both as separate, incompatible types. 
 		An assignment of a variable of one type to the value of another is illegal, and will trigger a compile-time error.
 	</p>
 
-	<div class="code-block"><pre><span/><span class="kd">type</span> <span class="kt">Integer_1</span> <span class="kr">is</span> <span class="kr">range</span> <span class="mi">1</span> <span class="p">..</span> <span class="mi">10</span><span class="p">;</span>
+	<div class="code-block"><pre><span></span><span class="kd">type</span> <span class="kt">Integer_1</span> <span class="kr">is</span> <span class="kr">range</span> <span class="mi">1</span> <span class="p">..</span> <span class="mi">10</span><span class="p">;</span>
 <span class="kd">type</span> <span class="kt">Integer_2</span> <span class="kr">is</span> <span class="kr">range</span> <span class="mi">1</span> <span class="p">..</span> <span class="mi">10</span><span class="p">;</span>
 <span class="n">A</span> <span class="p">:</span> <span class="n">Integer_1</span> <span class="p">:=</span> <span class="mi">8</span><span class="p">;</span>
 <span class="n">B</span> <span class="p">:</span> <span class="n">Integer_2</span> <span class="p">:=</span> <span class="n">A</span><span class="p">;</span> <span class="c1">-- illegal!</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		The following example demonstrates the creation of a custom enumerated type. 
 		It also demonstrates a subtype of an enumerated type with a constrained range of values.
 	</p>
 
-	<div class="code-block"><pre><span/><span class="kd">type</span> <span class="kt">Day_Of_Week</span> <span class="kr">is</span> <span class="p">(</span><span class="nv">Monday</span><span class="p">,</span> <span class="nv">Tuesday</span><span class="p">,</span>
+	<div class="code-block"><pre><span></span><span class="kd">type</span> <span class="kt">Day_Of_Week</span> <span class="kr">is</span> <span class="p">(</span><span class="nv">Monday</span><span class="p">,</span> <span class="nv">Tuesday</span><span class="p">,</span>
   <span class="nv">Wednesday</span><span class="p">,</span> <span class="nv">Thursday</span><span class="p">,</span> <span class="nv">Friday</span><span class="p">,</span> <span class="nv">Saturday</span><span class="p">,</span> <span class="nv">Sunday</span><span class="p">);</span>
 
 <span class="kd">subtype</span> <span class="kt">Work_Day</span> <span class="kr">is</span> <span class="n">Day_Of_Week</span> <span class="kr">range</span> <span class="n">Monday</span> <span class="p">..</span> <span class="n">Friday</span><span class="p">;</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		A variable with the type of <code>Work_Day</code> is restricted to its constrained range. 
 		Any attempt to assign a value outside this range to a variable of this type will raise a <code>Constraint_Error</code> exception at runtime.
 	</p>
@@ -167,7 +180,7 @@
 		as well as its associated representation in memory.
 	</p>
 	
-	<div class="code-block"><pre><span/><span class="c1">----------------------------------------------------------------------------</span>
+	<div class="code-block"><pre><span></span><span class="c1">----------------------------------------------------------------------------</span>
 <span class="c1">--  The format of the System Table Descriptor pointer used by the processor</span>
 <span class="c1">--  to load descriptor tables like the GDT and IDT.</span>
 <span class="c1">----------------------------------------------------------------------------</span>
@@ -181,7 +194,9 @@
   <span class="n">Size</span>   <span class="kr">at</span> <span class="mi">0</span> <span class="kr">range</span> <span class="mi">0</span>  <span class="p">..</span> <span class="mi">15</span><span class="p">;</span>
   <span class="n">Offset</span> <span class="kr">at</span> <span class="mi">0</span> <span class="kr">range</span> <span class="mi">16</span> <span class="p">..</span> <span class="mi">47</span><span class="p">;</span>
 <span class="kr">end</span> <span class="kr">record</span><span class="p">;</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		The <code>Size</code> aspect specifier instructs the compiler that the <code>System_Table_Descriptor</code> type must be 48 bits in size. 
 		The record representation clause instructs the compiler as to the required layout of this record type in memory. 
 		This example specifies that the <code>Size</code> member should occupy bits 0 to 15, 
@@ -192,7 +207,7 @@
 		The following example demonstrates defining the in-memory representation of an enumerated type.
 	</p>
 	
-	<div class="code-block"><pre><span/><span class="c1">----------------------------------------------------------------------------</span>
+	<div class="code-block"><pre><span></span><span class="c1">----------------------------------------------------------------------------</span>
 <span class="c1">--  The privilege level for a particular descriptor.</span>
 <span class="c1">--  These correspond to the 'protection ring' that this descriptor is</span>
 <span class="c1">--  accessible from.</span>
@@ -210,7 +225,9 @@
    <span class="n">Ring_2</span> <span class="p">=&gt;</span> <span class="mi">2</span><span class="p">,</span>
    <span class="n">Ring_3</span> <span class="p">=&gt;</span> <span class="mi">3</span>
 <span class="p">);</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		The <code>Size</code> aspect specifier instructs the compiler that the <code>Descriptor_Privilege_Level</code> type must be 2 bits in size.
 		The representation clause instructs the compiler as to required representation of each possible value of the enumerated type in memory. 
 		In this example the value of <code>Ring_0</code> will be represented by a value of <code>0x0</code> in memory,
@@ -223,7 +240,7 @@
 		This example has been adapted from a presentation by AdaCore viewable <a href="https://www.youtube.com/watch?v=qvmDqbuQe-M" target="_blank">here</a>.
 	</p>
 	
-	<div class="code-block"><pre><span/><span class="kn">with</span> <span class="n">System.Storage_Elements</span><span class="p">;</span> <span class="kn">use</span> <span class="n">System.Storage_Elements</span><span class="p">;</span>
+	<div class="code-block"><pre><span></span><span class="kn">with</span> <span class="n">System.Storage_Elements</span><span class="p">;</span> <span class="kn">use</span> <span class="n">System.Storage_Elements</span><span class="p">;</span>
 
 <span class="c1">-------------------------------------------------------------------------------</span>
 <span class="c1">--  Main</span>
@@ -285,14 +302,17 @@
    <span class="n">UART_Control_Register</span><span class="p">.</span><span class="n">Baud_Rate</span> <span class="p">:=</span> <span class="n">b_115200</span><span class="p">;</span>
    <span class="n">UART_Control_Register</span><span class="p">.</span><span class="n">Parity</span>    <span class="p">:=</span> <span class="n">Even</span><span class="p">;</span>
 <span class="kr">end</span> <span class="nf">Main</span><span class="p">;</span>
-</pre></div><p>
+</pre></div>
+	
+	<p>
 		Contrast this with the same functionality implemented in C. 
 		Despite being shorter, the register cannot be altered without using bitwise operators to manipulate the individual fields.
 		This approach is generally considered more error-prone than using a record in Ada overlaid at the register's memory-mapped address.
 		It's possible to define a struct type in C with bit-fields for the individual elements, 
-		however the C standard does not guarantee the layout and order of the individual fields<sup><a href="#footnote_5" id="footnote_5_link">5</a></sup></p>
+		however the C standard does not guarantee the layout and order of the individual fields<sup><a href="#footnote_5" id="footnote_5_link">5</a></sup>.
+	</p>
 	
-	<div class="code-block"><pre><span/><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+	<div class="code-block"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
 
 <span class="cp">#define UART_CNTL_REG_ADDR       0x80000040</span>
 <span class="cp">#define UART_CNTL_BAUD_MASK      0x07</span>
@@ -320,7 +340,9 @@
 <span class="w">	</span><span class="o">*</span><span class="n">uart_control_reg</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="n">UART_CNTL_PARITY_MASK</span><span class="p">;</span>
 <span class="w">	</span><span class="o">*</span><span class="n">uart_control_reg</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="n">UART_CNTL_PARITY_EVEN</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">UART_CNTL_PARITY_SHIFT</span><span class="p">);</span>
 <span class="p">}</span>
-</pre></div><p>
+</pre></div>
+
+	<p>
 		For anyone interested in learning more about Ada, or tutorials for learning the language, I recommend they visit
 		AdaCore's learning center, at <a href="https://learn.adacore.com/" target="_blank">learn.adacore.com</a>, and 
 		Olivier Henley's fantastic list of Ada resources at <a href="https://github.com/ohenley/awesome-ada" target="_blank">Awesome Ada</a>.
@@ -390,18 +412,25 @@
 		about long compilation times on expensive, proprietary development infrastructure.
 		The technical challenge of implementing, 
 		and operating an Ada compiler on contemporary hardware was so significant that enterprise software tool developer Rational would even go so far as creating a dedicated workstation for the task, 
-		the <a href="https://en.wikipedia.org/wiki/Rational_R1000" target="_blank">Rational R1000</a><sup><a href="#footnote_6" id="footnote_6_link">6</a></sup><i>GNAT</i> in 1995 &#8212;based on the FSF's GCC compiler&#8212; that Ada would have a freely available compiler.
+		the <a href="https://en.wikipedia.org/wiki/Rational_R1000" target="_blank">Rational R1000</a><sup><a href="#footnote_6" id="footnote_6_link">6</a></sup>.
+		Even with the Ada standard being publicly available,
+		It wouldn't be until the release of <i>GNAT</i> in 1995 &#8212;based on the FSF's GCC compiler&#8212; that Ada would have a freely available compiler.
 	</p>
 	<p>
 		Despite Department of Defense sponsored studies acknowledging Ada as the most suitable language for the task (National Research Council, 1997),
 		the DoD would ultimately 
 		<a href="https://www.adahome.com/articles/1997-04/po_memopaige.html" target="_blank">repeal</a>
-		its controversial mandate<sup><a href="#footnote_7" id="footnote_7_link">7</a></sup><a href="https://en.wikipedia.org/wiki/Commercial_off-the-shelf" target="_blank"><i>COTS</i></a> (Commercial Off The Shelf) software.
+		its controversial mandate<sup><a href="#footnote_7" id="footnote_7_link">7</a></sup> that all in-house mission-critical software be developed in Ada.
+		By this point in time the DoD had largely shifted its focus away from sponsoring expensive in-house software development, 
+		and towards the utilisation of 
+		<a href="https://en.wikipedia.org/wiki/Commercial_off-the-shelf" target="_blank"><i>COTS</i></a> (Commercial Off The Shelf) software.
 		This event would mark the beginning of Ada's decline in the general programming community.
 	</p>
 	<p>
 		For the development of the benighted F-35 Joint Strike Fighter's avionics software, 
-		Lockheed Martin would ultimately choose to forgo Ada in lieu a heavily abridged dialect of C++<sup><a href="#footnote_8" id="footnote_8_link">8</a></sup><a href="https://web.archive.org/web/20111219004314/http://journal.thedacs.com:80/issue/53/158" target="_blank">writes on the subject</a>:
+		Lockheed Martin would ultimately choose to forgo Ada in lieu a heavily abridged dialect of C++<sup><a href="#footnote_8" id="footnote_8_link">8</a></sup>.
+		John H. Robb, the Senior Manager of the F-35 Joint Strike Fighter Air Vehicle Software team at Lockheed Martin Aeronautics Fort Worth 
+		<a href="https://web.archive.org/web/20111219004314/http://journal.thedacs.com:80/issue/53/158" target="_blank">writes on the subject</a>:
 		<i>'Ada was seen as the technically superior and more robust language, 
 		but concern over the ability to successfully staff the software engineers required to develop the massive amounts of 
 		safety critical software caused the F-35 team to carefully look and finally to choose C and C++ for the implementation of safety critical software.'</i> 
@@ -411,7 +440,10 @@
 	<h2 id="whats_next">What's Next, and What Have We Learned? <a class="permalink" href="#whats_next">#</a></h2>
 	<p>
 		For all the water-cooler chatter of obsolescence, Ada still enjoys serious respect in industries where failure isn't an option. 
-		Nvidia <a href="https://www.adacore.com/company/partners/nvidia" target="_blank">recently</a> chose Ada and its SPARK subset<sup><a href="#footnote_9" id="footnote_9_link">9</a></sup><sup><a href="#footnote_10" id="footnote_10_link">10</a></sup><a href="http://archive.adaic.com/projects/atwork/boeing.html" target="_blank">Boeing</a>.
+		Nvidia <a href="https://www.adacore.com/company/partners/nvidia" target="_blank">recently</a> chose Ada and its SPARK subset<sup><a href="#footnote_9" id="footnote_9_link">9</a></sup> 
+		as their language of choice for developing safety-critical firmware in their embedded-systems.
+		Some other notable users of Ada include the European Space Agency<sup><a href="#footnote_10" id="footnote_10_link">10</a></sup>, 
+		BAE Systems, Saab, Thales, and <a href="http://archive.adaic.com/projects/atwork/boeing.html" target="_blank">Boeing</a>.
 		A quick glance at leading Ada compiler manufacturer AdaCore's 
 		<a href="https://www.adacore.com/company/our-customers" target="_blank">customer list</a> 
 		demonstrates that the market for Ada is certainly alive and well.
@@ -419,14 +451,24 @@
 	</p>
 	<p>
 		Many developers point to Rust as the systems programming language of the future. 
-		Rust markets itself as a <i>safe</i><sup><a href="#footnote_11" id="footnote_11_link">11</a></sup><a href="https://doc.rust-lang.org/nomicon/ffi.html" target="_blank">official Rust documentation</a> 
+		Rust markets itself as a <i>safe</i><sup><a href="#footnote_11" id="footnote_11_link">11</a></sup> language, 
+		which invites comparisons against both C and Ada (for vastly different reasons). 
+		Superficial comparisons aside, 
+		Rust seems like a language that has neither learned much from C's failures, nor from Ada's successes. 
+		Despite what the Rust community may say &#8212;or the algal bloom of new OSdev projects in Rust&#8212; 
+		Rust does not seem well adapted to low-level programming:
+		It lacks basic features like bitfields, and data structure packing. 
+		Its foreign function interface seems particularly poorly implemented. 
+		The <a href="https://doc.rust-lang.org/nomicon/ffi.html" target="_blank">official Rust documentation</a> 
 		suggests the use of the external third-party <code>libc</code> library (called a <i>'crate'</i> in Rust parlance)
 		to provide the type definitions necessary to interface with C programs. 
 		As of the time of writing, this crate has had 
-		<a href="https://crates.io/crates/libc/versions" target="_blank">95 releases</a><sup><a href="#footnote_12" id="footnote_12_link">12</a></sup><code>Interfaces.C</code> package, 
+		<a href="https://crates.io/crates/libc/versions" target="_blank">95 releases</a><sup><a href="#footnote_12" id="footnote_12_link">12</a></sup>.
+		Contrast this with Ada's <code>Interfaces.C</code> package, 
 		which was added the language in Ada 95 and hasn't needed to change in any fundamental way since.
 		Despite Rust's present shortcomings, 
-		it could prove to be a capable language that has much to offer if it can manage to standardise itself and evolve in a sensible way<sup><a href="#footnote_13" id="footnote_13_link">13</a></sup></p>
+		it could prove to be a capable language that has much to offer if it can manage to standardise itself and evolve in a sensible way<sup><a href="#footnote_13" id="footnote_13_link">13</a></sup>.
+	</p>
 	
 	<p>
 		I'm nothing if not an idealist, for better or worse.
@@ -457,7 +499,7 @@
 		</li>
 	</ul>
 	
-	<hr/>
+	<hr>
 	<ol class="footnotes">
 		<li id="footnote_1">
 			In comparison to the plethora of modern languages that count C as an ancestor.
