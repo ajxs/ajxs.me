@@ -9,7 +9,7 @@ external links open in a new tab.
 
 import getopt
 import sys
-from lxml import etree
+from lxml import html
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
@@ -35,7 +35,7 @@ def parse_footnotes(file_text):
     """
 
     # The root HTML element.
-    root = etree.HTML(file_text)
+    root = html.document_fromstring(file_text)
 
     # The current 'number' of the footnote. This is used to create the actual footnote
     # numbering, and text. This is incremented for each footnote parsed.
@@ -44,7 +44,7 @@ def parse_footnotes(file_text):
     # The footnote 'list' at the end of the article.
     footnote_list = root.xpath("//ol[@class='footnotes']")
     if not footnote_list:
-        return etree.tostring(root)
+        return html.tostring(root)
 
     # The footnote 'marker' elements found in the text body.
     footnote_markers = root.xpath("//footnote")
@@ -59,7 +59,7 @@ def parse_footnotes(file_text):
             raise ValueError(f"Unable to find body associated with footnote: {footnote_id}")
 
         # The final footnote 'body' element.
-        footnote_body_element = etree.Element("li")
+        footnote_body_element = html.Element("li")
         footnote_body_element.set("id", f"footnote_{current_footnote_number}")
 
         # Populate the footnote element's content.
@@ -70,9 +70,11 @@ def parse_footnotes(file_text):
             footnote_body_element.append(child_element)
 
         # Create the 'return' link, which will take the user back to the original footnote.
-        footnote_return_link = etree.SubElement(footnote_body_element, "a")
+        footnote_return_link = html.Element("a")
         footnote_return_link.set("href", f"#footnote_{current_footnote_number}_link")
         footnote_return_link.text = "↲"
+
+        footnote_body_element.append(footnote_return_link)
 
         # Append the final body element, and remove the text definition.
         # Note thatthe footnote body element shouldn't have any tail text.
@@ -80,12 +82,14 @@ def parse_footnotes(file_text):
         footnote_list[0].remove(footnote_body)
 
         # Create the footnote link.
-        footnote_link = etree.Element("sup")
+        footnote_link = html.Element("sup")
         footnote_link.tail = footnote_marker.tail
-        footnote_link_anchor = etree.SubElement(footnote_link, "a")
+        footnote_link_anchor = html.Element("a")
         footnote_link_anchor.set("href", f"#footnote_{current_footnote_number}")
         footnote_link_anchor.set("id", f"footnote_{current_footnote_number}_link")
         footnote_link_anchor.text = f"{current_footnote_number}"
+
+        footnote_link.append(footnote_link_anchor)
 
         # Add the newly created footnote link _after_ the marker, then delete the marker.
         footnote_marker.addnext(footnote_link)
@@ -94,7 +98,7 @@ def parse_footnotes(file_text):
 
         current_footnote_number = current_footnote_number + 1
 
-    return etree.tostring(root)
+    return html.tostring(root)
 
 
 def parse_links(file_text):
@@ -104,7 +108,7 @@ def parse_links(file_text):
     """
 
     # The root HTML element.
-    root = etree.HTML(file_text)
+    root = html.document_fromstring(file_text)
 
     # A list of all anchor elements
     link_list = root.xpath("//a")
@@ -118,7 +122,7 @@ def parse_links(file_text):
             )
             link.set("target", "_blank")
 
-    return etree.tostring(root)
+    return html.tostring(root)
 
 
 def parse_code_snippets(file_text):
@@ -128,7 +132,7 @@ def parse_code_snippets(file_text):
     """
 
     # The root HTML element.
-    root = etree.HTML(file_text)
+    root = html.document_fromstring(file_text)
 
     PRINT_LINE_NUMBERS = False
 
@@ -153,7 +157,7 @@ def parse_code_snippets(file_text):
                 )
             )
 
-            highlighted_code_element = etree.fromstring(highlighted_code_string)
+            highlighted_code_element = html.fragment_fromstring(highlighted_code_string)
             highlighted_code_element.tail = code_snippet.tail
 
             code_snippet_parent = code_snippet.getparent()
@@ -167,7 +171,7 @@ def parse_code_snippets(file_text):
             code_snippet_parent.remove(code_snippet)
 
 
-    return etree.tostring(root)
+    return html.tostring(root)
 
 
 def main():
