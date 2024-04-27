@@ -485,7 +485,16 @@ code {
 blockquote {
 	@include colour_mid;
 	font-style: italic;
-	margin: 0.6rem 1rem;
+	margin: 1rem;
+
+	p {
+		margin: 0.6rem 0;
+	}
+
+	cite {
+		font-size: 0.8rem;
+		margin-left: -1rem;
+	}
 }
 
 
