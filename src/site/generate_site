@@ -79,6 +79,9 @@ with open(f"{TEMPLATE_FOLDER}/tag_list.mustache", mode='r') as template_file:
 def create_blog_entry_file(entry):
     """
     Creates an individual blog entry HTML file from a parsed entry.
+    Note that the 'contains_code_blocks' field is used to conditionally
+    add the 'code blocks' CSS stylsheet to the page. This isn't added
+    to entries by default due to its size.
     """
 
     # The full page HTML. This is the Index HTML baked in to the main page template.
