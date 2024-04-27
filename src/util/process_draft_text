@@ -74,7 +74,13 @@ def parse_footnotes(file_text):
         footnote_return_link.set("href", f"#footnote_{current_footnote_number}_link")
         footnote_return_link.text = "↲"
 
-        footnote_body_element.append(footnote_return_link)
+        # If the last child of the footnote body is a paragraph, append the return link to it.
+        # Otherwise just append it to the body of the footnote element.
+        footnote_body_children = list(footnote_body_element)
+        if footnote_body_children and footnote_body_children[-1].tag == "p":
+            footnote_body_children[-1].append(footnote_return_link)
+        else:
+            footnote_body_element.append(footnote_return_link)
 
         # Append the final body element, and remove the text definition.
         # Note thatthe footnote body element shouldn't have any tail text.
