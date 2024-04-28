@@ -439,13 +439,6 @@ article.blog-entry {
 			& > li {
 				margin-bottom: 0.8rem;
 			}
-
-		}
-
-
-		.formula {
-			margin: 0.6rem 0;
-			font-family: monospace;
 		}
 	}
 
@@ -492,8 +485,9 @@ blockquote {
 	}
 
 	cite {
+		display: block;
 		font-size: 0.8rem;
-		margin-left: -1rem;
+		margin: 1rem 0 1rem -1rem;
 	}
 }
 
