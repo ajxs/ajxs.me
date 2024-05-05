@@ -45,7 +45,7 @@ TAG_LIST_TEMPLATE = None
 MAIN_INDEX_BLOG_POST_LENGTH = 10
 
 # The default page keywords.
-PAGE_META_DEFAULT_KEYWORDS = ["ajxs", "synthesisers", "programming", "dsp"]
+PAGE_META_DEFAULT_KEYWORDS = ["ajxs", "synthesisers", "programming"]
 
 # The default page meta information.
 # This object is used when rendering the main page template as the 'default' page meta
@@ -60,7 +60,7 @@ MAIN_PAGE_DEFAULT_META_INFO = {
 }
 
 
-with open(f"{TEMPLATE_FOLDER}/index_entry.mustache", mode='r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/blog_index_entry.mustache", mode='r') as template_file:
     BLOG_INDEX_ENTRY_TEMPLATE = template_file.read()
 
 with open(f"{TEMPLATE_FOLDER}/blog_index_entries.mustache", mode='r') as template_file:
@@ -69,7 +69,7 @@ with open(f"{TEMPLATE_FOLDER}/blog_index_entries.mustache", mode='r') as templat
 with open(f"{TEMPLATE_FOLDER}/blog_index.mustache", mode='r') as template_file:
     BLOG_INDEX_TEMPLATE = template_file.read()
 
-with open(f"{TEMPLATE_FOLDER}/main.mustache", mode='r') as template_file:
+with open(f"{TEMPLATE_FOLDER}/page.mustache", mode='r') as template_file:
     MAIN_PAGE_TEMPLATE = template_file.read()
 
 with open(f"{TEMPLATE_FOLDER}/tag_list.mustache", mode='r') as template_file:
@@ -107,7 +107,7 @@ def create_blog_entry_file(entry):
         full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
             **MAIN_PAGE_DEFAULT_META_INFO,
             "page_title": f"{MAIN_PAGE_TITLE}/{entry['title']}",
-            "meta_description": entry["short"],
+            "meta_description": entry["description"],
             "meta_keywords": page_keywords_string,
             "page_body": entry_html,
             "contains_code_blocks": entry["contains_code_blocks"] == 1
@@ -135,7 +135,7 @@ def create_tag_pages(tags):
             "template": BLOG_INDEX_TEMPLATE,
             "partials_dict": {
                 "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
-                "index_entry": BLOG_INDEX_ENTRY_TEMPLATE
+                "blog_index_entry": BLOG_INDEX_ENTRY_TEMPLATE
             },
             "data": {
                 "heading": f"Entries tagged as '<span id=\"tag-index-name\">{tag['name']}</span>'",
@@ -178,7 +178,7 @@ def create_index(entries, tags):
             "template": index_template_file,
             "partials_dict": {
                 "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
-                "index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
+                "blog_index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
                 "tag_list": TAG_LIST_TEMPLATE
             },
             "data": {
@@ -212,7 +212,7 @@ def create_all_entry_index(entries):
         "template": BLOG_INDEX_TEMPLATE,
         "partials_dict": {
             "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
-            "index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
+            "blog_index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
             "tag_list": TAG_LIST_TEMPLATE
         },
         "data": {

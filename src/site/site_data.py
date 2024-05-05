@@ -164,7 +164,7 @@ def parse_entry_row(entry_row):
     return {
         "entry_id": entry_row[0],
         "title": entry_row[1],
-        "short": entry_row[2],
+        "description": entry_row[2],
         "body": entry_row[3],
         "date_created": date_created,
         "date_modified": date_modified,

@@ -25,6 +25,8 @@ CODE_CSS            := ${DIST_FOLDER}/static/code.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 FAVICON             := ${DIST_FOLDER}/favicon.ico
 
+LOCAL_EMU_PORT      := 8321
+
 all: site
 
 clean:
@@ -63,4 +65,4 @@ ${FAVICON}:
 	cp ${SRC_FOLDER}/site/favicon.ico ${DIST_FOLDER}
 
 emu: site
-	cd "${DIST_FOLDER}" && python3 -m http.server 8321
+	cd "${DIST_FOLDER}" && python3 -m http.server "${LOCAL_EMU_PORT}"

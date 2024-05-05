@@ -53,7 +53,7 @@ def generate_entry_item(entry):
     item_link_el = etree.SubElement(item_root, "link")
     item_link_el.text = article_link
     item_desc_el = etree.SubElement(item_root, "description")
-    item_desc_el.text = entry["short"]
+    item_desc_el.text = entry["description"]
     item_pub_date_el = etree.SubElement(item_root, "pubDate")
     item_pub_date_el.text = publish_date
     # Refer to: https://validator.w3.org/feed/docs/warning/MissingGuid.html

@@ -132,38 +132,26 @@ body {
 h1, h2, h3, h4 {
 	font-family: $font-mono;
 	line-height: normal;
-}
-
-h1 {
-	font-size: $font-size-h1;
-	font-weight: 700;
-	letter-spacing: initial;
-	margin: 1.5rem 0;
-	text-transform: none;
-}
-
-h2 {
-	font-size: $font-size-h2;
-	font-weight: 700;
-	letter-spacing: initial;
-	margin: 1.5rem 0;
-	text-transform: none;
-}
-
-h3 {
-	font-size: $font-size-h3;
-	font-weight: 700;
-	letter-spacing: initial;
-	margin: 1.5rem 0;
-	text-transform: none;
-}
-
-h4 {
-	font-size: $font-size-h4;
 	font-weight: 700;
 	letter-spacing: initial;
 	margin: 1rem 0;
 	text-transform: none;
+}
+
+h1 {
+	font-size: $font-size-h1;
+}
+
+h2 {
+	font-size: $font-size-h2;
+}
+
+h3 {
+	font-size: $font-size-h3;
+}
+
+h4 {
+	font-size: $font-size-h4;
 }
 
 
@@ -184,23 +172,13 @@ section {
 }
 
 
-section#contact-info {
-	#contact-info-list {
-		font-family: $font-mono;
-		list-style: none;
-		margin: 0 0 0 0.4rem;
-		padding: 0;
+section#links {
+	text-align: center;
 
-		li {
-			margin-bottom: 0.4rem;
-
-			.icon {
-				display: inline-block;
-				height: 20px;
-				margin-right: 0.5rem;
-				width: 20px;
-				vertical-align: middle;
-			}
+	nav {
+		a {
+			display: inline-block;
+			padding: 0.4rem;
 		}
 	}
 }
@@ -246,7 +224,7 @@ section#blog {
 				margin: 0 0 0.4rem;
 			}
 
-			.short {
+			.description {
 				@include colour_mid;
 			}
 
@@ -328,7 +306,7 @@ article.blog-entry {
 			margin: 0 0 0.4rem;
 		}
 
-		.short {
+		.description {
 			@include colour_mid;
 		}
 
@@ -451,43 +429,91 @@ article.blog-entry {
 	td {
 		padding: 0.2rem;
 	}
-}
 
-
-abbr {
-	color: $text-colour-body-link;
-	text-decoration: underline dotted;
-
-	&:hover {
-		color: $text-colour-body-link-hover;
+	.active-low {
+		text-decoration: overline;
+	}
+	
+	.keyboard-command {
+		font-family: monospace;
+		font-weight: bold;
+		color: $text-colour-emphasis;
+		font-size: 0.9rem;
+	
+		.key {
+			padding: 0rem 0.4rem;
+			border: 1px solid $text-colour-emphasis;
+		}
+	
+		.plus {
+			margin: 0 0.2rem;
+		}
+	}
+	
+	.assembly-label {
+		font-family: monospace;
+		color: $text-colour-emphasis;
+	}
+	
+	.assembly-label.invalid-assembly-label {
+		color: red;
+	}
+	
+	.hex-address {
+		font-family: monospace;
+		color: $text-colour-emphasis;
+	}
+	
+	.register-name {
+		font-family: monospace;
+		font-weight: bold;
+		color: $text-colour-emphasis;
+	}
+	
+	.assembly-instruction {
+		font-family: monospace;
+		color: $text-colour-emphasis;
+	}
+	
+	.disassembly-writeup li {
+		margin-bottom: 0.6rem;
 	}
 
-	&::after {
-		color: $text-colour-body;
-		content: '[?]';
-		font-size: 70%;
-		vertical-align: super;
-		background-color: $background-colour-mid;
+	abbr {
+		color: $text-colour-body-link;
+		text-decoration: underline dotted;
+	
+		&:hover {
+			color: $text-colour-body-link-hover;
+		}
+	
+		&::after {
+			color: $text-colour-body;
+			content: '[?]';
+			font-size: 70%;
+			vertical-align: super;
+			background-color: $background-colour-mid;
+		}
 	}
-}
-
-code {
-	color: $text-colour-code;
-}
-
-blockquote {
-	@include colour_mid;
-	font-style: italic;
-	margin: 1rem;
-
-	p {
-		margin: 0.6rem 0;
+	
+	code {
+		color: $text-colour-code;
 	}
-
-	cite {
-		display: block;
-		font-size: 0.8rem;
-		margin: 1rem 0 1rem -1rem;
+	
+	blockquote {
+		@include colour_mid;
+		font-style: italic;
+		margin: 1rem;
+	
+		p {
+			margin: 0.6rem 0;
+		}
+	
+		cite {
+			display: block;
+			font-size: 0.8rem;
+			margin: 1rem 0 1rem -1rem;
+		}
 	}
 }
 
@@ -558,55 +584,12 @@ blockquote {
 	}
 }
 
-.donation-option-logo {
-	max-height: 1.25rem;
-}
-
-.active-low {
-	text-decoration: overline;
-}
-
-.keyboard-command {
-	font-family: monospace;
-	font-weight: bold;
-	color: $text-colour-emphasis;
-	font-size: 0.9rem;
-
-	.key {
-		padding: 0rem 0.4rem;
-		border: 1px solid $text-colour-emphasis;
+.donation-option {
+	.logo {
+		max-height: 1.25rem;
 	}
 
-	.plus {
-		margin: 0 0.2rem;
+	a {
+		display: block;
 	}
-}
-
-.assembly-label {
-	font-family: monospace;
-	color: $text-colour-emphasis;
-}
-
-.assembly-label.invalid-assembly-label {
-	color: red;
-}
-
-.hex-address {
-	font-family: monospace;
-	color: $text-colour-emphasis;
-}
-
-.register-name {
-	font-family: monospace;
-	font-weight: bold;
-	color: $text-colour-emphasis;
-}
-
-.assembly-instruction {
-	font-family: monospace;
-	color: $text-colour-emphasis;
-}
-
-.disassembly-writeup li {
-	margin-bottom: 0.6rem;
 }
