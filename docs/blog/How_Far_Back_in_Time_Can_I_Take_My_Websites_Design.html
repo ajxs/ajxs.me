@@ -147,6 +147,7 @@
 	that they would be ending all support for the ailing Netscape Navigator,
 	giving their users an endorsement of Firefox as a parting gift.
 </p>
+
 <h3>Firefox 3.0</h3>
 <p>
 	For what it's worth,
@@ -156,28 +157,34 @@
 	browser to feature a tabbed interface,
 	Firefox's reintroduction of tabs to the new generation of web browsers was an absolute game changer.
 </p>
+
+<h4>Problem: Content Container Styling</h4>
+<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Rem_Styling.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Firefox_3/Rem_Styling_Thumbnail.jpg" alt="An image showing the blog index page with the entries stretched to the full width of the page">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Content Container Styling</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Rem_Styling.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Firefox_3/Rem_Styling_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	The cause of these layout problems didn't take long to track down:
 	The <i>'rem'</i> unit wasn't even part of the CSS standard in 2008.
 	After converting them to <i>'px'</i> with some crude 'Find+Replace' wizardry,
 	things were starting to take shape.
-
+</p>
 <p>
 	Funnily enough,
 	even though no styling was actually applied to the blog item headings,
 	the browsers falling back to their default heading styles made the page largely resemble its intended design.
 	I guess my pedantic adherence to semantic markup might actually pay dividends after all.
 </p>
+
+<h4>Problem: Mangled Page Header</h4>
+<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Mangled_Headers.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Firefox_3/Mangled_Headers_Thumbnail.jpg" alt="An image showing the page header distorted">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Mangled Page Header</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Mangled_Headers.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Firefox_3/Mangled_Headers_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	This turned out to be the result of Firefox applying a default <i>inline</i>
 	style to the unsupported HTML5 <code>&lt;header&gt;</code> element.
-
+</p>
 <p>
 	How browsers should,
 	or even do actually handle unknown HTML elements is a matter of serious conjecture in the web design community.
@@ -193,13 +200,16 @@
 	<a href="http://diveintohtml5.info/semantics.html#unknown-elements" target="_blank">comprehensive guide</a>
 	to how this actually works in practice across different browsers.
 </p>
+
+<h4>Problem: &lt;figure&gt; elements not styled correctly</h4>
+<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Figure_Tag.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Firefox_3/Figure_Tag_Thumbnail.jpg" alt="An image showing figure elements not displaying correctly as block elements">
+</a>
+<b>Status: Unresolved</b>
 <p>
-	</p><h4>Problem: &lt;figure&gt; elements not styled correctly</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Firefox_3/Figure_Tag.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Firefox_3/Figure_Tag_Thumbnail.jpg"/></a>
-	<h4>Status: Unresolved</h4>
 	The <i>&lt;figure&gt;</i> elements I had used in several articles were not rendering correctly either for the same
 	reason as the difficulties I experienced above with the page header.
-
+</p>
 <p>
 	Each of the individual entries in this blog is composed in plain HTML and stored in an SQLite database,
 	before being rendered into the final product by my homegrown
@@ -208,19 +218,25 @@
 	tags from each individual article,
 	I decided that I would just have to live with this problem and move on.
 </p>
+
 <h3>Internet Explorer 7</h3>
 <p>
 	Switching back to Internet Explorer, it was clear much more work needed to be done.
 </p>
+
+<h4>Problem: Blog Index Styling</h4>
+<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/No_Styling.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/No_Styling_Thumbnail.jpg" alt="An image showing the blog index entries without styles applied">
+</a>
+<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Article.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Article_Thumbnail.jpg" alt="An image showing the blog index entries without styles applied">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Blog Index Styling</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/No_Styling.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/No_Styling_Thumbnail.jpg"/></a>
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Article.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Article_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	At first I suspected there was no way IE7 supported the 'child combinator' CSS selector I was using to style the blog index's entries.
 	It turned out I was underestimating Internet Explorer's CSS support.
 	A mistake I'd make more than once writing this article.
-
+</p>
 <p>
 	After a quick session of <s>debugging</s>
 	trial and error I figured out this was another instance of the browser not recognising HTML5's
@@ -235,15 +251,18 @@
 	Internet Explorer also added a default margins for lists,
 	which I took the opportunity to reset.
 </p>
+
+<h4>Problem: Inline-Block List Elements</h4>
+<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Tag_List.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Tag_List_Thumbnail.jpg" alt="An image showing the tag list not displaying correctly as inline-block elements">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Inline-Block List Elements</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Tag_List.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Tag_List_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	'Inline-block' elements, such as the front page tag list,
 	were being rendered as block.
 	Between Firefox rendering block HTML5 elements inline,
 	and IE rendering inline elements as block, it was all getting very confusing.
-
+</p>
 <p>
 	Adding the <code>zoom: 1; *display: inline;</code>
 	hack as per
@@ -251,19 +270,26 @@
 	from Mozilla resolved the issue.
 	Somehow this doesn't seem to have any side-effects on other browsers, thankfully.
 </p>
+
+<h4>Problem: Table Of Contents Item Numbering</h4>
+<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Table_Of_Contents.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Table_Of_Contents_Thumbnail.jpg" alt="An image showing the Table of Contents numbering not working">
+</a>
+<b>Status: (Partially) Resolved</b>
 <p>
-	</p><h4>Problem: Table Of Contents Item Numbering</h4>
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Table_Of_Contents.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Table_Of_Contents_Thumbnail.jpg"/></a>
-	<h4>Status: (Partially) Resolved</h4>
 	After putting in <em><b>way</b> too much</em> time debugging,
 	it looks like my use of the <i><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counters" target="_blank">counters()</a></i>
 	function was breaking IE7's CSS parsing,
 	causing it to stop applying any subsequent definitions from the stylesheet.
 	Unsurprisingly, this caused a great load of other problems,
 	like breaking the <i>TL;DR</i> block and code snippet styling.
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/TLDR.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/TLDR_Thumbnail.jpg"/></a>
-	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Code_Blocks.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Code_Blocks_Thumbnail.jpg"/></a>
-
+	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/TLDR.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/TLDR_Thumbnail.jpg" alt="An image showing the TLDR block at the start of articles not being styled">
+	</a>
+	<a href="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Code_Blocks.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/2008/Internet_Explorer_7/Code_Blocks_Thumbnail.jpg" alt="An image showing code blocks not being styled">
+	</a>
+</p>
 <p>
 	This function is used to create the item numbering in the 'Table of Contents' section used in articles.
 	Unlike the native <code>list-style</code> property,
@@ -333,14 +359,17 @@
 <p>
 	After dialling the clock back a full 20 years, things really began to fall apart.
 </p>
+
+<h4>Problem: Main Page Styling</h4>
+<a href="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/Styles.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/Styles_Thumbnail.jpg" alt="An image showing the entire page with no styles applied">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Main Page Styling</h4>
-	<a href="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/Styles.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/Styles_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	At this point Internet Explorer 6 wasn't styling the front-page blog entries at all.
 	I had a hunch, based on caniuse.com's suggestion,
 	that this could be due to IE lacking support for the <i>&lt;ul&gt;</i> element...
-
+</p>
 <p>
 	It turned out that this time it <em>was</em> actually IE's lack of support for the child combinator CSS selector.
 	This now meant that I needed to explicitly prevent the nested 'tagged as' lists from picking
@@ -352,14 +381,15 @@
 	<code>background-color: unset;</code> property on the nested list items.
 	I guess that this is the kind of thing that still inspires hate for CSS.
 </p>
+
+<h4>Problem: Index Entry Items Don't Highlight on Hover</h4>
+<b>Status: Unresolved</b>
 <p>
-	</p><h4>Problem: Index Entry Items Don't Highlight on Hover</h4>
-	<h4>Status: Unresolved</h4>
 	Unfortunately IE6 doesn't support the <code>:hover</code> CSS selector on arbitrary elements,
 	so the front-page index blog entry elements no longer highlight when hovered over.
 	I'm sure this would be easily resolvable with Javascript,
 	but since that's out of the question we'll unfortunately just have to push on without it.
-
+</p>
 <p>
 	Wrapping the entire index entry item in a link, and
 	<a href="https://css-tricks.com/nested-links/" target="_blank">nesting</a>
@@ -376,17 +406,20 @@
 	The Flexbox CSS layout method would eventually make this much more straightforward,
 	but setting up a good vertical navbar in the 90s/00s was no laughing matter.
 </p>
+
+<h4>Problem: Transparent PNG Support</h4>
+<a href="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/PNG.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/PNG_Thumbnail.jpg" alt="An image showing the contact icons displaying without transparency">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Transparent PNG Support</h4>
-	<a href="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/PNG.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2003/Internet_Explorer_6/PNG_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	PNG transparency isn't supported in IE6.
 	Unfortunately,
 	there just wasn't anything else (reasonable) to do but convert the PNG images to transparent GIFs.
 	Some quick <i>imagemagick</i> got the job done in no time,
 	although the anti-aliasing effect of the PNG alpha channel is gone.
 	I guess we can just make do like it's 2003 and live with that.
-
+</p>
 <p>
 	Being confronted with the ghastly results of my hasty solution brought back memories of tweaking GIF image palettes
 	in Paint Shop Pro (back when it was still owned by Jasc).
@@ -416,19 +449,23 @@
 	<a href="http://www.oldversion.com/windows/download/netscape-7-01" target="_blank">installation</a>
 	to finish before I'd start feeling nostalgic.
 	The offer to install <i>RealPlayer</i> and <i>Winamp</i> was truly a blast from the past.
-	<a href="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Installation.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Installation_Thumbnail.jpg"/></a>
+	<a href="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Installation.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Installation_Thumbnail.jpg" alt="An image of the Netscape Navigator 7.0 installation">
+	</a>
 </p>
 
+<h4>Problem: Tag Item Hovered Background Colour </h4>
+<a href="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Hover.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Hover_Thumbnail.jpg" alt="An image showing the blog index entry not displaying correctly when hovered">
+</a>
+<b>Status: Unresolved</b>
 <p>
-	</p><h4>Problem: Tag Item Hovered Background Colour </h4>
-	<a href="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Hover.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/2003/Netscape_Navigator_7_0/Hover_Thumbnail.jpg"/></a>
-	<h4>Status: Unresolved</h4>
 	Unfortunately, the issue I tackled above with the nested lists not picking 
 	up their parent list item's highlighted colour on hover was reoccurring in Netscape.
 	The fix I used earlier of removing any implicit background colour didn't seem to accomplish anything here.
 	Surprisingly, aside from this everything else was totally fine,
 	so I was happy enough to write this one off and move on.
-
+</p>
 <p>
 	As a side note, look at that interface! 
 	Check out the icons in the lower left-hand corner!
@@ -439,7 +476,7 @@
 <p>
 	To veterans of the browser wars,
 	any mention of <i>'cross-browser compatibility issues'</i>
-	brings to mind one culprit in particular: <em>Internet Explorer</em>.<br/>
+	brings to mind one culprit in particular: <em>Internet Explorer</em>.<br>
 	I certainly remember burning the midnight oil painstakingly aligning <i>div</i> elements in Firefox,
 	only to see my work reinterpreted as abstract art by the quirks of IE's layout engine.
 </p>
@@ -471,33 +508,40 @@
 	<a href="https://stackoverflow.com/questions/1261975/addressing-localhost-from-a-virtualbox-virtual-machine" target="_blank">This</a>
 	trick made accessing my local development environment from Virtualbox a piece of cake.
 </p>
+
+<h4>Problem: Main Page Content Container</h4>
+<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Page_Width.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Page_Width_Thumbnail.jpg" alt="An image showing the main page content stretched to the full width of the page">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Main Page Content Container</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Page_Width.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Page_Width_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	On first load, the main centre column layout was stretched to the page width.
 	This is because IE5 doesn't support applying a <i>width</i> rule to the page's
 	<code>&lt;body&gt;</code> element.
 	Wrapping the main page content in a <i>div</i> solved the issue of the content container.
 	However now it's incorrectly aligned...
-
+</p>
 <p>
-	<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Centered.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Centered_Thumbnail.jpg"/></a>
+	<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Centered.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Centered_Thumbnail.jpg" alt="An image showing the main content container misaligned">
+	</a>
 	Adding <code>text-align: center;</code> to the main body element
 	as per <a href="https://stackoverflow.com/questions/12235627/center-div-in-ie5-x" target="_blank">this</a> solution
 	put it back where it was supposed to be.
 </p>
 
+<h4>Problem: Image Maximum Size</h4>
+<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Image_Size.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Image_Size_Thumbnail.jpg" alt="An image showing the images stretching to the full width of the page">
+</a>
+<b>Status: (Partially) Solved</b>
 <p>
-	</p><h4>Problem: Image Maximum Size</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Image_Size.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Image_Size_Thumbnail.jpg"/></a>
-	<h4>Status: (Partially) Solved</h4>
 	Unfortunately the <code>max-width</code> CSS property of block elements didn't exist in 1998.
 	It was added as part of the
 	<a href="https://www.w3.org/TR/CSS21/" target="_blank">CSS 2.1</a> specification in 2010.
 	I remember how revolutionary this CSS property was.
 	It allowed designers to free themselves from so many precarious hacks!
-
+</p>
 <p>
 	After trying a dozen different approaches in vain,
 	I resorted to using an IE-specific stylesheet,
@@ -520,12 +564,14 @@
 	so no stretching will actually occur.
 </p>
 
+<h4>Problem: Inline-Block Elements</h4>
+<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Inline_Block.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Inline_Block_Thumbnail.jpg" alt="An image showing the tag list not displaying correctly as inline-block elements">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Inline-Block Elements</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Inline_Block.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Internet_Explorer_5/Inline_Block_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	Removing the inline block list elements that wrap the anchor elements resolved some issues.
-
+</p>
 
 <h3>Netscape Navigator 4.5</h3>
 <p>
@@ -540,57 +586,72 @@
 	<a href="http://www.richinstyle.com/bugs/netscape4.html" target="_blank">RichInStyle.com's bug guide</a>.
 	This fantastic resource contains an exhaustive list of contemporary browser bugs.
 </p>
+
+<h4>Problem: Background</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Background.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Background_Thumbnail.jpg" alt="An image showing the page background colour not rendering">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Background</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Background.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Background_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	The CSS3 Background module
 	<a href="https://www.w3.org/TR/2001/WD-css3-background-20010924/#CSS2" target="_blank">draft specification</a>
 	recommends that
 	<i>"authors specify the background for the BODY element rather than the HTML element"</i>.
 	Doing just that restored the page's lost background colour.
+</p>
 
-
+<h4>Problem: List Items</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Entries.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Entries_Thumbnail.jpg" alt="An image showing the main blog index entries showing up as unstyled list items">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: List Items</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Entries.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Entries_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	Now that we have a background colour again,
 	it's plain to see that something is going really wrong with the front page blog index styling.
 	It turns out Netscape doesn't like the way I constructed the main blog index out of a list element<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>.
 	Converting the individual index entry items from <code>&lt;li&gt;</code> to <code>&lt;div&gt;</code>
 	resolved the issue.
+</p>
 
+<h4>Problem: Background Only Applied To Text</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Block_Elements.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Block_Elements_Thumbnail.jpg" alt="An image showing the background colour only being applied to text">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Background Only Applied To Text</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Block_Elements.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Block_Elements_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	Once again, I have RichInStyle.com to thank for a solution that may have taken me years to find on my own.
 	Apparently this ghastly effect is the result of a bug in Netscape 4.x.
 	Adding the <code>border: none</code> property to elements resolved this issue.
+</p>
 
+<h4>Problem: Body Font Color</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Body_Font.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Body_Font_Thumbnail.jpg" alt="An image showing the body font colour not rendering">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Body Font Color</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Body_Font.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Body_Font_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	This problem was solved by explicitly adding the font colour property to all of the relevant elements,
 	one tedious definition after another.
+</p>
 
+<h4>Problem: Centre Div</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Thumbnail.jpg" alt="An image showing the main content div aligned to the left">
+</a>
+<b>Status: Unresolved</b>
 <p>
-	</p><h4>Problem: Centre Div</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Thumbnail.jpg"/></a>
-	<h4>Status: Unresolved</h4>
-
 	According to RichInStyle.com, <i>"Auto is interpreted as 0"</i>,
 	so the modern solution of <code>margin: 0 auto</code> won't accomplish anything in Netscape.
-
+</p>
 <p>
 	As a battle-scarred veteran of the browser wars,
 	I recalled the old trick of combining an absolute position and a negative margin, such as:
 	<code>position: absolute; left: 50%; margin-left: -320px;</code>
 	However all this accomplished was pushing the centre column halfway off the page,
 	as Netscape 4.5 doesn't seem to support negative margins.
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Misaligned.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Misaligned_Thumbnail.jpg"/></a>
+	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Misaligned.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Center_Div_Misaligned_Thumbnail.jpg" alt="An image showing the main content div aligned all the way to the right">
+	</a>
 </p>
 <p>
 	In desperation I even tried using Netscape's dreaded
@@ -599,7 +660,6 @@
 	rendered erroneously in the <s>Queen's</s> King's English as <i>&lt;centre&gt;</i>.
 	I may as well have left it that way for all the good it did me.
 </p>
-
 <p>
 	Grasping at straws, I tried adding the <code>align="center"</code> attribute,
 	as suggested <a href="https://www4.cs.fau.de/Services/Doc/webdocs/webdocs/HTMLdocs/NewHTML/center.html" target="_blank">here</a>,
@@ -608,16 +668,19 @@
 	With heavy heart, and with my remaining patience quickly evaporating, 
 	I decided to let this one go.
 </p>
+
+<h4>Problem: Image Size</h4>
+<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Image_Size.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Image_Size_Thumbnail.jpg" alt="An image showing the contact list icons exploded to huge sizes">
+</a>
+<b>Status: Solved</b>
 <p>
-	</p><h4>Problem: Image Size</h4>
-	<a href="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Image_Size.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1998/Netscape_Navigator_4_5/Image_Size_Thumbnail.jpg"/></a>
-	<h4>Status: Solved</h4>
 	Having barely mentally recovered from the last frustrating issue, 
 	I was willing to consider more <i>expedient</i> approaches to solving any further problems.
 	I figured there was no need to complicate matters any further,
 	so I manually resized the image files to their final, correct size.
 	I'm not even sure why I hadn't done this already.
-
+</p>
 <p>
 	To align the newly resized images correctly I resorted to using a <code>&lt;table&gt;</code> element. 
 	Very naughty.
@@ -660,7 +723,9 @@
 	in my Windows 98 VM was much less of a headache,
 	but my conscience simply wouldn't permit me passing this off as the real deal.
 	With my journalistic integrity intact, I pressed onward...
-	<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Windows.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Windows_Thumbnail.jpg"/></a>
+	<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Windows.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Windows_Thumbnail.jpg" alt="An image showing NCSA Mosaic 2.1 running in a Windows 98 VM">
+	</a>
 </p>
 <p>
 	For the sake of expediency, 
@@ -673,15 +738,20 @@
 	<a href="https://github.com/ajxs/dotfiles/blob/master/.config/.Xresources" target="_blank">my</a>
 	<code>~/.Xresources</code> file,
 	rendering Mosaic in an all but unusable state.
-	<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Incorrect_Colours.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Incorrect_Colours_Thumbnail.jpg"/></a>
+	<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Incorrect_Colours.jpg" target="_blank">
+		<img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Incorrect_Colours_Thumbnail.jpg" alt="An image showing Mosaic rendering the page with garbled, illegible colours">
+	</a>
 </p>
 <p>
 	After quickly cobbling a new X colour-scheme together, I was ready for the next challenge...
 </p>
+
+<h4>Problem: Everything</h4>
+<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Correct_Colours.jpg" target="_blank">
+	<img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Correct_Colours_Thumbnail.jpg" alt="An image showing a very spartan version of my site, with no graphical theming at all">
+</a>
+<b>Status: Impossible</b>
 <p>
-	</p><h4>Problem: Everything</h4>
-	<a href="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Correct_Colours.jpg" target="_blank"><img src="/static/img/articles/web_browser_history/1993/Mosaic_1_2/Correct_Colours_Thumbnail.jpg"/></a>
-	<h4>Status: Impossible</h4>
 	Well... I just had to see for myself.
 	Of course, any attempt to get my site rendering &#8212;in a reasonable fashion&#8212;
 	in the Mosaic browser was absolutely doomed from the start.
@@ -691,7 +761,7 @@
 	<a href="https://www.w3.org/Style/CSS20/history.html" target="_blank">another three years</a>.
 	On account of this limitation,
 	no amount of bending, bashing, or technical trickery could ever make my site display correctly in Mosaic.
-
+</p>
 <p>
 	Working backwards through the history of internet browsers,
 	it's interesting to see how quickly the design of the <i>world-wide-web</i>
@@ -773,7 +843,7 @@
 </p>
 
 <p>
-	In defence of my nostalgia, I was <em>there</em>.<br/>
+	In defence of my nostalgia, I was <em>there</em>.<br>
 	Like so many other children of the 90s,
 	I didn't need any convincing when it came to the internet,
 	I just <em>got</em> it,
@@ -800,7 +870,7 @@
 	in what is still a fantastic artistic medium:
 	<i>The internet</i>.
 </p>
-<hr/>
+<hr>
 <ol class="footnotes">
 <li id="footnote_1">
 	This design asceticism extends beyond just the site's superficial qualities,
@@ -861,20 +931,21 @@
 	<a href="https://www.youtube.com/watch?v=jdJA5C_Po4U" target="_blank">This</a>
 	episode of Beyond 2000 showcased what was pretty much the pinnacle of my childhood dreams.
 	Speaking of Battletech, one of the 
-	<a href="https://web.archive.org/web/19981205081846/http://sarna.net/btech/index.shtml">earliest websites</a> 
+	<a href="https://web.archive.org/web/19981205081846/http://sarna.net/btech/index.shtml" target="_blank">earliest websites</a> 
 	I can distinctly remember visiting is 
-	<a href="https://www.sarna.net/wiki/Main_Page">still online today</a>!
+	<a href="https://www.sarna.net/wiki/Main_Page" target="_blank">still online today</a>!
 <a href="#footnote_4_link">&#8626;</a></li><li id="footnote_5">
 	For anyone who's interested in creating a website of their own,
 	but doesn't know how, 
 	<a href="https://www.websiteplanet.com/blog/html-guide-beginners/" target="_blank">here</a>
-	is a great beginner's guide to HTML to get you started.
+	is a great beginner's guide to HTML to get them started.
 	MDN also have a fantastic series called
 	<a href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web" target="_blank">Getting started with the web</a>,
 	which will have you up and running in no time.
 	Neocities also provide some excellent <a href="https://neocities.org/tutorials" target="_blank">tutorials</a> on a variety of subjects,
 	as well as providing easy to use web-hosting.
 <a href="#footnote_5_link">&#8626;</a></li></ol>
+
 	</div>
 </article>
 
