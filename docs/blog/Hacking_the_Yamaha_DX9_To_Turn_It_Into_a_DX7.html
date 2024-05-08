@@ -234,15 +234,13 @@
 </p>
 
 <h2 id="new_firmware">Creating the New Firmware <a class="permalink" href="#new_firmware">#</a></h2>
-<p>
-	<i>
-		The full task of reverse-engineering the original firmware and writing the new one was too large to exhaustively detail in writing here.
-		I'll use this section to cover a few small areas that I think are meaningful and interesting.<br/>
-		For anyone interested in more specific information,
-		the <a href="https://github.com/ajxs/yamaha_dx97" target="_blank">DX9/7 Firmware's repository</a>
-		contains more technical details about the firmware.
-	</i>
-</p>
+<div class="note">
+	The full task of reverse-engineering the original firmware and writing the new one was too large to exhaustively detail in writing here.
+	I'll use this section to cover a few small areas that I think are meaningful and interesting.<br>
+	For anyone interested in more specific information,
+	the <a href="https://github.com/ajxs/yamaha_dx97" target="_blank">DX9/7 Firmware's repository</a>
+	contains more technical details about the firmware.
+</div>
 
 <p>
 	Unfortunately, hacking the DX9 to restore the use of all six operators wasn't going to be as straightforward as just changing a '4' to a '6' in a few crucial places.
@@ -372,17 +370,18 @@
 	One 
 	<a href="https://www.synthtopia.com/content/2023/03/20/yamaha-dx9-alternate-firmware-makes-it-a-6-op-dx7-compatible-synth/#comment-1469747" target="_blank">response</a>
 	in particular on Synthopia gave me a good laugh:
-	</p><blockquote>
-		Awesome. This is a dream come true for somewhere between 2 to 3 people all over the world.
-	</blockquote>
-
+</p>
+<blockquote>
+	Awesome. This is a dream come true for somewhere between 2 to 3 people all over the world.
+</blockquote>
+<p>
 	It's true. I fully admit that this is an extremely niche project.
 	Despite this, the project was a labour of love.
 	I really enjoyed the experience of hacking vintage synth hardware,
 	and being able to squeeze a little bit of extra value out of the
 	<a href="https://yamahadx9.com/DX9Worst.html" target="_blank"><i>'Worst Ever'</i></a>
 	FM synth.
-
+</p>
 <p>
 	In spite of its narrow appeal, 
 	I feel very fortunate to have had the opportunity to create something other people can enjoy,
@@ -393,8 +392,8 @@
 	As for the DX9 itself, it's hard to imagine exactly what kind of success Yamaha expected.
 	As <a href="https://yamahadx9.com/DX9Origins.html" target="_blank">yamahadx9.com</a> so eloquently notes:
 	<i>
-		"...the DX9 couldn't be described in terms of what it offered;
-		it was defined by what it lacked compared to the DX7"
+		'...the DX9 couldn't be described in terms of what it offered;
+		it was defined by what it lacked compared to the DX7'
 	</i><sup><a href="#footnote_8" id="footnote_8_link">8</a></sup>.
 	With an intimidating price tag of USD$1395 at its launch,
 	the DX9 was more affordable than its bigger brother, but not by much.
@@ -465,19 +464,19 @@
 	Suddenly it dawned on me that the two trailing non-ASCII bytes weren't part of the string at all...
 	My disassembler had been rendering each block as a single garbled, null-terminated string,
 	but the two trailing bytes were actually an offset into the ROM's address space,
-	and the preceding 6 character strings actually described what they pointed to...<br/>
+	and the preceding 6 character strings actually described what they pointed to...<br>
 	I was looking at a symbol table!
-	<figure>
-		<a href="/static/img/articles/dx97/symbol_table.png" target="_blank">
-			<img src="/static/img/articles/dx97/symbol_table_thumbnail.jpg"/>
-		</a>
-		<figcaption>
-			The symbol table fragment located at <code>0xEE7E</code>, as seen in Ghidra.<br/>
-			Note that the labels such as <code>"`CASS2 "</code> are the ASCII labels contained in the binary,
-			while the accompanying symbol <code>ui_yes_no_cassette_functions::.exit</code> is my own label.
-		</figcaption>
-	</figure>
 </p>
+<figure>
+	<a href="/static/img/articles/dx97/symbol_table.png" target="_blank">
+		<img src="/static/img/articles/dx97/symbol_table_thumbnail.jpg" alt="An image of the symbol table fragment located at 0xEE7E in the DX9 ROM">
+	</a>
+	<figcaption>
+		The symbol table fragment located at <code>0xEE7E</code>, as seen in Ghidra.<br>
+		Note that the labels such as <code>"`CASS2 "</code> are the ASCII labels contained in the binary,
+		while the accompanying symbol <code>ui_yes_no_cassette_functions::.exit</code> is a reference to my own label.
+	</figcaption>
+</figure>
 <p>
 	How did this get here?
 	These fragments of the symbol table give us a little bit of insight into the synth's development.
@@ -505,18 +504,17 @@
 		Motorola M68MASR Macro Assemblers Reference Manual
 	</a>
 	mentions ten byte symbol table entries:
-	<figure>
-		<blockquote>
-			'Each unique label, undefined symbol, and external reference symbol in a program
-			is allocated a ten-byte block in the symbol table. In addition, a ten-byte
-			block is allocated for every four references to a symbol, if the cross reference
-			option (paragraph 4,20) is in effect.'
-		</blockquote>
-		<figcaption>
-			Motorola M68MASR Macro Assemblers Reference Manual, 2-2
-		</figcaption>
-	</figure>
-
+</p>
+<blockquote>
+	'Each unique label, undefined symbol, and external reference symbol in a program
+	is allocated a ten-byte block in the symbol table. In addition, a ten-byte
+	block is allocated for every four references to a symbol, if the cross reference
+	option (paragraph 4,20) is in effect.'
+	<cite>
+		Motorola M68MASR Macro Assemblers Reference Manual, 2-2
+	</cite>
+</blockquote>
+<p>
 	The entries in this mysterious DX9 symbol table are also ten bytes.
 	This <em>could</em> just be a coincidence.
 	After all, it's unlikely that Yamaha used this exact cross-assembler.
@@ -542,12 +540,12 @@
 	please reach out! I'd love to hear any theories you might have.
 </p>
 
-<hr/>
+<hr>
 <ol class="footnotes">
 	<li id="footnote_1">
 		The DX9 is built around the same two proprietary LSI chips as the DX7:
 		The <i>YM21290 EGS</i>, which handles note events and envelope generation;
-		and the <i>YM21280 OPS</i>, which is responsible for tone generation.<br/>
+		and the <i>YM21280 OPS</i>, which is responsible for tone generation.<br>
 		For more information regarding the DX7's hardware, please refer to
 		<a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank">this article</a>.
 	<a href="#footnote_1_link">&#8626;</a></li><li id="footnote_2">
@@ -556,7 +554,7 @@
 		Yamaha's GS1
 		&#8212;the first commercially released FM synthesiser&#8212;
 		used the NEC &#181;PD8035 CPU, a second-source version of the
-		<a href="https://en.wikipedia.org/wiki/Intel_MCS-48" target="_blank">Intel MCS-48 microcontroller</a>.<br/>
+		<a href="https://en.wikipedia.org/wiki/Intel_MCS-48" target="_blank">Intel MCS-48 microcontroller</a>.<br>
 		A copy of the GS1's service manual is available <a href="http://www.oldcrows.net/~oldcrow/synth/yamaha/gs1/" target="_blank">here</a>.
 	<a href="#footnote_2_link">&#8626;</a></li><li id="footnote_3">
 		It's interesting to see the novel ideas that synth designers had for SysEx prior to MIDI's standardisation,
@@ -566,7 +564,7 @@
 		For all I know, this could very well have been a common technique when the DX9 firmware was developed.
 		If this is the case, please forgive me for not knowing the right terminology.
 		Tracking down whether this, and other routines, are well known can be
-		<a href="https://retrocomputing.stackexchange.com/q/26707/20781" target="_blank">difficult</a>.<br/>
+		<a href="https://retrocomputing.stackexchange.com/q/26707/20781" target="_blank">difficult</a>.<br>
 		It's quite likely that over time Yamaha developed an internal toolset of bespoke routines that they reused throughout their firmware.
 		If anyone has any insight into this routine, or anything else I may have misnamed,
 		please contact me.
@@ -579,7 +577,7 @@
 		The DX7's official literature uses the term <i>'voice'</i> to refer to what is more
 		commonly known as a <i>'patch'</i> in modern synthesiser parlance,
 		and <i>'note'</i> to refer to what is more commonly known as a <i>'voice'</i>.
-		I decided for the sake of minimising confusion to stick to the more modern terminology.<br/>
+		I decided for the sake of minimising confusion to stick to the more modern terminology.<br>
 		Similarly, Yamaha's technical literature also features some interesting terminology for programming concepts,
 		using words such as <i>'job'</i>, and <i>'routine'</i> interchangeably.
 		I use the terms <i>'routine'</i>, and <i>'subroutine'</i> throughout to stay consistent with Hitachi's official HD6303 documentation.
@@ -589,7 +587,7 @@
 		The HD63B03RP has built in <i>divide-by-4</i> circuitry, so the synth's actual clock rate is 1.178 MHz.
 		The DX7's OCF interrupt resets the CPU's 'Output Compare' register to '3140'.
 		From this we can calculate the rate of the periodic interrupt:
-		<code>9.4265 MHz / 2 / 4 / 3140 = 375.258758 Hz</code>.<br/>
+		<code>9.4265 MHz / 2 / 4 / 3140 = 375.258758 Hz</code>.<br>
 		The DX9's CPU is clocked by a 3.77 MHz crystal,
 		and the OCF interrupt resets the CPU's 'Output Compare' register to '2500'.
 		<code>3.77 MHz / 4 / 2500 = 377 Hz</code>.
@@ -612,7 +610,7 @@
 		noted that: <i>'the difference in price between the two could buy you a second MIDI synthesiser'</i>.
 		Going on to say that he <i>'bought a JX3P with the money I saved [opting for a DX9 over the DX7]'</i>.
 		Again, like the aforementioned Juno 106,
-		this is highly amusing considering the prices these iconic Roland polysynths fetch today.<br/>
+		this is hilarious considering the prices the JX3P fetches today.<br>
 		Mind you, the Roland Jupiter-6, also released in 1983, had the hefty price tag of USD$2995.
 		Considerably more than the DX7.
 	<a href="#footnote_9_link">&#8626;</a></li><li id="footnote_10">
