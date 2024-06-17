@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2023, AJXS.
+ *  Copyright (c) 2024, AJXS.
  *  SPDX-License-Identifier: GPL-3.0-or-later
  *
  *  Authors:
@@ -12,18 +12,13 @@ $text-saturation-hover: 6%;
 
 $background-colour-body: hsl($hue, 5%, 6%);
 
-$background-colour-dark: hsl($hue, 14%, 12%);
-$background-colour-dark-hover: hsl($hue, 14%, 16%);
-
-$background-colour-mid: $background-colour-dark-hover;
+$background-colour-level-2: hsl($hue, 14%, 12%);
+$background-colour-level-2-hover: hsl($hue, 14%, 16%);
 
 $text-colour-body: hsl($hue, $text-saturation, 85%);
 
 $text-colour-light: hsl($hue, $text-saturation, 95%);
 $text-colour-light-hover: hsl($hue, $text-saturation-hover, 85%);
-
-$text-colour-mid: hsl($hue, $text-saturation, 75%);
-$text-colour-mid-hover: hsl($hue, $text-saturation-hover, 95%);
 
 $text-colour-body-link: $text-colour-light;
 $text-colour-body-link-hover: $text-colour-light-hover;
@@ -31,11 +26,11 @@ $text-colour-body-link-hover: $text-colour-light-hover;
 $text-colour-body-permalink: hsl($hue, $text-saturation, 24%);
 $text-colour-body-permalink-hover: hsl($hue, $text-saturation-hover, 32%);
 
+$text-colour-mid: hsl($hue, $text-saturation, 75%);
+$text-colour-mid-hover: hsl($hue, $text-saturation-hover, 95%);
+
 $text-colour-dark: hsl($hue, $text-saturation, 50%);
 $text-colour-dark-hover: hsl($hue, $text-saturation-hover, 70%);
-
-$table-of-contents-outline-colour: $background-colour-mid;
-$table-of-contents-border-colour: $background-colour-body;
 
 $text-colour-emphasis: hsl($hue, 12%, 95%);
 
