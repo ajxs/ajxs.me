@@ -12,8 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 		<link rel="stylesheet" type="text/css" href="/static/code.css">
 		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 
 		<title>~ajxs/Introduction to Reverse-Engineering Vintage Synth Firmware</title>
 				
@@ -220,8 +220,8 @@
 		controlling whether the device responds to incoming signals.
 	</p>
 	<p>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/address_decoding_logic.png" target="_blank">
-			<img alt="A schematic showing the address decoding logic of a hypothetical system." src="/static/img/articles/reverse_engineering_vintage_synths/address_decoding_logic_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/address_decoding_logic.png" target="_blank">
+			<img alt="A schematic showing the address decoding logic of a hypothetical system." src="/static/articles/reverse_engineering_vintage_synths/address_decoding_logic_thumbnail.jpg">
 		</a>
 		Consider the above (incredibly simplified) diagram:
 		Two 8KiB 
@@ -284,8 +284,8 @@
 		Let's start by taking a look at the firmware ROM, IC14.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/schematics/rom.png" target="_blank">
-			<img alt="An excerpt from the Yamaha DX7's schematics, with the ROM address mapping logic highlighted" src="/static/img/articles/reverse_engineering_vintage_synths/schematics/rom_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/schematics/rom.png" target="_blank">
+			<img alt="An excerpt from the Yamaha DX7's schematics, with the ROM address mapping logic highlighted" src="/static/articles/reverse_engineering_vintage_synths/schematics/rom_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Yamaha DX7's schematics, with the ROM address mapping logic highlighted.
@@ -312,8 +312,8 @@
 		The address decoding logic for the RAM is a little more complicated.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/schematics/ram.png" target="_blank">
-			<img alt="An excerpt from the Yamaha DX7's schematics, with the RAM address mapping logic highlighted" src="/static/img/articles/reverse_engineering_vintage_synths/schematics/ram_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/schematics/ram.png" target="_blank">
+			<img alt="An excerpt from the Yamaha DX7's schematics, with the RAM address mapping logic highlighted" src="/static/articles/reverse_engineering_vintage_synths/schematics/ram_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Yamaha DX7's schematics, with the RAM address mapping logic highlighted.
@@ -335,8 +335,8 @@
 		Presumably to ensure the timing of read and write operations are valid.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/74ls138_function_table.png" target="_blank">
-			<img alt="The function table from the 74LS138P's datasheet" src="/static/img/articles/reverse_engineering_vintage_synths/74ls138_function_table_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/74ls138_function_table.png" target="_blank">
+			<img alt="The function table from the 74LS138P's datasheet" src="/static/articles/reverse_engineering_vintage_synths/74ls138_function_table_thumbnail.jpg">
 		</a>
 		<figcaption>
 			The 'Function Table' from the 74LS138P's datasheet, 
@@ -380,8 +380,8 @@
 		you can easily see <em>what's</em> printed <em>where</em> to get a better understanding of the code.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/schematics/lcd.png" target="_blank">
-			<img alt="An excerpt from the Yamaha DX7's schematics, with the LCD address mapping logic highlighted" src="/static/img/articles/reverse_engineering_vintage_synths/schematics/lcd_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/schematics/lcd.png" target="_blank">
+			<img alt="An excerpt from the Yamaha DX7's schematics, with the LCD address mapping logic highlighted" src="/static/articles/reverse_engineering_vintage_synths/schematics/lcd_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Yamaha DX7's schematics, with the LCD address mapping logic highlighted.
@@ -420,8 +420,8 @@
 		It provides 24 parallel, bidirectional IO lines<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/8255_basic_operation.png" target="_blank">
-			<img alt="An excerpt from the Intel 8255 datasheet showing its basic operations" src="/static/img/articles/reverse_engineering_vintage_synths/8255_basic_operation_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/8255_basic_operation.png" target="_blank">
+			<img alt="An excerpt from the Intel 8255 datasheet showing its basic operations" src="/static/articles/reverse_engineering_vintage_synths/8255_basic_operation_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Intel 8255 datasheet showing its basic operations.
@@ -509,21 +509,21 @@
 
 	<p>
 		Once you've installed the language definitions, open Ghidra and create a new project.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/new_project.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'New Project' dialog" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/new_project_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/new_project.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'New Project' dialog" src="/static/articles/reverse_engineering_vintage_synths/disassembly/new_project_thumbnail.jpg">
 		</a>
 
 		The first thing we're going to need to do is to import the firmware ROM binary.
 		Select the '6303' language, and click 'OK'.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/set_language.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'Select Language' dialog" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/set_language_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/set_language.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'Select Language' dialog" src="/static/articles/reverse_engineering_vintage_synths/disassembly/set_language_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
 		Next, open up the <i>Codebrowser</i>.
 		This is where all the action happens.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/codebrowser.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'Codebrowser' button" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/codebrowser_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/codebrowser.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'Codebrowser' button" src="/static/articles/reverse_engineering_vintage_synths/disassembly/codebrowser_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
@@ -538,8 +538,8 @@
 		That's going to come in handy now.
 		Press the <b>'Display Memory Map'</b> icon in the top button bar,
 		to open up the Memory Map dialog.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/display_memory_map.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'Display Memory Map' button" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/display_memory_map_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/display_memory_map.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'Display Memory Map' button" src="/static/articles/reverse_engineering_vintage_synths/disassembly/display_memory_map_thumbnail.jpg">
 		</a>
 
 		By default there's only one memory block defined.
@@ -548,12 +548,12 @@
 		The next thing we need to do is move this block to the correct offset <span class="hex-address">0xC000</span>.
 		Because all of the machine code instructions reference memory with absolute addresses,
 		if we didn't map the ROM to the correct location none of the disassembly would work.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/move_block_button.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'Move Memory Block' button" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/move_block_button_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/move_block_button.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'Move Memory Block' button" src="/static/articles/reverse_engineering_vintage_synths/disassembly/move_block_button_thumbnail.jpg">
 		</a>
 
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/move_block.png" target="_blank">
-			<img alt="A screenshot of Ghidra showing the 'Move Memory Block' dialog" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/move_block_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/move_block.png" target="_blank">
+			<img alt="A screenshot of Ghidra showing the 'Move Memory Block' dialog" src="/static/articles/reverse_engineering_vintage_synths/disassembly/move_block_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
@@ -563,8 +563,8 @@
 		it knows where to begin executing code by fetching a pointer from a specific location in the <i>interrupt vector table</i>.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/interrupt_vectors.png" target="_blank">
-			<img alt="An excerpt table from the 6301/6303 Handbook showing the 6303's interrupt vector table" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/interrupt_vectors_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/interrupt_vectors.png" target="_blank">
+			<img alt="An excerpt table from the 6301/6303 Handbook showing the 6303's interrupt vector table" src="/static/articles/reverse_engineering_vintage_synths/disassembly/interrupt_vectors_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt table from the 6301/6303 Handbook showing the 6303's interrupt vector table.
@@ -584,15 +584,15 @@
 		Press the <span class="keyboard-command"><span class="key">P</span></span> 
 		key on your keyboard to convert the data at this address to a pointer. 
 		You should see something similar to the image below.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_vector_pointer.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the reset vector pointer" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_vector_pointer_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_vector_pointer.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the reset vector pointer" src="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_vector_pointer_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
 		Double-click on this pointer to take you to the associated offset in the binary.
 		Now we've found where the actual code is located, but it doesn't look like much just yet.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_location.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the reset handler function" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_location_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_location.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the reset handler function" src="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_location_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
@@ -617,14 +617,14 @@
 		disassembling as it goes.
 		An error will pop up here, but don't worry about it for now.
 		This is just the disassembler mistaking a jump table for code.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/analyzer_error.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the expected 'analyzer error' message" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/analyzer_error_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/analyzer_error.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the expected 'analyzer error' message" src="/static/articles/reverse_engineering_vintage_synths/disassembly/analyzer_error_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
 		Once the disassembly completes you should see something like the picture below.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_disassembled.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the disassembled reset handler" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_disassembled_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_disassembled.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the disassembled reset handler" src="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_handler_disassembled_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
@@ -673,8 +673,8 @@
 		Ghidra offers a helpful error message: <i>'Address not found in program memory: 2575'</i>.
 		This is because we're missing our memory map!
 		Let's go back to the 'Memory Map' dialog, and add the missing blocks.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/adding_ram_memory_map.png" target="_blank">
-			<img alt="A screenshot showing adding the RAM memory map block in Ghidra" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/adding_ram_memory_map_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/adding_ram_memory_map.png" target="_blank">
+			<img alt="A screenshot showing adding the RAM memory map block in Ghidra" src="/static/articles/reverse_engineering_vintage_synths/disassembly/adding_ram_memory_map_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
@@ -684,8 +684,8 @@
 		It's not super important how the blocks are divided.
 		What matters is that the blocks cover all of the needed peripheral addresses.
 
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/memory_map.png" target="_blank">
-			<img alt="The completed memory map shown in Ghidra, with all peripheral address space allocated" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/memory_map_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/memory_map.png" target="_blank">
+			<img alt="The completed memory map shown in Ghidra, with all peripheral address space allocated" src="/static/articles/reverse_engineering_vintage_synths/disassembly/memory_map_thumbnail.jpg">
 		</a>
 
 		Note that I added memory blocks for the HD6303 CPU's internal registers, and internal RAM.
@@ -697,8 +697,8 @@
 		provides a list of the HD6303RP's internal registers.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/internal_register_area.png" target="_blank">
-			<img alt="An excerpt from the Hitachi HD6301/HD6303 Series Handbook showing the IO port addresses" src="/static/img/articles/reverse_engineering_vintage_synths/internal_register_area_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/internal_register_area.png" target="_blank">
+			<img alt="An excerpt from the Hitachi HD6301/HD6303 Series Handbook showing the IO port addresses" src="/static/articles/reverse_engineering_vintage_synths/internal_register_area_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Hitachi HD6301/HD6303 Series Handbook showing the IO port addresses.
@@ -748,8 +748,8 @@
 		This view shows a directed graph of the program's branching logic.
 		You can open this view by selecting <b>Window &#8594; Function Graph</b> in the top window menu.
 		You should see a view similar to the picture below.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_function_graph.png" target="_blank">
-			<img alt="A screenshot of Ghidra's function graph of the reset handler" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/reset_function_graph_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_function_graph.png" target="_blank">
+			<img alt="A screenshot of Ghidra's function graph of the reset handler" src="/static/articles/reverse_engineering_vintage_synths/disassembly/reset_function_graph_thumbnail.jpg">
 		</a>
 		At offset <span class="hex-address">0xC605</span> you'll see the following instructions:
 	</p>
@@ -803,8 +803,8 @@
 		If you look down at the bottom of the graph, you'll notice something interesting:
 		The program goes into an infinite loop. 
 		This is the firmware's <i>'main loop'</i>.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/main_loop.png" target="_blank">
-			<img alt="The firmware's 'main loop'" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/main_loop_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/main_loop.png" target="_blank">
+			<img alt="The firmware's 'main loop'" src="/static/articles/reverse_engineering_vintage_synths/disassembly/main_loop_thumbnail.jpg">
 		</a>
 		Tasks that need to be performed continuously happen here.
 		Such as updating the UI based on user input,
@@ -845,8 +845,8 @@
 		update the individual voice frequencies, and send the updated voice data to the sound chips.
 		Feel free to declare the pointer to the timer interrupt handler just like we did for the reset handler, 
 		disassemble the handler, and take a look at what's going on.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/ocf_handler.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the interrupt vector table and the OCF interrupt handler pointer" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/ocf_handler_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/ocf_handler.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the interrupt vector table and the OCF interrupt handler pointer" src="/static/articles/reverse_engineering_vintage_synths/disassembly/ocf_handler_thumbnail.jpg">
 		</a>
 	</p>
 	<h3 id="lcd_interface">LCD Interface <a class="permalink" href="#lcd_interface">#</a></h3>
@@ -859,8 +859,8 @@
 		Press the <span class="keyboard-command"><span class="key">G</span></span> 
 		key on your keyboard to open the <i>'Go To...'</i> dialog,
 		and go to address <span class="hex-address">0x2800</span>.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_registers.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the LCD registers" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_registers_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_registers.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the LCD registers" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_registers_thumbnail.jpg">
 		</a>
 		These are the two memory-mapped LCD registers.
 		The list of <i>cross-references</i> 
@@ -870,8 +870,8 @@
 	</p>
 	<p>
 		Below the function we can see something that looks like ASCII data.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/welcome_message.png" target="_blank">
-			<img alt="Screenshot from Ghidra showing ASCII data embedded in the code" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/welcome_message_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/welcome_message.png" target="_blank">
+			<img alt="Screenshot from Ghidra showing ASCII data embedded in the code" src="/static/articles/reverse_engineering_vintage_synths/disassembly/welcome_message_thumbnail.jpg">
 		</a>
 		In fact, it looks a lot like the welcome message displayed when you boot up the DX7. Hmm.
 		Click on offset <span class="hex-address">0xFE31</span>, and press the 
@@ -919,8 +919,8 @@
 	<p>
 		Let's take a walk through <span class="assembly-label">FUN_fea4</span> 
 		together and see if we can figure out what it's doing:
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_and_update.png" target="_blank">
-			<img alt="Screenshot from Ghidra showing an unknown function that prints the welcome message to the LCD screen" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_and_update_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_and_update.png" target="_blank">
+			<img alt="Screenshot from Ghidra showing an unknown function that prints the welcome message to the LCD screen" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_and_update_thumbnail.jpg">
 		</a>
 	</p>
 	<ol class="disassembly-writeup">
@@ -956,8 +956,8 @@
 		keyboard combination to navigate back to where we were before.
 		Once you're there, click through to <span class="assembly-label">FUN_fe8b</span>.
 
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_strcpy.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the function located at 0xfe8b" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_strcpy_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_strcpy.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the function located at 0xfe8b" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_strcpy_thumbnail.jpg">
 		</a>
 
 		We can see that lots of cross-references to this function have been found in the code already.
@@ -1048,16 +1048,16 @@
 	</div>
 	<p>
 		This is where we're at so far:
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_function_partially_annotated.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the function located at 0xfea4 partially annotated" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_function_partially_annotated_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_function_partially_annotated.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the function located at 0xfea4 partially annotated" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_function_partially_annotated_thumbnail.jpg">
 		</a>
 	</p>
 	<p>
 		Let's move on to that last function <span class="assembly-label">FUN_fe52</span> and see where that leads us.
 		This function is a bit more complicated.
 		Using the <i>Function Graph</i> window I showed you before might help visualise what's going on.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_update.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the function graph of the function located at 0xfe52" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_update_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_update.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the function graph of the function located at 0xfe52" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_update_thumbnail.jpg">
 		</a>
 		Let's go through this function step-by-step like we did before:
 	</p>
@@ -1094,8 +1094,8 @@
 	<p>
 		The function at <span class="assembly-label">FUN_fec7</span> is a bit more complicated,
 		so I'll walk you through what's happening.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_instruction.png" target="_blank">
-			<img alt="The firmware's 'main loop'" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_instruction_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_instruction.png" target="_blank">
+			<img alt="The firmware's 'main loop'" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_instruction_thumbnail.jpg">
 		</a>
 	</p>
 
@@ -1140,8 +1140,8 @@
 
 	<p>
 		Let's check out the subroutine at <span class="assembly-label">FUN_ff08</span> that our function jumps to.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_wait_ready.png" target="_blank">
-			<img alt="A screenshot from Ghidra showing the subroutine at 0xFF08." src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_wait_ready_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_wait_ready.png" target="_blank">
+			<img alt="A screenshot from Ghidra showing the subroutine at 0xFF08." src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_wait_ready_thumbnail.jpg">
 		</a>
 	</p>
 	<ol class="disassembly-writeup">
@@ -1165,8 +1165,8 @@
 		It's easy to miss, 
 		but if you look closely in the schematics you'll see that the PPI's <code>PC7</code> line is connected to <code>PA7</code>,
 		which is connected to the LCD controller's DB7 pin.
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/schematics/lcd_busy_line.png" target="_blank">
-			<img alt="An excerpt from the Yamaha DX7's schematics showing the PPI's connection to the LCD controller's 'Busy Flag' line" src="/static/img/articles/reverse_engineering_vintage_synths/schematics/lcd_busy_line_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/schematics/lcd_busy_line.png" target="_blank">
+			<img alt="An excerpt from the Yamaha DX7's schematics showing the PPI's connection to the LCD controller's 'Busy Flag' line" src="/static/articles/reverse_engineering_vintage_synths/schematics/lcd_busy_line_thumbnail.jpg">
 		</a>
 		The DB7 pin serves as the LCD controller's <i>'Busy Flag'</i>.
 		This flag indicates whether the LCD controller is busy processing data.
@@ -1198,8 +1198,8 @@
 		A value of <code>0x80</code> indicates the start of the screen's first line.
 	</p>
 	<p>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_data.png" target="_blank">
-			<img alt="The firmware's 'main loop'" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_data_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_data.png" target="_blank">
+			<img alt="The firmware's 'main loop'" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_write_data_thumbnail.jpg">
 		</a>
 		The next function call (<span class="assembly-label">FUN_fee7</span>) looks almost identical to our
 		<span class="assembly-label">lcd_write_instruction</span> function.
@@ -1238,8 +1238,8 @@
 		Go ahead and give it a name like <span class="assembly-label">lcd_print</span>.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_print.png" target="_blank">
-			<img alt="The firmware's 'main loop'" src="/static/img/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_print.png" target="_blank">
+			<img alt="The firmware's 'main loop'" src="/static/articles/reverse_engineering_vintage_synths/disassembly/lcd_print_thumbnail.jpg">
 		</a>
 		<figcaption>
 			The completed <code>lcd_print</code> function.
@@ -1386,8 +1386,8 @@
 		This allows the CPU to select which 'bank' is active by toggling the aforementioned I/O line in the software.
 	</p>
 	<figure>
-		<a href="/static/img/articles/reverse_engineering_vintage_synths/tx81z_schematics_excerpt.png" target="_blank">
-			<img alt="Yamaha TX81Z schematics excerpt showing CPU, ROM, and RAM" src="/static/img/articles/reverse_engineering_vintage_synths/tx81z_schematics_excerpt_thumbnail.jpg">
+		<a href="/static/articles/reverse_engineering_vintage_synths/tx81z_schematics_excerpt.png" target="_blank">
+			<img alt="Yamaha TX81Z schematics excerpt showing CPU, ROM, and RAM" src="/static/articles/reverse_engineering_vintage_synths/tx81z_schematics_excerpt_thumbnail.jpg">
 		</a>
 		<figcaption>
 			An excerpt from the Yamaha TX81Z's schematics, showing the CPU, ROM, and RAM wiring.

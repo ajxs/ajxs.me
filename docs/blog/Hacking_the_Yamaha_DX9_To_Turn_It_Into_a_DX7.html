@@ -12,8 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
 		
 		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 
 		<title>~ajxs/Hacking the Yamaha DX9 To Turn It Into a DX7</title>
 				
@@ -257,7 +257,7 @@
 	My initial attempt at writing the firmware from scratch was not exactly a roaring success.
 	However, for what it was worth,
 	I did manage to squeeze some <em>never before heard</em> sounds from the poor EGS and OPS chips as my buggy code hammered the pitch-modulation registers with invalid data.
-	You can hear the machine crying out in pain for yourself <a href="/static/yamaha_dx9_egs_glitch.mp3" target="_blank">here</a><sup><a href="#footnote_5" id="footnote_5_link">5</a></sup>.
+	You can hear the machine crying out in pain for yourself <a href="/static/articles/dx97/yamaha_dx9_egs_glitch.mp3" target="_blank">here</a><sup><a href="#footnote_5" id="footnote_5_link">5</a></sup>.
 </p>
 <p>
 	Around this point I decided to rethink my strategy.
@@ -468,8 +468,8 @@
 	I was looking at a symbol table!
 </p>
 <figure>
-	<a href="/static/img/articles/dx97/symbol_table.png" target="_blank">
-		<img src="/static/img/articles/dx97/symbol_table_thumbnail.jpg" alt="An image of the symbol table fragment located at 0xEE7E in the DX9 ROM">
+	<a href="/static/articles/dx97/symbol_table.png" target="_blank">
+		<img src="/static/articles/dx97/symbol_table_thumbnail.jpg" alt="An image of the symbol table fragment located at 0xEE7E in the DX9 ROM">
 	</a>
 	<figcaption>
 		The symbol table fragment located at <code>0xEE7E</code>, as seen in Ghidra.<br>
@@ -621,7 +621,6 @@
 	<a href="#footnote_10_link">&#8626;</a></li><li id="footnote_11">
 		For all I know, the '0' byte might actually be the <em>start</em> of an entry.
 	<a href="#footnote_11_link">&#8626;</a></li></ol>
-
 	</div>
 </article>
 

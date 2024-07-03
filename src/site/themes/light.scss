@@ -17,14 +17,14 @@ $background-colour-level-2-hover: hsl($hue, 8%, 70%);
 
 $text-colour-body: hsl($hue, $text-saturation, 8%);
 
+$text-colour-light: hsl($hue, $text-saturation, 8%);
+$text-colour-light-hover: hsl($hue, $text-saturation-hover, 16%);
+
 $text-colour-body-link: $text-colour-light;
 $text-colour-body-link-hover: $text-colour-light-hover;
 
 $text-colour-body-permalink: hsl($hue, $text-saturation, 18%);
 $text-colour-body-permalink-hover: hsl($hue, $text-saturation-hover, 32%);
-
-$text-colour-light: hsl($hue, $text-saturation, 8%);
-$text-colour-light-hover: hsl($hue, $text-saturation-hover, 16%);
 
 $text-colour-mid: hsl($hue, $text-saturation, 16%);
 $text-colour-mid-hover: hsl($hue, $text-saturation-hover, 24%);
@@ -32,7 +32,8 @@ $text-colour-mid-hover: hsl($hue, $text-saturation-hover, 24%);
 $text-colour-dark: hsl($hue, $text-saturation, 20%);
 $text-colour-dark-hover: hsl($hue, $text-saturation-hover, 28%);
 
+$text-colour-code: rgb(200, 0, 40);
+
 $text-colour-emphasis: $text-colour-code;
 
-$text-colour-code: rgb(200, 0, 40);
 
