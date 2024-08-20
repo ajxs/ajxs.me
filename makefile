@@ -11,7 +11,7 @@
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-.PHONY: all clean
+.PHONY: all clean emu venv_init
 
 SRC_FOLDER          := ./src
 DIST_FOLDER         := ./docs
@@ -23,6 +23,7 @@ SITE_CSS            := ${DIST_FOLDER}/static/style.css
 CODE_CSS            := ${DIST_FOLDER}/static/code.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 FAVICON             := ${DIST_FOLDER}/favicon.ico
+HUMANS_TXT          := ${DIST_FOLDER}/humans.txt
 
 LOCAL_EMU_PORT      := 8321
 VENV_DIR            := ./.venv
@@ -34,7 +35,7 @@ clean:
 
 site: ${DIST_FOLDER} ${DIST_BLOG_FOLDER} ${DIST_TAGS_FOLDER} \
 	${DIST_STATIC_CONTENT} ${DIST_RSS} ${SITE_CSS} ${CODE_CSS} \
-	${GITHUB_DNS_RECORD} ${FAVICON}
+	${GITHUB_DNS_RECORD} ${FAVICON} ${HUMANS_TXT}
 	${SRC_FOLDER}/generate_site
 
 ${DIST_FOLDER}:
@@ -63,6 +64,9 @@ ${CODE_CSS}:
 
 ${FAVICON}:
 	cp ${SRC_FOLDER}/favicon.ico ${DIST_FOLDER}
+
+${HUMANS_TXT}:
+	cp ${SRC_FOLDER}/humans.txt ${DIST_FOLDER}
 
 emu: site
 	cd "${DIST_FOLDER}" && python3 -m http.server "${LOCAL_EMU_PORT}"
