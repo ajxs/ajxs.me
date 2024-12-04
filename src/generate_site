@@ -30,8 +30,6 @@ TEMPLATE_FOLDER = f"{os.getcwd()}/src/templates"
 # The destination folder for generated blog entries.
 DIST_BLOG_ENTRIES_FOLDER = f"{DIST_FOLDER}/blog"
 
-# Blog entry index list template.
-BLOG_INDEX_ENTRIES_TEMPLATE = None
 # Blog entry index link template.
 BLOG_INDEX_ENTRY_TEMPLATE = None
 # The template for a particular blog index.
@@ -68,14 +66,7 @@ with open(
     BLOG_INDEX_ENTRY_TEMPLATE = template_file.read()
 
 with open(
-    f"{TEMPLATE_FOLDER}/blog_index_entries.mustache",
-    mode='r',
-    encoding='utf-8'
-) as template_file:
-    BLOG_INDEX_ENTRIES_TEMPLATE = template_file.read()
-
-with open(
-    f"{TEMPLATE_FOLDER}/blog_index.mustache",
+    f"{TEMPLATE_FOLDER}/index.mustache",
     mode='r',
     encoding='utf-8'
 ) as template_file:
@@ -147,92 +138,65 @@ def create_blog_entry_file(entry):
 
 def create_blog_index_page(
     entries,
-    heading,
-    page_title,
+    tags,
     filename,
-    meta_description="",
-    show_tag_list=True,
-    additional_keywords=[]
+    heading=None,
+    page_title=None,
+    meta_description=None,
+    show_tag_list=False,
+    show_entry_tags=False,
+    show_all_entries_link=False,
+    additional_keywords=None
 ):
     """
     Creates a blog index page.
     This is used to create the individual tag, and all entries pages.
     """
 
-    render_arguments = {
+    blog_index_render_arguments = {
         "template": BLOG_INDEX_TEMPLATE,
         "partials_dict": {
-            "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
             "blog_index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
             "tag_list": TAG_LIST_TEMPLATE
         },
         "data": {
-            "heading": heading,
             "entries": entries,
-            "show_tag_list": show_tag_list
+            "heading": heading,
+            "show_all_entries_link": show_all_entries_link,
+            "show_entry_tags": show_entry_tags,
+            "show_tag_list": show_tag_list,
+            "tags": sorted(tags, key=lambda tag: tag['name']),
         }
     }
 
     # Create the blog index HTML.
-    blog_index_html = chevron.render(**render_arguments)
+    blog_index_html = chevron.render(**blog_index_render_arguments)
 
-    # The full page HTML. This is the Index HTML baked in to the main page template.
-    full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
+    full_page_render_arguments = {
         **MAIN_PAGE_DEFAULT_META_INFO,
-        "page_title": f"{MAIN_PAGE_TITLE}/{page_title}",
-        "meta_description": meta_description,
-        "meta_keywords": ",".join(PAGE_META_DEFAULT_KEYWORDS + additional_keywords),
+        "meta_keywords": ",".join(PAGE_META_DEFAULT_KEYWORDS),
         "page_body": blog_index_html,
         "contains_code_blocks": False
-    })
+    }
+
+    if additional_keywords:
+        full_page_render_arguments["meta_keywords"] = ",".join(
+            PAGE_META_DEFAULT_KEYWORDS + additional_keywords
+        )
+
+    if page_title:
+        full_page_render_arguments['page_title'] = f"{MAIN_PAGE_TITLE}/{page_title}"
+
+    if meta_description:
+        full_page_render_arguments['meta_description'] = meta_description
+
+    # The full page HTML. This is the Index HTML baked in to the main page template.
+    full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, full_page_render_arguments)
 
     with open(filename, 'x', encoding='utf-8') as index_file:
         index_file.write(full_file_html)
 
     print(f"Wrote blog index file: {filename}")
-
-
-def create_index(entries, tags):
-    """
-    Creates the site index.
-    This will include only the specified number of 'latest' blog posts.
-    """
-
-    indexed_entries = filter_unlisted_entries(entries)
-
-    # Open and parse each of the template HTML files.
-    with open(
-        f"{TEMPLATE_FOLDER}/index.mustache",
-        mode='r',
-        encoding='utf-8'
-    ) as index_template_file:
-        render_arguments = {
-            "template": index_template_file,
-            "partials_dict": {
-                "blog_index_entries": BLOG_INDEX_ENTRIES_TEMPLATE,
-                "blog_index_entry": BLOG_INDEX_ENTRY_TEMPLATE,
-                "tag_list": TAG_LIST_TEMPLATE
-            },
-            "data": {
-                "entries": indexed_entries[0:MAIN_INDEX_BLOG_POST_LENGTH],
-                "index_tag_links": sorted(tags, key=lambda tag: tag['name']),
-                "show_tag_list": True
-            }
-        }
-
-        # Create the index HTML.
-        index_html = chevron.render(**render_arguments)
-
-        # The full page HTML. This is the Index HTML baked in to the main page template.
-        full_file_html = chevron.render(MAIN_PAGE_TEMPLATE, {
-            **MAIN_PAGE_DEFAULT_META_INFO,
-            "page_body": index_html
-        })
-
-        with open(f"{DIST_FOLDER}/index.html", 'x', encoding='utf-8') as index_file:
-            index_file.write(full_file_html)
-
-        print("Wrote index.html")
 
 
 def create_static_page(page):
@@ -305,7 +269,6 @@ def main():
 
     # Load all of the individual blog entries from the database.
     blog_entries = load_blog_entries()
-
     # All of the tags used in the blog.
     blog_tags = load_tags()
 
@@ -319,25 +282,34 @@ def main():
 
         create_blog_index_page(
             filter_unlisted_entries(tagged_entries),
-            f"Blog entries tagged as '<span id=\"tag-index-name\">{tag['name']}</span>'",
-            tag['name'],
+            blog_tags,
             f"{DIST_FOLDER}/blog/tag/{tag['filename']}.html",
-            f"Blog entries marked {tag['name']}",
-            False,
-            [tag['name']]
+            heading=f"Blog entries tagged as '<span id=\"tag-index-name\">{tag['name']}</span>'",
+            page_title=tag['name'],
+            meta_description=f"Blog entries marked {tag['name']}",
+            additional_keywords=[tag['name']]
         )
 
     #Create the 'All Blog Entries' page
     create_blog_index_page(
         filter_unlisted_entries(blog_entries),
-        "All Blog Entries",
-        "All Blog Entries",
+        blog_tags,
         f"{DIST_FOLDER}/blog/all.html",
-        "All Blog Entries"
+        heading="All Blog Entries",
+        page_title="All Blog Entries",
+        meta_description="All Blog Entries",
+        show_entry_tags=True
     )
 
-    # Creates the site index.
-    create_index(blog_entries, blog_tags)
+    # Create the site index.
+    create_blog_index_page(
+        filter_unlisted_entries(blog_entries)[0:MAIN_INDEX_BLOG_POST_LENGTH],
+        blog_tags,
+        f"{DIST_FOLDER}/index.html",
+        show_all_entries_link=True,
+        show_tag_list=True,
+        show_entry_tags=True
+    )
 
     static_pages = load_static_pages()
     for page in static_pages:

@@ -23,6 +23,8 @@ CREATE TABLE entry (
 	date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	date_modified DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	date_deleted DATETIME
+	unlisted INTEGER
+	contains_code_blocks INTEGER
 );
 
 

@@ -1,17 +1,33 @@
 <section id="blog">
-	<h1>Blog</h1>
-	{{> blog_index_entries}}
-	<div id="blog-view-all-entries">
-		<a href="/blog/all.html">View All Entries</a>
-	</div>
-	<h2>Tags</h2>
-	<ul id="blog-index-tags">
-		{{#index_tag_links}}
-			<li>
-				<a href='/blog/tag/{{filename}}.html'>{{name}}</a>
-			</li>
-		{{/index_tag_links}}
+	{{#heading}}
+	<h1 id="blog-heading">
+		{{{heading}}}
+	</h1>
+	{{/heading}}
+	<ul id="blog-index-entries">
+		{{#entries}}
+			{{> blog_index_entry}}
+		{{/entries}}
 	</ul>
+	{{#show_all_entries_link}}
+		<div id="blog-view-all-entries">
+			<a href="/blog/all.html">View All Entries</a>
+		</div>
+	{{/show_all_entries_link}}
+	{{#show_tag_list}}
+		{{!This conditional block checks for the existence of a 'first' element within the tags array.
+			Effectively testing the length. This ensures the tag list is only printed if there are tags.}}
+		{{#tags.0}}
+			<h2>Tags</h2>
+			<ul id="blog-index-tags">
+				{{#tags}}
+					<li>
+						<a href='/blog/tag/{{filename}}.html'>{{name}}</a>
+					</li>
+				{{/tags}}
+			</ul>
+		{{/tags.0}}
+	{{/show_tag_list}}
 </section>
 <section id="links">
 	<nav>

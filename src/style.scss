@@ -99,13 +99,12 @@ body {
 		font-family: $font-mono;
 		font-size: 3rem;
 		font-weight: 700;
-		margin-bottom: 1rem;
+		margin: 1rem 0;
 		letter-spacing: 0.25rem;
 
 		a {
 			display: inline-block;
 			padding: 1rem 2rem;
-			margin-top: 1rem;
 			background-color: $background-colour-level-2;
 		}
 
