@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Anthony <ajxs@panoptic.online> (https://github.com/ajxs)",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "description": "https://ajxs.me static-site generator",
   "dependencies": {
     "@types/node": "^22.9.4",

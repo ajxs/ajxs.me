@@ -1,11 +1,4 @@
 # ajxs.me
 
-Personal blog.
-
-This blog is built via a homegrown static site generator built in Python, with the blog data stored in an SQLite database.
-
-## Requirements
-
-Python3
-SQLite3
-sassc
+Static-site generator for my personal site.
+The initial version was implemented in Python. The current version has been re-implemented in Typescript.

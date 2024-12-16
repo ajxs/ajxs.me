@@ -1,5 +1,5 @@
 #####################################################################
-#  Copyright (c) 2023, Ajxs.
+#  Copyright (c) 2024, Ajxs.
 #  SPDX-License-Identifier: GPL-3.0-or-later
 #
 #  Authors:
