@@ -6,14 +6,11 @@
  *     Anthony <ajxs [at] panoptic.online>
  */
 
+@use "themes/code/manni";
+
 .code-block { 
 	padding: 0.4rem 0.4rem 0.4rem 1rem;
 	margin-bottom: 1rem;
 	font-size: 12px;
 	overflow: scroll;
-
-	@import "themes/code/manni";
-
-	background-color: $code-background-colour;
-	color: $code-text-colour;
 }

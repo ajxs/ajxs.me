@@ -1,7 +1,3 @@
-draft
 *.swp
 
-__pycache__/
-*.py[cod]
-*$py.class
-.venv
+node_modules

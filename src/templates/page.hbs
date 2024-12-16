@@ -2,27 +2,38 @@
 <html lang="en">
 
 <head>
+	{{! https://stackoverflow.com/questions/19506028/do-you-need-to-close-meta-and-link-tags-in-html }}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="author" content="ajxs">
-	<meta name="description" content="ajxs personal site">
+	<meta name="author" content="{{meta_author}}">
+	<meta name="description" content="{{meta_description}}">
 	<meta name="robots" content="index, follow">
-	<meta name="keywords" content="ajxs,synthesisers,programming">
-	<meta name="reply-to" content="ajxs@panoptic.online">
-	<meta name="owner" content="ajxs">
+	<meta name="keywords" content="{{meta_keywords}}">
+	<meta name="reply-to" content="{{meta_email}}">
+	<meta name="owner" content="{{meta_author}}">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	{{#if contains_code_blocks}}
+	<link rel="stylesheet" type="text/css" href="/static/code.css">
+	{{/if}}
 	<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
 	<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 
-	<title>~ajxs</title>
-	<meta http-equiv="refresh" content="3;url=/blog/How_Far_Back_in_Time_Can_I_Take_My_Websites_Design.html" />
+	<title>{{page_title}}</title>
+	{{! Set the redirect time to a reasonable amount due to the negative impact of short values on screen-reader software.}}
+	{{#if redirect}}
+	<meta http-equiv="refresh" content="3;url={{redirect}}" />
+	{{/if}}
 </head>
+{{#if body_class}}
+	<body class="{{body_class}}">
+{{else}}
 	<body>
+{{/if}}
 		<header>
 			<a href="/">~ajxs</a>
 		</header>
-		<p>The page you're looking for has moved.<br/>If you are not redirected automatically please<a href="/blog/How_Far_Back_in_Time_Can_I_Take_My_Websites_Design.html">click here</a>.</p>
+		{{{page_body}}}
 		<footer>
 			<div class="links">
 				<nav>
@@ -38,7 +49,7 @@
 				<a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
 			</div>
 
-			© 2024 ajxs
+			{{footer_text}}
 		</footer>
 	</body>
 

@@ -1,0 +1,36 @@
+{
+  "name": "ajxs.me",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Anthony <ajxs@panoptic.online> (https://github.com/ajxs)",
+  "license": "ISC",
+  "description": "https://ajxs.me static-site generator",
+  "dependencies": {
+    "@types/node": "^22.9.4",
+    "@types/xml2js": "^0.4.14",
+    "dayjs": "^1.11.13",
+    "handlebars": "^4.7.8",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
+    "sass": "^1.81.0",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.20",
+    "typescript": "^5.7.2",
+    "xml2js": "^0.6.2"
+  },
+  "scripts": {
+    "clean": "rm -rf docs",
+    "css": "sass --style=compressed  --no-source-map ./src/style.scss:./docs/static/style.css ./src/code.scss:./docs/static/code.css",
+    "dev": "nodemon",
+    "site": "ts-node ./src/main.ts && cp -r ./src/static ./docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "nodemonConfig": {
+    "ext": "scss, ts",
+    "ignore": [
+      "./**/*.spec.ts"
+    ],
+    "exec": "npm run site && npm run css"
+  }
+}

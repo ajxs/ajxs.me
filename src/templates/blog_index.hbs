@@ -1,0 +1,28 @@
+<div class="blog-index">
+	{{#if heading}}
+	<h1>
+		{{{heading}}}
+	</h1>
+	{{/if}}
+
+	<ul id="blog-index-entries">
+		{{#articles}}
+		<li>
+			<a class="entry-link" href="/blog/{{filename}}.html">
+				<h2>{{title}}</h2>
+				<div class="date">{{date}}</div>
+				<div class="description">{{description}}</div>
+			</a>
+			{{#if ../show_entry_tags}}
+			{{#if tags.length}}
+				{{> tag_list}}
+			{{/if}}
+			{{/if}}
+		</li>
+		{{/articles}}
+	</ul>
+
+	<div id="blog-view-all-entries">
+		<a href="/blog/all.html">View All Entries</a>
+	</div>
+</div>
