@@ -59,6 +59,3 @@ ${FAVICON}:
 
 ${HUMANS_TXT}:
 	cp ${SRC_FOLDER}/humans.txt ${DIST_FOLDER}
-
-emu: site
-	cd "${DIST_FOLDER}" && python3 -m http.server "${LOCAL_EMU_PORT}"

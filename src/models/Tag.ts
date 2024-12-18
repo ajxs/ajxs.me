@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryColumn,
-} from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
 import { Article } from "./Entry";
 
 @Entity("tag")
@@ -41,5 +35,5 @@ export class Tag {
       referencedColumnName: "entryId",
     },
   })
-  public taggedEntries!: Promise<Article[]>;
+  public taggedArticles!: Article[];
 }

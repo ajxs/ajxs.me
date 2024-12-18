@@ -1,3 +1,0 @@
-chevron==0.14.0
-pytz==2022.7
-lxml

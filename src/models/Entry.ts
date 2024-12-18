@@ -1,68 +1,66 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
-import { Tag } from './Tag';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
+import { Tag } from "./Tag";
 
-@Entity('entry')
+@Entity("entry")
 export class Article {
   @PrimaryColumn({
-    name: 'entry_id',
+    name: "entry_id",
   })
   entryId!: number;
 
   @Column({
-    name: 'title',
+    name: "title",
   })
   title!: string;
 
   @Column({
-    name: 'description',
+    name: "description",
   })
   description!: string;
 
   @Column({
-    name: 'body',
+    name: "body",
   })
   body!: string;
 
   @Column({
-    name: 'contains_code_blocks',
+    name: "contains_code_blocks",
   })
   articleContainsCodeBlocks!: number;
 
   @Column({
-    name: 'unlisted',
+    name: "unlisted",
   })
   unlisted!: number;
 
   @Column({
-    name: 'date_created',
+    name: "date_created",
   })
   dateCreated!: Date;
 
   @Column({
-    name: 'date_modified',
+    name: "date_modified",
   })
   dateModified!: Date;
 
   @Column({
-    name: 'date_deleted',
+    name: "date_deleted",
   })
   dateDeleted!: Date;
 
-  @ManyToMany((_type) => Tag, {
-    eager: true,
-  })
+  @ManyToMany((_type) => Tag)
   @JoinTable({
-    name: 'tagged_entry',
+    name: "tagged_entry",
     joinColumn: {
-      name: 'entry_id',
-      referencedColumnName: 'entryId',
+      name: "entry_id",
+      referencedColumnName: "entryId",
     },
     inverseJoinColumn: {
-      name: 'tag_id',
-      referencedColumnName: 'tagId',
+      name: "tag_id",
+      referencedColumnName: "tagId",
     },
   })
-  public tags!: Tag[];
+  public tags: Tag[];
 
   get isUnlisted(): boolean {
     return this.unlisted === 1;

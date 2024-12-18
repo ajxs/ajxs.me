@@ -48,7 +48,10 @@ export async function createRssFeed(articles: Article[]): Promise<void> {
         description: "Ajxs blog",
         language: "en",
         // Set the channel pubDate to the date of the last article.
-        pubDate: convertDateToRssFormat(sortedArticles[0].dateCreated),
+        // In the case of an empty article list, use the current date.
+        pubDate: convertDateToRssFormat(
+          sortedArticles[0]?.dateCreated ?? new Date()
+        ),
         lastBuildDate: convertDateToRssFormat(new Date()),
         /**
          * The channel webmaster email string.
@@ -68,5 +71,9 @@ export async function createRssFeed(articles: Article[]): Promise<void> {
     },
   });
 
-  await fs.writeFile(`${distFolder}/site.rss`, rssFeedString);
+  const rssFeedPath = `${distFolder}/site.rss`;
+
+  await fs.writeFile(rssFeedPath, rssFeedString);
+
+  console.log(`Created RSS feed: ${rssFeedPath}`);
 }

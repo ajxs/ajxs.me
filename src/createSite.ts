@@ -16,6 +16,8 @@ import {
   mainPageTitle,
   tagsDirectory,
 } from "./constants";
+import { createRssFeed } from "./createRssFeed";
+import { loadBlogData } from "./loadBlogData";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -48,7 +50,7 @@ const transformArticleToTemplateFormat = (article: Article) => ({
   description: article.description,
   filename: convertNameToFilename(article.title),
   title: article.title,
-  tags: sortTagsByName(article.tags).map(transformTagToTemplateFormat),
+  tags: sortTagsByName(article.tags ?? []).map(transformTagToTemplateFormat),
 });
 
 /**
@@ -112,10 +114,8 @@ async function createTagIndexPage(
   blogIndexTemplate: Handlebars.TemplateDelegate,
   mainPageTemplate: Handlebars.TemplateDelegate
 ): Promise<void> {
-  const taggedArticles = await tag.taggedEntries;
-
   const taggedArticleIndexHtml = blogIndexTemplate({
-    articles: filterAndSortArticles(taggedArticles)
+    articles: filterAndSortArticles(tag.taggedArticles ?? [])
       .slice(0, mainIndexArticleCount)
       .map(transformArticleToTemplateFormat),
     heading: `Entries tagged as '<span class="tag-index-name">${tag.name}</span>'`,
@@ -151,7 +151,7 @@ async function createArticlePage(
   articleTemplate: Handlebars.TemplateDelegate,
   mainPageTemplate: Handlebars.TemplateDelegate
 ): Promise<void> {
-  const articleTagNames = article.tags.map((tag) => tag.name);
+  const articleTagNames = (article.tags ?? []).map((tag) => tag.name);
   const pageKeywordString = [...defaultPageKeywords, ...articleTagNames].join();
 
   const articleHtml = articleTemplate(
@@ -268,12 +268,9 @@ async function createAllEntriesPage(
   console.log(`Created all entries page: ${filePath}`);
 }
 
-export async function createSite(
-  articles: Article[],
-  pageRedirects: PageRedirect[],
-  staticPages: StaticPage[],
-  tags: Tag[]
-): Promise<void> {
+export async function createSite() {
+  const { articles, pageRedirects, staticPages, tags } = await loadBlogData();
+
   const {
     mainPageTemplate,
     blogIndexTemplate,
@@ -286,6 +283,7 @@ export async function createSite(
   await fs.mkdir(tagsDirectory, { recursive: true });
 
   await Promise.all([
+    createRssFeed(articles),
     createSiteIndex(
       articles,
       tags,
