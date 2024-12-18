@@ -121,7 +121,7 @@ def parse_links(file_text):
     for link in link_list:
         link_href = link.get('href')
 
-        if link_href and not link_href.startswith("#") and not link.get("target"):
+        if link_href and not link_href.startswith("#") and not link_href.startswith("mailto") and not link.get("target"):
             print(
                 f"Fixing link target attribute for link with href '{link_href}'",
                 file=sys.stderr

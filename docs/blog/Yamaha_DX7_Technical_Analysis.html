@@ -50,7 +50,7 @@
 <h2 id="update_december_2021">Updates <a class="permalink" href="#update_december_2021">#</a></h2>
 <p>
 	Since this article was originally published, in April 2021, much new research into the DX7's technical implementation has taken place.
-	Ken Shiriff managed the incredible feat of <a href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html" target="_blank">decapulsating the OPS chip</a>,
+	Ken Shirriff managed the incredible feat of <a href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html" target="_blank">decapulsating the OPS chip</a>,
 	and analysing its functionality.
 	This revealed, among other things, the format of the internal sine, and exponential ROM tables;
 	I was able to <a href="https://github.com/ajxs/yamaha_dx7_rom_disassembly" target="_blank">disassemble</a>, and document the DX7's firmware ROM, 
@@ -248,7 +248,7 @@
 	the OPS stores a lookup table of exponential values.
 </p>
 <p>
-	The remarkably talented Ken Shiriff has been able to decapsulate the YM21280, 
+	The remarkably talented Ken Shirriff has been able to decapsulate the YM21280, 
 	and reverse-engineer its internal implementation. 
 	From his <a href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html" target="_blank">amazing research</a>, 
 	we know that the OPS' sine ROM uses a clever delta encoding mechanism to reduce the amount of die space needed to store the lookup table. 
@@ -259,7 +259,7 @@
 	Taking full advantage of the sine wave's symmetrical property,
 	the OPS stores only a quarter of the sine's full period.
 	This quarter can be flipped and mirrored to assemble the full sine wave.
-	Ken Shiriff's decapsulation on the OPS chip verified that the quarter log-sine table consists of 1024 samples,
+	Ken Shirriff's decapsulation on the OPS chip verified that the quarter log-sine table consists of 1024 samples,
 	with a fully assembled sine wave having 4096<sup><a href="#footnote_6" id="footnote_6_link">6</a></sup>.
 </p>
 <p>
@@ -270,7 +270,7 @@
 	in a brilliant, mathematically correct notation.
 </p>
 <p>
-	Prior to Ken Shiriff's decapsulation of the YM21280, 
+	Prior to Ken Shirriff's decapsulation of the YM21280, 
 	two studious engineers Matthew Gambrell and Olli Niemitalo were able to 
 	<a href="http://yehar.com/blog/?p=665" target="_blank">decapsulate the YMF262</a> 
 	(otherwise known as the <i>OPL3</i>, a nineties-era 2-operator Yamaha FM sound-chip designed for use within PC sound-cards), 
@@ -441,7 +441,7 @@
 	however there might still be a few inaccuracies here and there.
 	If you spot any errors in the article, or have any additional information, 
 	please
-	<a href="mailto:ajxs@panoptic.online" target="_blank">get in touch</a>!
+	<a href="mailto:ajxs@panoptic.online">get in touch</a>!
 	You'll be credited in the article for your efforts.
 	I love hearing from readers, 
 	so feel free to send me an email if you have any corrections, suggestions, or questions about the article. 
@@ -458,7 +458,7 @@
 <p>
 	<b>Decapsulate the YM21280 and YM21290:</b> 
 	It's likely that this was performed by Yamaha's competitors, if not hobbyist reverse engineers, at some point in the past.
-	Aside from Ken Shiriff's work, there is no public account of this.
+	Aside from Ken Shirriff's work, there is no public account of this.
 </p>
 <p>
 	The EGS and OPS chips exist in both plastic, and ceramic packaging.
@@ -666,6 +666,7 @@
 		for the Ensoniq Mirage, 
 		developed by <a href="http://www.buchty.net/~buchty/ensoniq/transoniq_hacker/PDF/039.pdf" target="_blank">Mark Cecys</a>.
 	<a href="#footnote_12_link">&#8626;</a></li></ol>
+
 	</div>
 </article>
 
