@@ -11,7 +11,7 @@
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-.PHONY: all clean emu
+.PHONY: all clean
 
 SRC_FOLDER          := ./src
 DIST_FOLDER         := ./docs
@@ -23,8 +23,6 @@ CODE_CSS            := ${DIST_FOLDER}/static/code.css
 GITHUB_DNS_RECORD   := ${DIST_FOLDER}/CNAME
 FAVICON             := ${DIST_FOLDER}/favicon.ico
 HUMANS_TXT          := ${DIST_FOLDER}/humans.txt
-
-LOCAL_EMU_PORT      := 8321
 
 all: site
 

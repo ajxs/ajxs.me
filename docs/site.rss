@@ -5,13 +5,22 @@
     <link>https://ajxs.me</link>
     <description>Ajxs blog</description>
     <language>en</language>
-    <pubDate>Mon, 18 Mar 2024 13:27:25 +1100</pubDate>
-    <lastBuildDate>Wed, 18 Dec 2024 12:46:49 +1100</lastBuildDate>
+    <pubDate>Fri, 17 Jan 2025 16:12:51 +1100</pubDate>
+    <lastBuildDate>Fri, 17 Jan 2025 16:23:21 +1100</lastBuildDate>
     <webMaster>ajxs@panoptic.online (Anthony)</webMaster>
     <atom:link href="https://ajxs.me/site.rss" rel="self" type="application/rss+xml"/>
     <category>ajxs</category>
     <category>synthesisers</category>
     <category>programming</category>
+    <item>
+      <title>How Does Ada's Memory Safety Compare Against Rust?</title>
+      <link>https://ajxs.me/blog/How_Does_Adas_Memory_Safety_Compare_Against_Rust.html</link>
+      <description>A comparison of how well Rust and Ada prevent the most common memory-related software errors.</description>
+      <pubDate>Fri, 17 Jan 2025 16:12:51 +1100</pubDate>
+      <guid>https://ajxs.me/blog/How_Does_Adas_Memory_Safety_Compare_Against_Rust.html</guid>
+      <category>Ada</category>
+      <category>Programming</category>
+    </item>
     <item>
       <title>Introduction to Reverse-Engineering Vintage Synth Firmware</title>
       <link>https://ajxs.me/blog/Introduction_to_Reverse-Engineering_Vintage_Synth_Firmware.html</link>
@@ -101,6 +110,7 @@
       <description>An in-depth look at the Ada programming language, its history, and what it has to offer developers today. As well as a fistful of my humble opinions.</description>
       <pubDate>Wed, 13 Jan 2021 15:31:03 +1100</pubDate>
       <guid>https://ajxs.me/blog/Giving_Ada_a_Chance.html</guid>
+      <category>Ada</category>
       <category>Programming</category>
     </item>
     <item>
