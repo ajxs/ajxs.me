@@ -34,6 +34,6 @@
     "ignore": [
       "./**/*.spec.ts"
     ],
-    "exec": "npm run static && ts-node ./src/devServer.ts"
+    "exec": "npm run static && npm run css && ts-node ./src/devServer.ts"
   }
 }
