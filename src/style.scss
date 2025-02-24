@@ -20,9 +20,6 @@ $font-size-h2: 1.5rem;
 $font-size-h3: 1.25rem;
 $font-size-h4: 1.17rem;
 
-$font-size-index-entry: 0.9rem;
-$font-size-index-title: 1.25rem;
-
 // Include the current site colour theme.
 @use "themes/pine" as theme;
 
@@ -38,7 +35,6 @@ $font-size-index-title: 1.25rem;
 	}
 }
 
-
 @mixin text_colour_light {
 	color: theme.$text-colour-light;
 
@@ -50,7 +46,6 @@ $font-size-index-title: 1.25rem;
 		}
 	}
 }
-
 
 @mixin text_colour_mid {
 	color: theme.$text-colour-mid;
@@ -64,7 +59,6 @@ $font-size-index-title: 1.25rem;
 	}
 }
 
-
 @mixin text_colour_dark {
 	color: theme.$text-colour-dark;
 
@@ -77,14 +71,12 @@ $font-size-index-title: 1.25rem;
 	}
 }
 
-
 html {
 	font-size: $font-size-body;
 	line-height: $font-size-body-line-height;
 
 	background-color: theme.$background-colour-body;
 }
-
 
 body {
 	@include text_colour_body;
@@ -108,7 +100,9 @@ body {
 			background-color: theme.$background-colour-level-2;
 		}
 
-		a:visited, a:link, a:active {
+		a:visited,
+		a:link,
+		a:active {
 			text-decoration: none;
 		}
 
@@ -124,7 +118,7 @@ body {
 		font-size: 0.8rem;
 		padding: 0.4rem;
 		text-align: center;
-		
+
 		.links {
 			@include text_colour_body;
 			font-size: 1rem;
@@ -140,8 +134,10 @@ body {
 	}
 }
 
-
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
 	font-family: $font-mono;
 	line-height: normal;
 	font-weight: 700;
@@ -165,11 +161,9 @@ h4 {
 	font-size: $font-size-h4;
 }
 
-
 section {
 	margin-bottom: 1.6rem;
 }
-
 
 .blog-index {
 	span.tag-index-name {
@@ -177,18 +171,17 @@ section {
 	}
 
 	ul#blog-index-entries {
+		font-size: 0.9rem;
 		list-style: none;
 		padding: 0;
 
-		font-size: $font-size-index-entry;
-
 		& > li {
-			background-color: theme.$background-colour-level-2;
-			margin-bottom: 0.8rem;
-			padding: 1rem;
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid theme.$background-colour-level-2;
 
 			h2 {
-				font-size: $font-size-index-title;
+				text-decoration: underline;
+				font-size: 1.25rem;
 				margin: 0 0 0.4rem;
 			}
 
@@ -198,20 +191,17 @@ section {
 				margin-bottom: 0.4rem;
 			}
 
-			.date {
-				@include text_colour_dark;
-
-				margin: 0 0 0.4rem;
-			}
-
 			.description {
 				@include text_colour_mid;
 			}
 
-			.tags {
+			.article-meta {
+				font-size: 0.8rem;
 				@include text_colour_dark;
+			}
 
-				font-size: 0.75rem;
+			.tags {
+				display: inline-block;
 
 				ul.tag-list {
 					@include text_colour_mid;
@@ -246,7 +236,6 @@ ul#blog-index-tags {
 	}
 }
 
-
 ul.tag-list {
 	display: inline;
 	list-style: none;
@@ -257,15 +246,14 @@ ul.tag-list {
 		display: inline;
 
 		&::after {
-			content: ', ';
+			content: ", ";
 		}
 
 		&:last-child:after {
-			content: '';
+			content: "";
 		}
 	}
 }
-
 
 article.blog-entry {
 	header {
@@ -378,7 +366,6 @@ article.blog-entry {
 			}
 		}
 
-
 		ol.footnotes {
 			padding-left: 1.6rem;
 
@@ -386,7 +373,6 @@ article.blog-entry {
 				margin-bottom: 0.6rem;
 			}
 		}
-
 
 		ul#references-list {
 			list-style: none;
@@ -398,7 +384,8 @@ article.blog-entry {
 		}
 	}
 
-	ol, ul {
+	ol,
+	ul {
 		li {
 			margin-bottom: 0.6rem;
 		}
@@ -411,48 +398,48 @@ article.blog-entry {
 	.active-low {
 		text-decoration: overline;
 	}
-	
+
 	.keyboard-command {
 		font-family: monospace;
 		font-weight: bold;
 		color: theme.$text-colour-emphasis;
 		font-size: 0.9rem;
-	
+
 		.key {
 			padding: 0rem 0.4rem;
 			border: 1px solid theme.$text-colour-emphasis;
 		}
-	
+
 		.plus {
 			margin: 0 0.2rem;
 		}
 	}
-	
+
 	.assembly-label {
 		font-family: monospace;
 		color: theme.$text-colour-emphasis;
 	}
-	
+
 	.assembly-label.invalid-assembly-label {
 		color: red;
 	}
-	
+
 	.hex-address {
 		font-family: monospace;
 		color: theme.$text-colour-emphasis;
 	}
-	
+
 	.register-name {
 		font-family: monospace;
 		font-weight: bold;
 		color: theme.$text-colour-emphasis;
 	}
-	
+
 	.assembly-instruction {
 		font-family: monospace;
 		color: theme.$text-colour-emphasis;
 	}
-	
+
 	.disassembly-writeup li {
 		margin-bottom: 0.6rem;
 	}
@@ -460,33 +447,33 @@ article.blog-entry {
 	abbr {
 		color: theme.$text-colour-body-link;
 		text-decoration: underline dotted;
-	
+
 		&:hover {
 			color: theme.$text-colour-body-link-hover;
 		}
-	
+
 		&::after {
 			color: theme.$text-colour-body;
-			content: '[?]';
+			content: "[?]";
 			font-size: 70%;
 			vertical-align: super;
 			background-color: theme.$background-colour-level-2;
 		}
 	}
-	
+
 	code {
 		color: theme.$text-colour-code;
 	}
-	
+
 	blockquote {
 		@include text_colour_mid;
 		font-style: italic;
 		margin: 1rem;
-	
+
 		p {
 			margin: 0.6rem 0;
 		}
-	
+
 		cite {
 			display: block;
 			font-size: 0.8rem;
@@ -494,7 +481,6 @@ article.blog-entry {
 		}
 	}
 }
-
 
 @media screen and (max-width: 640px) {
 	body {
@@ -528,7 +514,6 @@ article.blog-entry {
 				width: unset;
 			}
 
-
 			ol.footnotes {
 				padding-left: 1rem;
 			}
@@ -558,7 +543,6 @@ article.blog-entry {
 				margin: 0 0.6rem 0.6rem 0;
 			}
 		}
-
 	}
 }
 
@@ -569,25 +553,5 @@ article.blog-entry {
 
 	a {
 		display: block;
-	}
-}
-
-.index-page {
-	& > .blog-index h1 {
-		text-transform: uppercase;
-		margin: 1rem 0;
-	}
-
-	& > h2 {
-		text-transform: uppercase;
-		margin: 1rem 0;
-	}
-
-	& > h1 {
-		letter-spacing: 0.2rem;
-	}
-
-	& > h2 {
-		letter-spacing: 0.1rem;
 	}
 }

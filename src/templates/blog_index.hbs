@@ -5,14 +5,16 @@
 		<li>
 			<a class="entry-link" href="/blog/{{filename}}.html">
 				<h2>{{title}}</h2>
-				<div class="date">{{date}}</div>
 				<div class="description">{{description}}</div>
 			</a>
-			{{#if ../show_entry_tags}}
-			{{#if tags.length}}
-				{{> tag_list}}
-			{{/if}}
-			{{/if}}
+			<div class="article-meta">
+				<span class="date">{{date}}</span>
+				{{#if ../show_entry_tags}}
+				{{#if tags.length}}
+					| {{> tag_list}}
+				{{/if}}
+				{{/if}}
+			</div>
 		</li>
 		{{/articles}}
 	</ul>
