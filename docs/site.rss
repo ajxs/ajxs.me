@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rss version="2.0" xmlns="http://www.w3.org/2005/Atom">
   <channel>
-    <title>~ajxs</title>
+    <title>ajxs.me</title>
     <link>https://ajxs.me</link>
     <description>Ajxs blog</description>
     <language>en</language>
     <pubDate>Fri, 17 Jan 2025 16:12:51 +1100</pubDate>
-    <lastBuildDate>Wed, 26 Mar 2025 09:25:08 +1100</lastBuildDate>
+    <lastBuildDate>Wed, 26 Mar 2025 09:39:22 +1100</lastBuildDate>
     <webMaster>ajxs@panoptic.online (Anthony)</webMaster>
     <atom:link href="https://ajxs.me/site.rss" rel="self" type="application/rss+xml"/>
     <category>ajxs</category>

@@ -97,7 +97,7 @@ async function createStaticPage(
   const staticPageHtml = mainPageTemplate({
     ...defaultMainPageTemplateInfo,
     meta_description: staticPage.description,
-    page_title: `${mainPageTitle}/${staticPage.title}`,
+    page_title: `${staticPage.title} - ${mainPageTitle}`,
     page_body: staticPage.body,
     contains_code_blocks: staticPage.containsCodeBlocks,
   });
@@ -126,7 +126,7 @@ async function createTagIndexPage(
     ...defaultMainPageTemplateInfo,
     meta_description: `Blog entries tagged as '${tag.name}'`,
     meta_keywords: [...defaultPageKeywords, tag.name].join(),
-    page_title: `${mainPageTitle}/${tag.name}`,
+    page_title: `${tag.name} - ${mainPageTitle}`,
     page_body: taggedArticleIndexHtml,
   });
 
@@ -162,7 +162,7 @@ async function createArticlePage(
     ...defaultMainPageTemplateInfo,
     meta_keywords: pageKeywordString,
     meta_description: article.description,
-    page_title: `${mainPageTitle}/${article.title}`,
+    page_title: `${article.title} - ${mainPageTitle}`,
     page_body: articleHtml,
     contains_code_blocks: article.containsCodeBlocks,
   });
@@ -257,7 +257,7 @@ async function createAllEntriesPage(
   const allEntriesHtml = mainPageTemplate({
     ...defaultMainPageTemplateInfo,
     meta_description: "All Blog Entries",
-    page_title: `${mainPageTitle}/All Blog Entries`,
+    page_title: `All Blog Entries - ${mainPageTitle}`,
     page_body: allEntriesIndexHtml,
   });
 

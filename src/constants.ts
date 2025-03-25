@@ -2,7 +2,7 @@
  * The main title for the blog. This is used to create all of the
  * <title>$page_title</title> elements.
  */
-export const mainPageTitle = "~ajxs";
+export const mainPageTitle = "ajxs.me";
 /* The destination folder for the distributable artifacts. */
 export const distFolder = "docs";
 /* The destination folder for generated blog entries. */
