@@ -176,32 +176,26 @@ section {
 		padding: 0;
 
 		& > li {
-			padding: 0.5rem 1rem;
+			padding: 0.4rem 0.8rem;
 			border-bottom: 1px solid theme.$background-colour-level-2;
 
-			h2 {
+			.title {
+				font-size: 1.2rem;
+				font-weight: bold;
 				text-decoration: underline;
-				font-size: 1.25rem;
-				margin: 0 0 0.4rem;
 			}
 
-			.entry-link {
-				display: block;
-				text-decoration: none;
-				margin-bottom: 0.4rem;
+			.date {
+				@include text_colour_dark;
 			}
 
 			.description {
 				@include text_colour_mid;
 			}
 
-			.article-meta {
-				font-size: 0.8rem;
-				@include text_colour_dark;
-			}
-
 			.tags {
-				display: inline-block;
+				@include text_colour_dark;
+				margin-top: 0.4rem;
 
 				ul.tag-list {
 					@include text_colour_mid;

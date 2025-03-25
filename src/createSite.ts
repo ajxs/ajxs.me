@@ -64,7 +64,7 @@ const transformArticleToTemplateFormat = (article: Article) => ({
  */
 async function createRedirectPage(
   pageRedirect: PageRedirect,
-  mainPageTemplate: Handlebars.TemplateDelegate
+  mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   /**
    * The page body for the redirect.
@@ -92,7 +92,7 @@ async function createRedirectPage(
 
 async function createStaticPage(
   staticPage: StaticPage,
-  mainPageTemplate: Handlebars.TemplateDelegate
+  mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const staticPageHtml = mainPageTemplate({
     ...defaultMainPageTemplateInfo,
@@ -112,7 +112,7 @@ async function createStaticPage(
 async function createTagIndexPage(
   tag: Tag,
   blogIndexTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate
+  mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const taggedArticleIndexHtml = blogIndexTemplate({
     articles: filterAndSortArticles(tag.taggedArticles ?? [])
@@ -149,13 +149,13 @@ async function createTagIndexPage(
 async function createArticlePage(
   article: Article,
   articleTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate
+  mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const articleTagNames = (article.tags ?? []).map((tag) => tag.name);
   const pageKeywordString = [...defaultPageKeywords, ...articleTagNames].join();
 
   const articleHtml = articleTemplate(
-    transformArticleToTemplateFormat(article)
+    transformArticleToTemplateFormat(article),
   );
 
   const articlePageHtml = mainPageTemplate({
@@ -212,7 +212,7 @@ async function createSiteIndex(
   tags: Tag[],
   mainPageTemplate: Handlebars.TemplateDelegate,
   blogIndexTemplate: Handlebars.TemplateDelegate,
-  indexTemplate: Handlebars.TemplateDelegate
+  indexTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const siteIndexArticleIndexHtml = blogIndexTemplate({
     articles: filterAndSortArticles(articles)
@@ -220,7 +220,7 @@ async function createSiteIndex(
       .map(transformArticleToTemplateFormat),
     heading: "Blog",
     show_tag_list: true,
-    show_entry_tags: true,
+    show_entry_tags: false,
   });
 
   const siteIndexHtml = indexTemplate({
@@ -244,11 +244,11 @@ async function createSiteIndex(
 async function createAllEntriesPage(
   articles: Article[],
   blogIndexTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate
+  mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const allEntriesIndexHtml = blogIndexTemplate({
     articles: filterAndSortArticles(articles).map(
-      transformArticleToTemplateFormat
+      transformArticleToTemplateFormat,
     ),
     heading: "All Blog Entries",
     show_entry_tags: true,
@@ -289,20 +289,20 @@ export async function createSite() {
       tags,
       mainPageTemplate,
       blogIndexTemplate,
-      indexTemplate
+      indexTemplate,
     ),
     createAllEntriesPage(articles, blogIndexTemplate, mainPageTemplate),
     ...tags.map((tag) =>
-      createTagIndexPage(tag, blogIndexTemplate, mainPageTemplate)
+      createTagIndexPage(tag, blogIndexTemplate, mainPageTemplate),
     ),
     ...articles.map((article) =>
-      createArticlePage(article, articleTemplate, mainPageTemplate)
+      createArticlePage(article, articleTemplate, mainPageTemplate),
     ),
     ...staticPages.map((staticPage) =>
-      createStaticPage(staticPage, mainPageTemplate)
+      createStaticPage(staticPage, mainPageTemplate),
     ),
     ...pageRedirects.map((pageRedirect) =>
-      createRedirectPage(pageRedirect, mainPageTemplate)
+      createRedirectPage(pageRedirect, mainPageTemplate),
     ),
   ]);
 }

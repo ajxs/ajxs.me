@@ -2,20 +2,16 @@
 	{{#if heading}}<h1>{{{heading}}}</h1>{{/if}}
 	<ul id="blog-index-entries">
 		{{#articles}}
-		<li>
-			<a class="entry-link" href="/blog/{{filename}}.html">
-				<h2>{{title}}</h2>
-				<div class="description">{{description}}</div>
-			</a>
-			<div class="article-meta">
+			<li>
+				<a class="title" href="/blog/{{filename}}.html">{{title}}</a>
 				<span class="date">{{date}}</span>
+				<div class="description">{{description}}</div>
 				{{#if ../show_entry_tags}}
 				{{#if tags.length}}
-					| {{> tag_list}}
+					{{> tag_list}}
 				{{/if}}
 				{{/if}}
-			</div>
-		</li>
+			</li>
 		{{/articles}}
 	</ul>
 
