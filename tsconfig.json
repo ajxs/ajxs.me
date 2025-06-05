@@ -4,8 +4,5 @@
     "experimentalDecorators": true,
     "esModuleInterop": true
   },
-  "exclude": [
-    "node_modules",
-    ".nyc_output"
-  ]
+  "exclude": ["node_modules", ".nyc_output"]
 }

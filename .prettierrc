@@ -5,6 +5,13 @@
       "options": {
         "useTabs": true
       }
+    },
+    {
+      "files": "*.sql",
+      "options": {
+        "useTabs": true
+      }
     }
-  ]
+  ],
+  "plugins": ["prettier-plugin-sql"]
 }
