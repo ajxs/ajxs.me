@@ -1,0 +1,16 @@
+<% layout("./layout") %>
+<article class="blog-entry">
+	<header>
+		<h1><%= it.article.title %></h1>
+		<div class="date"><%= it.article.date %></div>
+		<div class="description"><%= it.article.description %></div>
+		<% if (it.tags && it.tags.length) { %>
+			<%~ include('./tagList', {
+				tags: it.tags
+			}) %>
+		<% } %>
+	</header>
+	<div class="entry-body">
+	<%~ it.article.body %>
+	</div>
+</article>

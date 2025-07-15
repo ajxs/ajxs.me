@@ -1,0 +1,35 @@
+<% layout("./layout") %>
+<div class="blog-index">
+<% if (it.heading) { %>
+	<h1><%~ it.heading %></h1>
+<% } %>
+	<ul id="blog-index-entries">
+	<% it.articles.forEach(function(article){ %>
+		<li>
+			<a class="title" href="/blog/<%= article.filename %>.html"><%= article.title %></a>
+			<span class="date"><%= article.date %></span>
+			<div class="description"><%= article.description %></div>
+			<% if (it.show_entry_tags && article.tags.length) { %>
+				<%~ include("./tagList", {
+					tags: article.tags
+				}) %>
+			<% } %>
+		</li>
+	<% }) %>
+	</ul>
+
+	<div id="blog-view-all-entries">
+		<a href="/blog/all.html">View All Entries</a>
+	</div>
+</div>
+
+<% if(it.tags) { %>
+<h2>Tags</h2>
+<ul id="blog-index-tags">
+<% it.tags.forEach(function(tag){ %>
+	<li>
+		<a href='/blog/tag/<%= tag.filename %>.html'><%= tag.name %></a>
+	</li>
+<% }) %>
+</ul>
+<% } %>

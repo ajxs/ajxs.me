@@ -1,9 +1,10 @@
 import fs from "fs/promises";
+import path from "path";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import Handlebars from "handlebars";
 import prettier from "prettier";
+import { Eta } from "eta";
 import { Article, PageRedirect, StaticPage, Tag } from "./models";
 import {
   convertNameToFilename,
@@ -19,6 +20,8 @@ import {
 } from "./constants";
 import { createRssFeed } from "./createRssFeed";
 import { loadBlogData } from "./loadBlogData";
+
+const eta = new Eta({ views: path.join(__dirname, "templates") });
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -67,10 +70,7 @@ const transformArticleToTemplateFormat = (article: Article) => ({
  * @param pageRedirect - The page redirect entity to create the page from.
  * @param mainPageTemplate - The main page template.
  */
-async function createRedirectPage(
-  pageRedirect: PageRedirect,
-  mainPageTemplate: Handlebars.TemplateDelegate,
-): Promise<void> {
+async function createRedirectPage(pageRedirect: PageRedirect): Promise<void> {
   /**
    * The page body for the redirect.
    * Ordinarily this should not be seen, however this exists as a fallback for
@@ -82,9 +82,9 @@ async function createRedirectPage(
     "If you are not redirected automatically please" +
     `<a href=\"${pageRedirect.addressTo}\">click here</a>.</p>`;
 
-  const redirectPageHtml = mainPageTemplate({
+  const redirectPageHtml = eta.render("./layout", {
     ...defaultMainPageTemplateInfo,
-    page_body: pageBody,
+    body: pageBody,
     redirect: pageRedirect.addressTo,
   });
 
@@ -100,15 +100,12 @@ async function createRedirectPage(
   console.log(`Created redirect page: ${filePath}`);
 }
 
-async function createStaticPage(
-  staticPage: StaticPage,
-  mainPageTemplate: Handlebars.TemplateDelegate,
-): Promise<void> {
-  const staticPageHtml = mainPageTemplate({
+async function createStaticPage(staticPage: StaticPage): Promise<void> {
+  const staticPageHtml = eta.render("./layout", {
     ...defaultMainPageTemplateInfo,
     meta_description: staticPage.description,
     page_title: `${staticPage.title} - ${mainPageTitle}`,
-    page_body: staticPage.body,
+    body: staticPage.body,
     contains_code_blocks: staticPage.containsCodeBlocks,
   });
 
@@ -124,25 +121,17 @@ async function createStaticPage(
   console.log(`Created static page: ${filePath}`);
 }
 
-async function createTagIndexPage(
-  tag: Tag,
-  blogIndexTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate,
-): Promise<void> {
-  const taggedArticleIndexHtml = blogIndexTemplate({
+async function createTagIndexPage(tag: Tag): Promise<void> {
+  const tagIndexHtml = eta.render("./index", {
+    ...defaultMainPageTemplateInfo,
     articles: filterAndSortArticles(tag.taggedArticles ?? []).map(
       transformArticleToTemplateFormat,
     ),
-    heading: `Entries tagged as '<span class="tag-index-name">${tag.name}</span>'`,
-    show_entry_tags: false,
-  });
-
-  const tagIndexHtml = mainPageTemplate({
-    ...defaultMainPageTemplateInfo,
     meta_description: `Blog entries tagged as '${tag.name}'`,
     meta_keywords: [...defaultPageKeywords, tag.name].join(),
     page_title: `${tag.name} - ${mainPageTitle}`,
-    page_body: taggedArticleIndexHtml,
+    heading: `Entries tagged as '<span class="tag-index-name">${tag.name}</span>'`,
+    show_entry_tags: false,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -166,24 +155,17 @@ async function createTagIndexPage(
  * @param articleTemplate - The article HTML template.
  * @param mainPageTemplate - The main page template.
  */
-async function createArticlePage(
-  article: Article,
-  articleTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate,
-): Promise<void> {
+async function createArticlePage(article: Article): Promise<void> {
   const articleTagNames = (article.tags ?? []).map((tag) => tag.name);
   const pageKeywordString = [...defaultPageKeywords, ...articleTagNames].join();
 
-  const articleHtml = articleTemplate(
-    transformArticleToTemplateFormat(article),
-  );
-
-  const articlePageHtml = mainPageTemplate({
+  const articlePageHtml = eta.render("./entry", {
     ...defaultMainPageTemplateInfo,
+    article: transformArticleToTemplateFormat(article),
+    tags: sortTagsByName(article.tags ?? []).map(transformTagToTemplateFormat),
     meta_keywords: pageKeywordString,
     meta_description: article.description,
     page_title: `${article.title} - ${mainPageTitle}`,
-    page_body: articleHtml,
     contains_code_blocks: article.containsCodeBlocks,
   });
 
@@ -199,64 +181,19 @@ async function createArticlePage(
   console.log(`Created article page: ${filePath}`);
 }
 
-async function loadBlogTemplates(): Promise<{
-  mainPageTemplate: Handlebars.TemplateDelegate;
-  blogIndexTemplate: Handlebars.TemplateDelegate;
-  articleTemplate: Handlebars.TemplateDelegate;
-  indexTemplate: Handlebars.TemplateDelegate;
-}> {
-  /* The base template folder. */
-  const templateDirectory = "src/templates";
-
-  const [
-    tagListPartialContents,
-    pageTemplateFileContents,
-    blogIndexTemplateFile,
-    articleTemplateFile,
-    indexTemplateFile,
-  ] = await Promise.all([
-    fs.readFile(`${templateDirectory}/tag_list.hbs`, "utf-8"),
-    fs.readFile(`${templateDirectory}/page.hbs`, "utf-8"),
-    fs.readFile(`${templateDirectory}/blog_index.hbs`, "utf-8"),
-    fs.readFile(`${templateDirectory}/entry.hbs`, "utf-8"),
-    fs.readFile(`${templateDirectory}/index.hbs`, "utf-8"),
-  ]);
-
-  Handlebars.registerPartial("tag_list", tagListPartialContents);
-
-  return {
-    mainPageTemplate: Handlebars.compile(pageTemplateFileContents),
-    blogIndexTemplate: Handlebars.compile(blogIndexTemplateFile),
-    articleTemplate: Handlebars.compile(articleTemplateFile),
-    indexTemplate: Handlebars.compile(indexTemplateFile),
-  };
-}
-
 async function createSiteIndex(
   articles: Article[],
   tags: Tag[],
-  mainPageTemplate: Handlebars.TemplateDelegate,
-  blogIndexTemplate: Handlebars.TemplateDelegate,
-  indexTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
-  const siteIndexArticleIndexHtml = blogIndexTemplate({
+  const siteIndexPageHtml = eta.render("./index", {
+    ...defaultMainPageTemplateInfo,
     articles: filterAndSortArticles(articles)
       .slice(0, mainIndexArticleCount)
       .map(transformArticleToTemplateFormat),
-    heading: "Blog",
-    show_tag_list: true,
-    show_entry_tags: false,
-  });
-
-  const siteIndexHtml = indexTemplate({
-    blog_index_html: siteIndexArticleIndexHtml,
-    index_tag_links: sortTagsByName(tags).map(transformTagToTemplateFormat),
-  });
-
-  const siteIndexPageHtml = mainPageTemplate({
-    ...defaultMainPageTemplateInfo,
     body_class: "index-page",
-    page_body: siteIndexHtml,
+    heading: "Blog",
+    tags: sortTagsByName(tags).map(transformTagToTemplateFormat),
+    show_entry_tags: false,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -271,24 +208,16 @@ async function createSiteIndex(
   console.log(`Created site index page: ${filePath}`);
 }
 
-async function createAllEntriesPage(
-  articles: Article[],
-  blogIndexTemplate: Handlebars.TemplateDelegate,
-  mainPageTemplate: Handlebars.TemplateDelegate,
-): Promise<void> {
-  const allEntriesIndexHtml = blogIndexTemplate({
+async function createAllEntriesPage(articles: Article[]): Promise<void> {
+  const allEntriesHtml = eta.render("./index", {
+    ...defaultMainPageTemplateInfo,
     articles: filterAndSortArticles(articles).map(
       transformArticleToTemplateFormat,
     ),
     heading: "All Blog Entries",
-    show_entry_tags: true,
-  });
-
-  const allEntriesHtml = mainPageTemplate({
-    ...defaultMainPageTemplateInfo,
     meta_description: "All Blog Entries",
     page_title: `All Blog Entries - ${mainPageTitle}`,
-    page_body: allEntriesIndexHtml,
+    show_entry_tags: true,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -306,38 +235,17 @@ async function createAllEntriesPage(
 export async function createSite() {
   const { articles, pageRedirects, staticPages, tags } = await loadBlogData();
 
-  const {
-    mainPageTemplate,
-    blogIndexTemplate,
-    articleTemplate,
-    indexTemplate,
-  } = await loadBlogTemplates();
-
   // This will recursively create the entire blog directory structure.
   // i.e. 'docs/blog/tag'.
   await fs.mkdir(tagsDirectory, { recursive: true });
 
   await Promise.all([
     createRssFeed(articles),
-    createSiteIndex(
-      articles,
-      tags,
-      mainPageTemplate,
-      blogIndexTemplate,
-      indexTemplate,
-    ),
-    createAllEntriesPage(articles, blogIndexTemplate, mainPageTemplate),
-    ...tags.map((tag) =>
-      createTagIndexPage(tag, blogIndexTemplate, mainPageTemplate),
-    ),
-    ...articles.map((article) =>
-      createArticlePage(article, articleTemplate, mainPageTemplate),
-    ),
-    ...staticPages.map((staticPage) =>
-      createStaticPage(staticPage, mainPageTemplate),
-    ),
-    ...pageRedirects.map((pageRedirect) =>
-      createRedirectPage(pageRedirect, mainPageTemplate),
-    ),
+    createSiteIndex(articles, tags),
+    createAllEntriesPage(articles),
+    ...tags.map(createTagIndexPage),
+    ...articles.map(createArticlePage),
+    ...staticPages.map(createStaticPage),
+    ...pageRedirects.map(createRedirectPage),
   ]);
 }

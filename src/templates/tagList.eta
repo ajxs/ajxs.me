@@ -1,0 +1,8 @@
+<div class="tags">
+	<span>Tagged as: </span>
+	<ul class="tag-list">
+		<% it.tags.forEach(function(tag){ %>
+			<li><a href="/blog/tag/<%= tag.filename %>.html"><%= tag.name %></a></li>
+		<% }) %>
+	</ul>
+</div>
