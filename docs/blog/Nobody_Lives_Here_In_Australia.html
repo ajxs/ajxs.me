@@ -1,253 +1,387 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="ajxs">
-		<meta name="description" content="A map of Australia&#x27;s vast uninhabited zones.">
-		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="ajxs,synthesisers,programming">
-		<meta name="reply-to" content="ajxs@panoptic.online">
-		<meta name="owner" content="ajxs">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/style.css">
-		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="ajxs" />
+    <meta
+      name="description"
+      content="A map of Australia&#x27;s vast uninhabited zones."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="ajxs,synthesisers,programming" />
+    <meta name="reply-to" content="ajxs@panoptic.online" />
+    <meta name="owner" content="ajxs" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog Posts"
+      href="/site.rss"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon-16x16.png"
+    />
 
-		<title>Nobody Lives Here (In Australia) - ajxs.me</title>
-	</head>
-	<body>
-		<header>
-			<a href="/">~ajxs</a>
-		</header>
-		<article class="blog-entry">
-	<header>
-		<h1>Nobody Lives Here (In Australia)</h1>
-		<div class="date">2024.02.15</div>
-		<div class="description">A map of Australia&#x27;s vast uninhabited zones.</div>
-	</header>
-	<div class="entry-body">
-		<figure>
-	<a href="/static/articles/nobody_lives_here/nobody_lives_here_australia.png" target="_blank">
-		<img src="/static/articles/nobody_lives_here/thumbnails/nobody_lives_here_australia_thumbnail.jpg" alt="A map of Australia subdivided into one kilometre square blocks, showing blocks with no reported residents">
-	</a>
-	<figcaption>
-		A map of Australia's vast uninhabited zones.
-		Dark green areas represent 1 square kilometre blocks where the resident population equals zero, according to the 2011 Australian Census.
-	</figcaption>
-</figure>
-<p>
-	I first encountered Nik Freeman's 
-	<a href="https://tumblr.mapsbynik.com/post/82791188950/nobody-lives-here-the-nearly-5-million-census" target="_blank"><i>'Nobody Lives Here'</i></a>
-	on 
-	<a href="https://news.ycombinator.com/item?id=25825390" target="_blank">Hacker News</a><sup><a href="#footnote_1" id="footnote_1_link">1</a></sup>.
-	Something about this map of the uninhabited, untouched spaces in the human world really captivated me.
-	There was something alluring and beautiful about the idea of these hidden, unexplored places.
-	My imagination ran wild in the forest green polygons that speckled Nik's map.
-	I daydreamed of untamed and wild places, ancient imaginary forests still untouched by human hands.
-</p>
-<p>
-	I clearly wasn't alone in my fascination. 
-	Nik Freeman's work seems to have inspired 
-	<a href="https://vividmaps.com/nobody-lives-here/" target="_blank">others</a>
-	to map the hidden, untouched parts of their own corners of the world,
-	such as this awesome map of
-	<a href="https://www.reddit.com/r/dataisbeautiful/comments/a645kh/oc_areas_that_are_more_than_1km_away_from_a_road/" target="_blank">
-		areas in Great Britain that are more than 1km away from a named road</a>.
-	However despite inspiring amazing maps of Canada, Brazil, Norway, Finland, and a host of other fantastic places,
-	no one had yet made their own <i>Nobody Lives Here</i> featuring one of the most sparse, uninhabited countries the world has to offer:
-	Australia... Until now.
-</p>
-<p>
-	Australia covers an impressive 7,692,024km<sup>2</sup> of surface area. 
-	The United States of America, for comparison, weighs in at 9,833,520km<sup>2</sup>,
-	and continental Europe somewhere around 10 million.
-	While Australia and the US might be roughly comparable in geographical area,
-	the disparity in population density is remarkable:
-	The US boasts 37.7 people per square kilometre.
-	Australia on the other hand, has a measly 3.47,
-	making it one of the least-densely populated countries on the planet (Our World in Data, 2022).
-	The only countries less-densely populated are Mongolia, Western Sahara, Pitcairn Islands, Falkland Islands, and Greenland.
-</p>
-<p>
-	My hometown of Sydney doesn't feel like a particularly empty place.
-	The population density of the <i>City of Sydney</i><sup><a href="#footnote_2" id="footnote_2_link">2</a></sup> 
-	is 8,176 people per square kilometre (City of Sydney, 2020),
-	which is roughly on par with Warsaw, Budapest, Stuttgart, or New York's Staten Island borough.
-	However travel an hour in any direction from Sydney and you'll get a small taste of Australia's vast emptiness.
-	The leafy suburban sprawl of <i>Greater Sydney</i> slowly gives way to a rolling, green landscape of bushland stretching out to the horizon.
-	A great ring of forest surrounds it on all sides,
-	separating it from nearby Newcastle, Woolongong, and the Blue Mountains.
-	The further you get from Sydney, the larger these vast expanses of nothing between everything become.
-</p>
-<figure>
-	<a href="/static/articles/nobody_lives_here/forest_path.jpg" target="_blank">
-		<img src="/static/articles/nobody_lives_here/thumbnails/forest_path_thumbnail.jpg" alt="A typical image of Australian bushland">
-	</a>
-	<figcaption>
-		<a href="https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/forest-path" target="_blank">'Forest Path'</a>,
-		Royal National Park, NSW, Australia. A typical image of coastal Australian bushland.
-		Image courtesy of State of New South Wales and Department of Climate Change, Energy, the Environment and Water (DCCEEW)
-	</figcaption>
-</figure>
-<p>
-	The original <i>Nobody Lives Here</i> presents a map of the United States subdivided into its individual
-	<a href="https://en.wikipedia.org/wiki/Census_block" target="_blank"><i>Census Blocks</i></a>,
-	the smallest geographical unit used by the U.S. Census Bureau to count population.
-	My first attempt at creating an Australian <i>Nobody Lives Here</i> took the same approach.
-</p>
-<p>
-	As part of the Australian Statistical Geography Standard (ASGS),
-	the Australian Bureau of Statistics (ABS) subdivides the Australian landmass into
-	<a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026" target="_blank">
-		<i>Mesh Blocks</i>
-	</a>,
-	the smallest geographical area defined by the ABS.
-	Fortunately, the ABS 
-	<a href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1270.0.55.001July%202016?OpenDocument" target="_blank">provides</a>
-	ESRI shapefiles for these Mesh Blocks on their website at no cost.
-</p>
-<p>
-	To construct my map, I took the 2021 Australian Census 
-	<a href="https://www.abs.gov.au/census/guide-census-data/mesh-block-counts/latest-release" target="_blank">
-		<i>Mesh Block Counts</i>
-	</a>
-	data &#8212;a count of total <i>usual resident population</i>&#8212;
-	and used this data to identify the blocks where nobody lives,
-	and the population density of the blocks where people actually do.
-	The result (imitating Nik Freeman's wonderful design to the best of my ability)
-	looked aesthetically pleasing enough, 
-	but unfortunately even after shading the blocks that were <em>practically</em> uninhabited it still just didn't get the point across.
-	<em>Australia is emptier than this</em>.
-</p>
-<figure>
-	<a href="/static/articles/nobody_lives_here/nobody_lives_here_australia_mesh_blocks.png" target="_blank">
-		<img src="/static/articles/nobody_lives_here/thumbnails/nobody_lives_here_australia_mesh_blocks_thumbnail.jpg" alt="A map of Australia subdivided into ASGS Mesh Blocks, showing blocks with no reported residents">
-	</a>
-	<figcaption>
-		A map of Australia's vast uninhabited zones.
-		Dark green areas represent Mesh Blocks where the resident population equals zero, according to the 2021 Australian Census.
-		Lighter green areas represent Mesh Blocks where the resident population density is less than 0.01 persons per square kilometre.
-	</figcaption>
-</figure>
-<p>
-	Not only do Australia's Mesh Blocks have a lower 'resolution' than America and its Census Blocks
-	(368,286 Mesh Blocks, versus 11,078,300 Census Blocks),
-	most of these Mesh Blocks are allocated to Australia's densely populated coastal urban areas.
-	This makes sense, I guess.
-	When categorised as either <i>inhabited</i>, or <i>uninhabited</i>,
-	very few of Australia's Mesh Blocks are actually <i>uninhabited</i><sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>. How can this be?
-	There must be a better way to illustrate how vast and utterly empty Australia really is.
-</p>
-<p>
-	I went back to the drawing board.
-	I was already building my map with the smallest geographical data the ABS made available, or was I?
-	Was there something better out there that I just hadn't found?
-	I decided to try my luck one last time and do a web search for <i>'Australia Population Density Map'</i>...
-	Maybe I should have done this first...
-</p>
-<p>
-	It turns out I'm not the first to try this after all.
-	After going to the trouble of tracking down the right census data, 
-	painstakingly joining it to the ABS' Mesh Block geometry in 
-	<a href="https://qgis.org/en/site/" target="_blank">QGIS</a>,
-	and styling the final map in 
-	<a href="https://tilemill-project.github.io/tilemill/" target="_blank">TileMill</a>,
-	I now discovered that the Australian Bureau of Statistics had not only 
-	<a href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/1270.0.55.007Main+Features12011" target="_blank">beaten me to the punch</a><sup><a href="#footnote_4" id="footnote_4_link">4</a></sup>,
-	they'd beaten me by such a large margin that their page still has a <i>'Get Adobe Flash Player'</i> button.
-</p>
+    <title>Nobody Lives Here (In Australia) - ajxs.me</title>
+  </head>
+  <body>
+    <header>
+      <a href="/">~ajxs</a>
+    </header>
+    <article class="blog-entry">
+      <header>
+        <h1>Nobody Lives Here (In Australia)</h1>
+        <div class="date">2024.02.15</div>
+        <div class="description">
+          A map of Australia&#x27;s vast uninhabited zones.
+        </div>
+      </header>
+      <div class="entry-body">
+        <figure>
+          <a
+            href="/static/articles/nobody_lives_here/nobody_lives_here_australia.png"
+            target="_blank"
+          >
+            <img
+              src="/static/articles/nobody_lives_here/thumbnails/nobody_lives_here_australia_thumbnail.jpg"
+              alt="A map of Australia subdivided into one kilometre square blocks, showing blocks with no reported residents"
+            />
+          </a>
+          <figcaption>
+            A map of Australia's vast uninhabited zones. Dark green areas
+            represent 1 square kilometre blocks where the resident population
+            equals zero, according to the 2011 Australian Census.
+          </figcaption>
+        </figure>
+        <p>
+          I first encountered Nik Freeman's
+          <a
+            href="https://tumblr.mapsbynik.com/post/82791188950/nobody-lives-here-the-nearly-5-million-census"
+            target="_blank"
+            ><i>'Nobody Lives Here'</i></a
+          >
+          on
+          <a
+            href="https://news.ycombinator.com/item?id=25825390"
+            target="_blank"
+            >Hacker News</a
+          ><sup><a href="#footnote_1" id="footnote_1_link">1</a></sup
+          >. Something about this map of the uninhabited, untouched spaces in
+          the human world really captivated me. There was something alluring and
+          beautiful about the idea of these hidden, unexplored places. My
+          imagination ran wild in the forest green polygons that speckled Nik's
+          map. I daydreamed of untamed and wild places, ancient imaginary
+          forests still untouched by human hands.
+        </p>
+        <p>
+          I clearly wasn't alone in my fascination. Nik Freeman's work seems to
+          have inspired
+          <a href="https://vividmaps.com/nobody-lives-here/" target="_blank"
+            >others</a
+          >
+          to map the hidden, untouched parts of their own corners of the world,
+          such as this awesome map of
+          <a
+            href="https://www.reddit.com/r/dataisbeautiful/comments/a645kh/oc_areas_that_are_more_than_1km_away_from_a_road/"
+            target="_blank"
+          >
+            areas in Great Britain that are more than 1km away from a named
+            road</a
+          >. However despite inspiring amazing maps of Canada, Brazil, Norway,
+          Finland, and a host of other fantastic places, no one had yet made
+          their own <i>Nobody Lives Here</i> featuring one of the most sparse,
+          uninhabited countries the world has to offer: Australia... Until now.
+        </p>
+        <p>
+          Australia covers an impressive 7,692,024km<sup>2</sup> of surface
+          area. The United States of America, for comparison, weighs in at
+          9,833,520km<sup>2</sup>, and continental Europe somewhere around 10
+          million. While Australia and the US might be roughly comparable in
+          geographical area, the disparity in population density is remarkable:
+          The US boasts 37.7 people per square kilometre. Australia on the other
+          hand, has a measly 3.47, making it one of the least-densely populated
+          countries on the planet (Our World in Data, 2022). The only countries
+          less-densely populated are Mongolia, Western Sahara, Pitcairn Islands,
+          Falkland Islands, and Greenland.
+        </p>
+        <p>
+          My hometown of Sydney doesn't feel like a particularly empty place.
+          The population density of the <i>City of Sydney</i
+          ><sup><a href="#footnote_2" id="footnote_2_link">2</a></sup> is 8,176
+          people per square kilometre (City of Sydney, 2020), which is roughly
+          on par with Warsaw, Budapest, Stuttgart, or New York's Staten Island
+          borough. However travel an hour in any direction from Sydney and
+          you'll get a small taste of Australia's vast emptiness. The leafy
+          suburban sprawl of <i>Greater Sydney</i> slowly gives way to a
+          rolling, green landscape of bushland stretching out to the horizon. A
+          great ring of forest surrounds it on all sides, separating it from
+          nearby Newcastle, Woolongong, and the Blue Mountains. The further you
+          get from Sydney, the larger these vast expanses of nothing between
+          everything become.
+        </p>
+        <figure>
+          <a
+            href="/static/articles/nobody_lives_here/forest_path.jpg"
+            target="_blank"
+          >
+            <img
+              src="/static/articles/nobody_lives_here/thumbnails/forest_path_thumbnail.jpg"
+              alt="A typical image of Australian bushland"
+            />
+          </a>
+          <figcaption>
+            <a
+              href="https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/forest-path"
+              target="_blank"
+              >'Forest Path'</a
+            >, Royal National Park, NSW, Australia. A typical image of coastal
+            Australian bushland. Image courtesy of State of New South Wales and
+            Department of Climate Change, Energy, the Environment and Water
+            (DCCEEW)
+          </figcaption>
+        </figure>
+        <p>
+          The original <i>Nobody Lives Here</i> presents a map of the United
+          States subdivided into its individual
+          <a href="https://en.wikipedia.org/wiki/Census_block" target="_blank"
+            ><i>Census Blocks</i></a
+          >, the smallest geographical unit used by the U.S. Census Bureau to
+          count population. My first attempt at creating an Australian
+          <i>Nobody Lives Here</i> took the same approach.
+        </p>
+        <p>
+          As part of the Australian Statistical Geography Standard (ASGS), the
+          Australian Bureau of Statistics (ABS) subdivides the Australian
+          landmass into
+          <a
+            href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026"
+            target="_blank"
+          >
+            <i>Mesh Blocks</i> </a
+          >, the smallest geographical area defined by the ABS. Fortunately, the
+          ABS
+          <a
+            href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1270.0.55.001July%202016?OpenDocument"
+            target="_blank"
+            >provides</a
+          >
+          ESRI shapefiles for these Mesh Blocks on their website at no cost.
+        </p>
+        <p>
+          To construct my map, I took the 2021 Australian Census
+          <a
+            href="https://www.abs.gov.au/census/guide-census-data/mesh-block-counts/latest-release"
+            target="_blank"
+          >
+            <i>Mesh Block Counts</i>
+          </a>
+          data &#8212;a count of total <i>usual resident population</i>&#8212;
+          and used this data to identify the blocks where nobody lives, and the
+          population density of the blocks where people actually do. The result
+          (imitating Nik Freeman's wonderful design to the best of my ability)
+          looked aesthetically pleasing enough, but unfortunately even after
+          shading the blocks that were <em>practically</em> uninhabited it still
+          just didn't get the point across.
+          <em>Australia is emptier than this</em>.
+        </p>
+        <figure>
+          <a
+            href="/static/articles/nobody_lives_here/nobody_lives_here_australia_mesh_blocks.png"
+            target="_blank"
+          >
+            <img
+              src="/static/articles/nobody_lives_here/thumbnails/nobody_lives_here_australia_mesh_blocks_thumbnail.jpg"
+              alt="A map of Australia subdivided into ASGS Mesh Blocks, showing blocks with no reported residents"
+            />
+          </a>
+          <figcaption>
+            A map of Australia's vast uninhabited zones. Dark green areas
+            represent Mesh Blocks where the resident population equals zero,
+            according to the 2021 Australian Census. Lighter green areas
+            represent Mesh Blocks where the resident population density is less
+            than 0.01 persons per square kilometre.
+          </figcaption>
+        </figure>
+        <p>
+          Not only do Australia's Mesh Blocks have a lower 'resolution' than
+          America and its Census Blocks (368,286 Mesh Blocks, versus 11,078,300
+          Census Blocks), most of these Mesh Blocks are allocated to Australia's
+          densely populated coastal urban areas. This makes sense, I guess. When
+          categorised as either <i>inhabited</i>, or <i>uninhabited</i>, very
+          few of Australia's Mesh Blocks are actually <i>uninhabited</i
+          ><sup><a href="#footnote_3" id="footnote_3_link">3</a></sup
+          >. How can this be? There must be a better way to illustrate how vast
+          and utterly empty Australia really is.
+        </p>
+        <p>
+          I went back to the drawing board. I was already building my map with
+          the smallest geographical data the ABS made available, or was I? Was
+          there something better out there that I just hadn't found? I decided
+          to try my luck one last time and do a web search for
+          <i>'Australia Population Density Map'</i>... Maybe I should have done
+          this first...
+        </p>
+        <p>
+          It turns out I'm not the first to try this after all. After going to
+          the trouble of tracking down the right census data, painstakingly
+          joining it to the ABS' Mesh Block geometry in
+          <a href="https://qgis.org/en/site/" target="_blank">QGIS</a>, and
+          styling the final map in
+          <a href="https://tilemill-project.github.io/tilemill/" target="_blank"
+            >TileMill</a
+          >, I now discovered that the Australian Bureau of Statistics had not
+          only
+          <a
+            href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/1270.0.55.007Main+Features12011"
+            target="_blank"
+            >beaten me to the punch</a
+          ><sup><a href="#footnote_4" id="footnote_4_link">4</a></sup
+          >, they'd beaten me by such a large margin that their page still has a
+          <i>'Get Adobe Flash Player'</i> button.
+        </p>
 
-<figure>
-	<a href="/static/articles/nobody_lives_here/abs_australia_population_grid.png" target="_blank">
-		<img src="/static/articles/nobody_lives_here/thumbnails/abs_australia_population_grid_thumbnail.jpg" alt="A map of Australia subdivided into ASGS Mesh Blocks, showing blocks with no reported residents">
-	</a>
-	<figcaption>
-		Population Density 1km<sup>2</sup> Grid August 2011', courtesy of the Australian Bureau of Statistics.
-	</figcaption>
-</figure>
+        <figure>
+          <a
+            href="/static/articles/nobody_lives_here/abs_australia_population_grid.png"
+            target="_blank"
+          >
+            <img
+              src="/static/articles/nobody_lives_here/thumbnails/abs_australia_population_grid_thumbnail.jpg"
+              alt="A map of Australia subdivided into ASGS Mesh Blocks, showing blocks with no reported residents"
+            />
+          </a>
+          <figcaption>
+            Population Density 1km<sup>2</sup> Grid August 2011', courtesy of
+            the Australian Bureau of Statistics.
+          </figcaption>
+        </figure>
 
-<p>
-	In their words:
-</p>
-<blockquote>
-	This release presents the first time population data has been published in 1km<sup>2</sup> grid format by the Australian Bureau of Statistics. 
-	The grid displays Usual Resident Population (URP) from the 2011 Census of Population and Housing using 1km<sup>2</sup> grid cells across Australia.
-	The 1km&#178; resolution of the grid therefore offers a measure of population density for Australia.
-</blockquote>
-<p>
-	The accompanying <i>'Explanatory Notes'</i> 
-	page offers some interesting details on how the population grid was created using a combination of the Mesh Block data, 
-	and the 
-	<a href="https://data.gov.au/data/dataset/geocoded-national-address-file-g-naf" target="_blank">Geocoded National Address File (G-NAF)</a>.
-	In a spirit of openness that seems to be common in the GIS world the ABS published the data in ESRI/GeoTIFF.
-	Just so I didn't leave empty-handed,
-	I took the GeoTIFF file provided, 
-	loaded it into TileMill, and bashed it into the shape of the final product.
-</p>
-<p>
-	It might not be as beautiful as Nik Freeman's original design,
-	but it gets the point across:
-	<i>Nobody Lives Here</i>.
-</p>
+        <p>In their words:</p>
+        <blockquote>
+          This release presents the first time population data has been
+          published in 1km<sup>2</sup> grid format by the Australian Bureau of
+          Statistics. The grid displays Usual Resident Population (URP) from the
+          2011 Census of Population and Housing using 1km<sup>2</sup> grid cells
+          across Australia. The 1km&#178; resolution of the grid therefore
+          offers a measure of population density for Australia.
+        </blockquote>
+        <p>
+          The accompanying <i>'Explanatory Notes'</i>
+          page offers some interesting details on how the population grid was
+          created using a combination of the Mesh Block data, and the
+          <a
+            href="https://data.gov.au/data/dataset/geocoded-national-address-file-g-naf"
+            target="_blank"
+            >Geocoded National Address File (G-NAF)</a
+          >. In a spirit of openness that seems to be common in the GIS world
+          the ABS published the data in ESRI/GeoTIFF. Just so I didn't leave
+          empty-handed, I took the GeoTIFF file provided, loaded it into
+          TileMill, and bashed it into the shape of the final product.
+        </p>
+        <p>
+          It might not be as beautiful as Nik Freeman's original design, but it
+          gets the point across:
+          <i>Nobody Lives Here</i>.
+        </p>
 
-<h2>References</h2>
-<ul id="references-list">
-	<li>
-		City of Sydney. (2020, April 9). The city at a glance. City of Sydney.
-		<a href="https://www.cityofsydney.nsw.gov.au/guides/city-at-a-glance" target="_blank">https://www.cityofsydney.nsw.gov.au/guides/city-at-a-glance</a>
-	</li>
-	<li>
-		Our World in Data. (2022). Population density. Our World in Data.
-		<a href="https://ourworldindata.org/grapher/population-density" target="_blank">https://ourworldindata.org/grapher/population-density</a>
-	</li>
-</ul>
-<hr>
-<ol class="footnotes">
-	<li id="footnote_1">
-		I was also particularly captivated by the accompanying discussion on Hacker News of Yellowstone National Park's
-		<a href="https://en.m.wikipedia.org/wiki/Zone_of_Death_(Yellowstone)" target="_blank">'Zone of Death'</a>
-	<a href="#footnote_1_link">&#8626;</a></li><li id="footnote_2">
-		This refers to the 
-		<a href="https://www.cityofsydney.nsw.gov.au/areas-of-service" target="_blank"><i>'City of Sydney'</i></a>
-		local government area,
-		<em>not</em> the much larger
-		<a href="https://www.abs.gov.au/census/find-census-data/quickstats/2021/1GSYD" target="_blank">greater Sydney metropolitan area</a>,
-		which has a much lower population density of 429 people per square kilometre.
-	<a href="#footnote_2_link">&#8626;</a></li><li id="footnote_3">
-		The ABS actually lists the 
-		<a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/main-structure-and-greater-capital-city-statistical-areas/mesh-blocks#mesh-block-design-criteria" target="_blank">
-			Mesh Block design criteria
-		</a> on their website.
-		They're not arbitrarily placed.
-		Rather they're designed to reflect, and capture actual land use for statistical analysis.
-		So I guess it makes sense that there aren't many uninhabited blocks.
-	<a href="#footnote_3_link">&#8626;</a></li><li id="footnote_4">
-		Given that this was published only a few months after the original <i>Nobody Lives Here</i>,
-		it's totally possible that this map was created in response.
-	<a href="#footnote_4_link">&#8626;</a></li></ol>
-	</div>
-</article>
+        <h2>References</h2>
+        <ul id="references-list">
+          <li>
+            City of Sydney. (2020, April 9). The city at a glance. City of
+            Sydney.
+            <a
+              href="https://www.cityofsydney.nsw.gov.au/guides/city-at-a-glance"
+              target="_blank"
+              >https://www.cityofsydney.nsw.gov.au/guides/city-at-a-glance</a
+            >
+          </li>
+          <li>
+            Our World in Data. (2022). Population density. Our World in Data.
+            <a
+              href="https://ourworldindata.org/grapher/population-density"
+              target="_blank"
+              >https://ourworldindata.org/grapher/population-density</a
+            >
+          </li>
+        </ul>
+        <hr />
+        <ol class="footnotes">
+          <li id="footnote_1">
+            I was also particularly captivated by the accompanying discussion on
+            Hacker News of Yellowstone National Park's
+            <a
+              href="https://en.m.wikipedia.org/wiki/Zone_of_Death_(Yellowstone)"
+              target="_blank"
+              >'Zone of Death'</a
+            >
+            <a href="#footnote_1_link">&#8626;</a>
+          </li>
+          <li id="footnote_2">
+            This refers to the
+            <a
+              href="https://www.cityofsydney.nsw.gov.au/areas-of-service"
+              target="_blank"
+              ><i>'City of Sydney'</i></a
+            >
+            local government area,
+            <em>not</em> the much larger
+            <a
+              href="https://www.abs.gov.au/census/find-census-data/quickstats/2021/1GSYD"
+              target="_blank"
+              >greater Sydney metropolitan area</a
+            >, which has a much lower population density of 429 people per
+            square kilometre. <a href="#footnote_2_link">&#8626;</a>
+          </li>
+          <li id="footnote_3">
+            The ABS actually lists the
+            <a
+              href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/main-structure-and-greater-capital-city-statistical-areas/mesh-blocks#mesh-block-design-criteria"
+              target="_blank"
+            >
+              Mesh Block design criteria
+            </a>
+            on their website. They're not arbitrarily placed. Rather they're
+            designed to reflect, and capture actual land use for statistical
+            analysis. So I guess it makes sense that there aren't many
+            uninhabited blocks. <a href="#footnote_3_link">&#8626;</a>
+          </li>
+          <li id="footnote_4">
+            Given that this was published only a few months after the original
+            <i>Nobody Lives Here</i>, it's totally possible that this map was
+            created in response. <a href="#footnote_4_link">&#8626;</a>
+          </li>
+        </ol>
+      </div>
+    </article>
 
-		<footer>
-			<div class="links">
-				<nav>
-					<a href="/about.html">About Me</a>
-					<a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
-					<a href="https://github.com/ajxs" target="_blank">Github</a>
-					<a href="/donate.html">Donate</a>
-					<a href="/site.rss" target="_blank">RSS</a>
-				</nav>
-				<div>
-					Webring:
-					<a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a> /
-					<a href="https://webri.ng/webring/ajxs/random">Random</a> /
-					<a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
-				</div>
-			</div>
+    <footer>
+      <div class="links">
+        <nav>
+          <a href="/about.html">About Me</a>
+          <a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
+          <a href="https://github.com/ajxs" target="_blank">Github</a>
+          <a href="/donate.html">Donate</a>
+          <a href="/site.rss" target="_blank">RSS</a>
+        </nav>
+        <div>
+          Webring:
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
+          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
+        </div>
+      </div>
 
-			© 2025 ajxs
-		</footer>
-	</body>
-
+      © 2025 ajxs
+    </footer>
+  </body>
 </html>

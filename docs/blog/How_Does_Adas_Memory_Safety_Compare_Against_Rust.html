@@ -1,196 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="ajxs">
-		<meta name="description" content="A comparison of how well Rust and Ada prevent the most common memory-related software errors.">
-		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="ajxs,synthesisers,programming,Ada,Programming">
-		<meta name="reply-to" content="ajxs@panoptic.online">
-		<meta name="owner" content="ajxs">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/style.css">
-		<link rel="stylesheet" type="text/css" href="/static/code.css">
-		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="ajxs" />
+    <meta
+      name="description"
+      content="A comparison of how well Rust and Ada prevent the most common memory-related software errors."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="keywords"
+      content="ajxs,synthesisers,programming,Ada,Programming"
+    />
+    <meta name="reply-to" content="ajxs@panoptic.online" />
+    <meta name="owner" content="ajxs" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/code.css" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog Posts"
+      href="/site.rss"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon-16x16.png"
+    />
 
-		<title>How Does Ada&#x27;s Memory Safety Compare Against Rust? - ajxs.me</title>
-	</head>
-	<body>
-		<header>
-			<a href="/">~ajxs</a>
-		</header>
-		<article class="blog-entry">
-	<header>
-		<h1>How Does Ada&#x27;s Memory Safety Compare Against Rust?</h1>
-		<div class="date">2025.01.17</div>
-		<div class="description">A comparison of how well Rust and Ada prevent the most common memory-related software errors.</div>
-				<div class="tags">
-					<span>Tagged as: </span>
-					<ul class="tag-list">
-							<li><a href="/blog/tag/Ada.html">Ada</a></li>
-							<li><a href="/blog/tag/Programming.html">Programming</a></li>
-					</ul>
-				</div>
-	</header>
-	<div class="entry-body">
-		<p>
-	This article takes a look at the most common memory-related errors, 
-	and compares how well Rust and Ada 
-	<u><em>prevent</em> you from making them in the first place</u>.
-</p>
+    <title>
+      How Does Ada&#x27;s Memory Safety Compare Against Rust? - ajxs.me
+    </title>
+  </head>
+  <body>
+    <header>
+      <a href="/">~ajxs</a>
+    </header>
+    <article class="blog-entry">
+      <header>
+        <h1>How Does Ada&#x27;s Memory Safety Compare Against Rust?</h1>
+        <div class="date">2025.01.17</div>
+        <div class="description">
+          A comparison of how well Rust and Ada prevent the most common
+          memory-related software errors.
+        </div>
+        <div class="tags">
+          <span>Tagged as: </span>
+          <ul class="tag-list">
+            <li><a href="/blog/tag/Ada.html">Ada</a></li>
+            <li><a href="/blog/tag/Programming.html">Programming</a></li>
+          </ul>
+        </div>
+      </header>
+      <div class="entry-body">
+        <p>
+          This article takes a look at the most common memory-related errors,
+          and compares how well Rust and Ada
+          <u><em>prevent</em> you from making them in the first place</u>.
+        </p>
 
-<div class="note"><span class="heading">TL;DR:</span> 
-	Rust is better at outright preventing common memory-related errors,
-	however Ada's avoidance of dynamic memory allocation 
-	and support for formal proof of correctness 
-	help you avoid many of the common errors altogether.
-</div>
+        <div class="note">
+          <span class="heading">TL;DR:</span>
+          Rust is better at outright preventing common memory-related errors,
+          however Ada's avoidance of dynamic memory allocation and support for
+          formal proof of correctness help you avoid many of the common errors
+          altogether.
+        </div>
 
-<div class="table-of-contents colour_mid-bg">
-	<div class="table-of-contents-title">Table of Contents</div>
-	<ol>
-		<li><a href="#foreword">Foreword</a></li>
-		<li>
-			<a href="#common_Memory_errors">Common Memory-Related Errors</a>
-			<ol>
-				<li><a href="#memory_leaks">Memory Leaks</a></li>
-				<li><a href="#buffer_overflow">Buffer Overflow</a></li>
-				<li><a href="#use_after_free">Use After Free</a></li>
-				<li><a href="#double_free">Double Free</a></li>
-				<li><a href="#race_conditions">Race Conditions</a></li>
-				<li><a href="#dangling_pointer">Dangling Pointer</a></li>
-				<li><a href="#freeing_stack_memory">Freeing Stack Memory</a></li>
-			</ol>
-		</li>
-		<li><a href="#am_i_being_unfair">Am I Being Unfair to Ada?</a></li>
-		<li><a href="#conclusions">Conclusions?</a></li>
-	</ol>
-</div>
+        <div class="table-of-contents colour_mid-bg">
+          <div class="table-of-contents-title">Table of Contents</div>
+          <ol>
+            <li><a href="#foreword">Foreword</a></li>
+            <li>
+              <a href="#common_Memory_errors">Common Memory-Related Errors</a>
+              <ol>
+                <li><a href="#memory_leaks">Memory Leaks</a></li>
+                <li><a href="#buffer_overflow">Buffer Overflow</a></li>
+                <li><a href="#use_after_free">Use After Free</a></li>
+                <li><a href="#double_free">Double Free</a></li>
+                <li><a href="#race_conditions">Race Conditions</a></li>
+                <li><a href="#dangling_pointer">Dangling Pointer</a></li>
+                <li>
+                  <a href="#freeing_stack_memory">Freeing Stack Memory</a>
+                </li>
+              </ol>
+            </li>
+            <li><a href="#am_i_being_unfair">Am I Being Unfair to Ada?</a></li>
+            <li><a href="#conclusions">Conclusions?</a></li>
+          </ol>
+        </div>
 
-<h2 id="foreword">Foreword <a class="permalink" href="#foreword">#</a></h2>
+        <h2 id="foreword">
+          Foreword <a class="permalink" href="#foreword">#</a>
+        </h2>
 
-<p>
-	The Rust programming language has 
-	<a href="https://github.blog/developer-skills/programming-languages-and-frameworks/why-rust-is-the-most-admired-language-among-developers/" target="_blank">exploded in popularity</a>
-	in the last few years,
-	consistently ranking as one of the 
-	<a href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/" target="_blank">most loved languages</a>
-	in Stack Overflow's
-	<a href="https://survey.stackoverflow.co/2024/technology#admired-and-desired" target="_blank">Developer Survey</a>.
-	Designed by Mozilla to be <i>memory-safe</i>,
-	it's steadily gaining ground as a viable alternative to languages like C++.
-	This focus on safety has invited comparisons with Ada;
-	An older, but battle-tested language designed for safety-critical industries.
-	Despite all the things they have in common, 
-	a bitter 
-	<a href="https://www.reddit.com/r/rust/comments/pm4k1f/rust_vs_ada_how_do_they_compare/" target="_blank">rivalry</a>
-	has grown between the Ada and Rust communities.
-	For years I've been defending Ada online from a motley crew of 
-	<a href="https://news.ycombinator.com/item?id=20935953" target="_blank">angry Rustaceans</a>,
-	<a href="https://www.fulltextarchive.com/book/7625/#p203" target="_blank">crusty old greybeards</a>,
-	and 
-	<a href="https://news.ycombinator.com/item?id=20932467" target="_blank">bitter old haters</a>.
-	Most of whom either haven't used it,
-	or haven't used it since Reagan was in office.
-	I've been critical of Rust's design in the past,
-	but have I actually given Rust a fair go?
-	When it comes to <em>memory safety</em>, 
-	how do the two languages <em>really</em> stack up?
-	Does Rust offer us anything new that Ada doesn't?
-	Let's find out!
-</p>
+        <p>
+          The Rust programming language has
+          <a
+            href="https://github.blog/developer-skills/programming-languages-and-frameworks/why-rust-is-the-most-admired-language-among-developers/"
+            target="_blank"
+            >exploded in popularity</a
+          >
+          in the last few years, consistently ranking as one of the
+          <a
+            href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/"
+            target="_blank"
+            >most loved languages</a
+          >
+          in Stack Overflow's
+          <a
+            href="https://survey.stackoverflow.co/2024/technology#admired-and-desired"
+            target="_blank"
+            >Developer Survey</a
+          >. Designed by Mozilla to be <i>memory-safe</i>, it's steadily gaining
+          ground as a viable alternative to languages like C++. This focus on
+          safety has invited comparisons with Ada; An older, but battle-tested
+          language designed for safety-critical industries. Despite all the
+          things they have in common, a bitter
+          <a
+            href="https://www.reddit.com/r/rust/comments/pm4k1f/rust_vs_ada_how_do_they_compare/"
+            target="_blank"
+            >rivalry</a
+          >
+          has grown between the Ada and Rust communities. For years I've been
+          defending Ada online from a motley crew of
+          <a
+            href="https://news.ycombinator.com/item?id=20935953"
+            target="_blank"
+            >angry Rustaceans</a
+          >,
+          <a
+            href="https://www.fulltextarchive.com/book/7625/#p203"
+            target="_blank"
+            >crusty old greybeards</a
+          >, and
+          <a
+            href="https://news.ycombinator.com/item?id=20932467"
+            target="_blank"
+            >bitter old haters</a
+          >. Most of whom either haven't used it, or haven't used it since
+          Reagan was in office. I've been critical of Rust's design in the past,
+          but have I actually given Rust a fair go? When it comes to
+          <em>memory safety</em>, how do the two languages <em>really</em> stack
+          up? Does Rust offer us anything new that Ada doesn't? Let's find out!
+        </p>
 
-<div class="note">
-	This article assumes you're already familiar with the basics of Rust.
-	If you're not, the best place to start is 
-	<a href="https://www.rust-lang.org/learn" target="_blank">Learn Rust</a>,
-	particularly the
-	<a href="https://doc.rust-lang.org/book/" target="_blank">Rust Book</a>.
-	For an introduction to Ada,
-	check out AdaCore's
-	<a href="https://learn.adacore.com/courses/intro-to-ada/" target="_blank">Introduction to Ada</a>.
-</div>
+        <div class="note">
+          This article assumes you're already familiar with the basics of Rust.
+          If you're not, the best place to start is
+          <a href="https://www.rust-lang.org/learn" target="_blank"
+            >Learn Rust</a
+          >, particularly the
+          <a href="https://doc.rust-lang.org/book/" target="_blank">Rust Book</a
+          >. For an introduction to Ada, check out AdaCore's
+          <a
+            href="https://learn.adacore.com/courses/intro-to-ada/"
+            target="_blank"
+            >Introduction to Ada</a
+          >.
+        </div>
 
-<p>
-	Before we begin,
-	it's worth noting that
-	<u><em>you can do a lot in Ada without ever allocating heap memory</em></u>,
-	or even using pointers at all.
-	In fact, most guides on Ada programming recommend avoiding pointers altogether.
-	Language constructs such as in/out parameter modes, 
-	creating dynamically sized arrays at runtime,
-	and the ability to return variable length arrays from functions 
-	address many of the scenarios where pointers would be necessary in other languages.
-	Keep this in mind when reading:
-	<u><em>You can avoid many of these situations altogether in Ada</em></u>.
-</p>
+        <p>
+          Before we begin, it's worth noting that
+          <u
+            ><em
+              >you can do a lot in Ada without ever allocating heap memory</em
+            ></u
+          >, or even using pointers at all. In fact, most guides on Ada
+          programming recommend avoiding pointers altogether. Language
+          constructs such as in/out parameter modes, creating dynamically sized
+          arrays at runtime, and the ability to return variable length arrays
+          from functions address many of the scenarios where pointers would be
+          necessary in other languages. Keep this in mind when reading:
+          <u
+            ><em
+              >You can avoid many of these situations altogether in Ada</em
+            ></u
+          >.
+        </p>
 
-<div class="note">
-	All the examples in this article are tested on an x86-64 machine running Debian 12,
-	with glibc 2.36;
-	Compiled with GCC 12.2.0,
-	GNAT native 14.2.1,
-	and rustc 1.80.1.
-</div>
+        <div class="note">
+          All the examples in this article are tested on an x86-64 machine
+          running Debian 12, with glibc 2.36; Compiled with GCC 12.2.0, GNAT
+          native 14.2.1, and rustc 1.80.1.
+        </div>
 
-<h2 id="common_Memory_errors">Common Memory Errors <a class="permalink" href="#common_Memory_errors">#</a></h2>
+        <h2 id="common_Memory_errors">
+          Common Memory Errors
+          <a class="permalink" href="#common_Memory_errors">#</a>
+        </h2>
 
-<h3 id="memory_leaks">Memory Leaks <a class="permalink" href="#memory_leaks">#</a></h3>
-<p>
-	<a href="https://cwe.mitre.org/data/definitions/401.html" target="_blank"><i>CWE-401: Memory Leak</i></a>
-	refers to a program failing to release the memory that it's allocated.
-	Left unchecked, a leaky program could drain all your system's memory.
-	The most common cause of 
-	<a href="https://devblogs.microsoft.com/oldnewthing/20180228-00/?p=98125" target="_blank">memory leaks</a> 
-	in C is mismatched <code>malloc()</code>, and <code>free()</code> statements.
-</p>
+        <h3 id="memory_leaks">
+          Memory Leaks <a class="permalink" href="#memory_leaks">#</a>
+        </h3>
+        <p>
+          <a
+            href="https://cwe.mitre.org/data/definitions/401.html"
+            target="_blank"
+            ><i>CWE-401: Memory Leak</i></a
+          >
+          refers to a program failing to release the memory that it's allocated.
+          Left unchecked, a leaky program could drain all your system's memory.
+          The most common cause of
+          <a
+            href="https://devblogs.microsoft.com/oldnewthing/20180228-00/?p=98125"
+            target="_blank"
+            >memory leaks</a
+          >
+          in C is mismatched <code>malloc()</code>, and
+          <code>free()</code> statements.
+        </p>
 
-<p>
-	While not impossible<sup><a href="#footnote_1" id="footnote_1_link">1</a></sup>, 
-	Rust does actually make leaking memory pretty difficult.
-	Variables in Rust are automatically deallocated when their <i>owner</i> goes out of scope.
-	Most of the time this means a variable will be deallocated at the end of the scope it's declared in.
-</p>
-<p>
-	For
-	<a href="https://en.wikipedia.org/wiki/Reference_counting" target="_blank"><i>reference counted</i></a>
-	smart pointers, like <code>Rc&lt;T&gt;</code> and <code>Arc&lt;T&gt;</code>,
-	Rust will automatically deallocate the memory they point to when the reference count reaches zero. 
-</p>
+        <p>
+          While not impossible<sup
+            ><a href="#footnote_1" id="footnote_1_link">1</a></sup
+          >, Rust does actually make leaking memory pretty difficult. Variables
+          in Rust are automatically deallocated when their <i>owner</i> goes out
+          of scope. Most of the time this means a variable will be deallocated
+          at the end of the scope it's declared in.
+        </p>
+        <p>
+          For
+          <a
+            href="https://en.wikipedia.org/wiki/Reference_counting"
+            target="_blank"
+            ><i>reference counted</i></a
+          >
+          smart pointers, like <code>Rc&lt;T&gt;</code> and
+          <code>Arc&lt;T&gt;</code>, Rust will automatically deallocate the
+          memory they point to when the reference count reaches zero.
+        </p>
 
-<div class="note">
-	In Ada, pointers are called <i>Access Types</i>.
-	Like in C, they <i>point</i> at a memory location;
-	However <em>unlike</em> C, they're <em>not</em> an address.
-	This means you can't assign an address to an access variable, 
-	or perform arithmetic on it.
-</div>
+        <div class="note">
+          In Ada, pointers are called <i>Access Types</i>. Like in C, they
+          <i>point</i> at a memory location; However <em>unlike</em> C, they're
+          <em>not</em> an address. This means you can't assign an address to an
+          access variable, or perform arithmetic on it.
+        </div>
 
-<p>
-	In Ada, dynamically allocated memory needs to be deallocated <em>manually</em> with the generic
-	<code>Ada.Unchecked_Deallocation</code> procedure.
-	With <i>unchecked</i> 
-	referring to checking whether the variable being deallocated is still in use.
-</p>
-<p>
-	While Ada's 
-	<a href="https://learn.adacore.com/courses/advanced-ada/parts/resource_management/controlled_types.html" target="_blank"><i>controlled types</i></a>
-	do support implementing RAII-like functionality,
-	under normal circumstances forgetting to manually deallocate heap memory will cause it to leak.
-</p>
-<p> 
-	The only scenario where Ada <em>will</em> automatically<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup> 
-	deallocate memory is when the user specifies a static size for an access type's <i>storage pool</i>
-	using the <code>Storage_Size</code> aspect.
-	This controls exactly how many bytes of heap memory can be allocated for variables of a particular type.
-	If this is specified, the compiler automatically allocates all the required memory up front<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>,
-	and automatically <em>deallocates</em> it when the type goes out of scope.
-	If this pool is exhausted, the program will raise a <code>Storage_Error</code> exception.
-</p>
+        <p>
+          In Ada, dynamically allocated memory needs to be deallocated
+          <em>manually</em> with the generic
+          <code>Ada.Unchecked_Deallocation</code> procedure. With
+          <i>unchecked</i>
+          referring to checking whether the variable being deallocated is still
+          in use.
+        </p>
+        <p>
+          While Ada's
+          <a
+            href="https://learn.adacore.com/courses/advanced-ada/parts/resource_management/controlled_types.html"
+            target="_blank"
+            ><i>controlled types</i></a
+          >
+          do support implementing RAII-like functionality, under normal
+          circumstances forgetting to manually deallocate heap memory will cause
+          it to leak.
+        </p>
+        <p>
+          The only scenario where Ada <em>will</em> automatically<sup
+            ><a href="#footnote_2" id="footnote_2_link">2</a></sup
+          >
+          deallocate memory is when the user specifies a static size for an
+          access type's <i>storage pool</i> using the
+          <code>Storage_Size</code> aspect. This controls exactly how many bytes
+          of heap memory can be allocated for variables of a particular type. If
+          this is specified, the compiler automatically allocates all the
+          required memory up front<sup
+            ><a href="#footnote_3" id="footnote_3_link">3</a></sup
+          >, and automatically <em>deallocates</em> it when the type goes out of
+          scope. If this pool is exhausted, the program will raise a
+          <code>Storage_Error</code> exception.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Access_Type_With_Explicit_Pool_Size</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Access_Type_With_Explicit_Pool_Size</span> <span class="kr">is</span>
    <span class="c1">--  This sets aside a total of 128 bytes for the pool of Int_Access.</span>
    <span class="c1">--  Allocating more than 128 bytes will raise a Storage_Error exception.</span>
    <span class="kd">type</span> <span class="kt">Int_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kt">Integer</span>
@@ -204,28 +296,46 @@
       <span class="kr">end</span><span class="p">;</span>
    <span class="kr">end</span> <span class="kr">loop</span><span class="p">;</span>
 <span class="kr">end</span> <span class="nf">Access_Type_With_Explicit_Pool_Size</span><span class="p">;</span>
-</pre></div>
-<p>
-	Running Valgrind on the example above shows that the memory is indeed deallocated automatically.
-</p>
+</pre>
+        </div>
+        <p>
+          Running Valgrind on the example above shows that the memory is indeed
+          deallocated automatically.
+        </p>
 
-<h3 id="buffer_overflow">Buffer Overflow <a class="permalink" href="#buffer_overflow">#</a></h3>
-<p>
-	<a href="https://cwe.mitre.org/data/definitions/119.html" target="_blank"><i>CWE-119: Buffer Overflow</i></a>
-	refers to reading or writing past the end of an array, 
-	and into adjacent memory.
-	Buffer overflows are probably responsible for more 
-	<a href="https://github.com/johnjhacking/Buffer-Overflow-Guide" target="_blank">security vulnerabilities</a>
-	than any other kind of bug,
-	and are a common technique for 
-	<a href="https://cturt.github.io/ps4.html" target="_blank">jailbreaking</a>
-	<a href="https://github.com/singi/oob_timestamp" target="_blank">hardware</a>.
-	The infamous
-	<a href="https://en.wikipedia.org/wiki/Morris_worm" target="_blank">Morris Worm</a>,
-	and <a href="https://en.wikipedia.org/wiki/Heartbleed" target="_blank">Heartbleed</a>
-	vulnerabilities both relied on buffer overflows.
-</p>
-<div class="code-block"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">buffer_overflow</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+        <h3 id="buffer_overflow">
+          Buffer Overflow <a class="permalink" href="#buffer_overflow">#</a>
+        </h3>
+        <p>
+          <a
+            href="https://cwe.mitre.org/data/definitions/119.html"
+            target="_blank"
+            ><i>CWE-119: Buffer Overflow</i></a
+          >
+          refers to reading or writing past the end of an array, and into
+          adjacent memory. Buffer overflows are probably responsible for more
+          <a
+            href="https://github.com/johnjhacking/Buffer-Overflow-Guide"
+            target="_blank"
+            >security vulnerabilities</a
+          >
+          than any other kind of bug, and are a common technique for
+          <a href="https://cturt.github.io/ps4.html" target="_blank"
+            >jailbreaking</a
+          >
+          <a href="https://github.com/singi/oob_timestamp" target="_blank"
+            >hardware</a
+          >. The infamous
+          <a href="https://en.wikipedia.org/wiki/Morris_worm" target="_blank"
+            >Morris Worm</a
+          >, and
+          <a href="https://en.wikipedia.org/wiki/Heartbleed" target="_blank"
+            >Heartbleed</a
+          >
+          vulnerabilities both relied on buffer overflows.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">buffer_overflow</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">email_address</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
 
 <span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">"Please enter your email address:</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
@@ -239,13 +349,19 @@
 <span class="c1">// $ Please enter your email address:</span>
 <span class="c1">// $ anthony@this_will_overwrite_the_function's_return_address_on_the_stack.com</span>
 <span class="c1">// $ Segmentation fault</span>
-</pre></div>
-<p>
-	One of the few things that Rust and Ada agree on is
-	<a href="https://shnatsel.medium.com/how-to-avoid-bounds-checks-in-rust-without-unsafe-f65e618b4c1e" target="_blank">runtime bounds checking</a>.
-	Attempting to access an out-of-bounds array index will result in a 'panic'.
-</p>
-<div class="code-block"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">overflow_this_buffer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</pre>
+        </div>
+        <p>
+          One of the few things that Rust and Ada agree on is
+          <a
+            href="https://shnatsel.medium.com/how-to-avoid-bounds-checks-in-rust-without-unsafe-f65e618b4c1e"
+            target="_blank"
+            >runtime bounds checking</a
+          >. Attempting to access an out-of-bounds array index will result in a
+          'panic'.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">overflow_this_buffer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mi">10</span><span class="p">];</span>
 
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">raw_input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span><span class="p">::</span><span class="n">new</span><span class="p">();</span>
@@ -268,17 +384,19 @@
 <span class="c1">// $ index out of bounds: the len is 10 but the index is 12</span>
 <span class="c1">// $ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</span>
 <span class="c1">// $ ...</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Similar to Rust, 
-	attempting to access an array index outside of its valid range will raise a
-	<code>Constraint_Error</code> exception at runtime,
-	which can be handled programmatically.
-	This is the same type of exception raised in the case of a scalar range constraint violation,
-	such as an integer overflow.
-</p>
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Buffer_Overflow</span> <span class="kr">is</span>
+        <p>
+          Similar to Rust, attempting to access an array index outside of its
+          valid range will raise a
+          <code>Constraint_Error</code> exception at runtime, which can be
+          handled programmatically. This is the same type of exception raised in
+          the case of a scalar range constraint violation, such as an integer
+          overflow.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Buffer_Overflow</span> <span class="kr">is</span>
    <span class="n">Email_Address</span> <span class="p">:</span> <span class="kt">String</span> <span class="p">(</span><span class="mi">1</span> <span class="p">..</span> <span class="mi">10</span><span class="p">);</span>
 <span class="kr">begin</span>
    <span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Please enter your email address:"</span><span class="p">);</span>
@@ -293,30 +411,40 @@
 <span class="c1">--  $ Please enter your email address:</span>
 <span class="c1">--  $ anthony@this_will_overflow_the_buffer.com</span>
 <span class="c1">--  $ Buffer overflowed!</span>
-</pre></div>
+</pre>
+        </div>
 
-<h4>SPARK</h4>
-<p>
-	SPARK is a subset of Ada which can be 
-	<a href="https://en.wikipedia.org/wiki/Formal_verification" target="_blank">formally verified</a>.
-	Meaning that it's possible to verify the absence of runtime errors in your code using formal methods.
-</p>
+        <h4>SPARK</h4>
+        <p>
+          SPARK is a subset of Ada which can be
+          <a
+            href="https://en.wikipedia.org/wiki/Formal_verification"
+            target="_blank"
+            >formally verified</a
+          >. Meaning that it's possible to verify the absence of runtime errors
+          in your code using formal methods.
+        </p>
 
-<div class="note">
-	All SPARK code is valid Ada,
-	but to determine whether the Ada code is valid SPARK I'm using
-	<a href="https://docs.adacore.com/hilite-docs/html/ug/usage.html" target="_blank"><i>GNATprove</i></a>.
-	GNATprove is a component of AdaCore's <i>GNAT</i> 
-	Ada compiler used to formally verify the correctness of SPARK code.
-	If you're using <i><a href="https://alire.ada.dev" target="_blank">Alire</a></i>,
-	you can add GNATprove to your project by running <code>alr with gnatprove</code>.
-</div>
+        <div class="note">
+          All SPARK code is valid Ada, but to determine whether the Ada code is
+          valid SPARK I'm using
+          <a
+            href="https://docs.adacore.com/hilite-docs/html/ug/usage.html"
+            target="_blank"
+            ><i>GNATprove</i></a
+          >. GNATprove is a component of AdaCore's <i>GNAT</i> Ada compiler used
+          to formally verify the correctness of SPARK code. If you're using
+          <i><a href="https://alire.ada.dev" target="_blank">Alire</a></i
+          >, you can add GNATprove to your project by running
+          <code>alr with gnatprove</code>.
+        </div>
 
-<p>
-	Let's see if we can reimplement the previous Rust example in SPARK,
-	and prove that a buffer overflow can't occur.
-</p>
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Overflow_This_Buffer</span>
+        <p>
+          Let's see if we can reimplement the previous Rust example in SPARK,
+          and prove that a buffer overflow can't occur.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Overflow_This_Buffer</span>
    <span class="nf">with</span> <span class="nf">SPARK_Mode</span> <span class="p">=&gt;</span> <span class="nf">On</span>
 <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">Integer_Array</span> <span class="kr">is</span> <span class="kr">array</span> <span class="p">(</span><span class="kt">Positive</span> <span class="kr">range</span> <span class="p">&lt;&gt;)</span> <span class="kr">of</span> <span class="kt">Integer</span><span class="p">;</span>
@@ -329,12 +457,15 @@
 
    <span class="n">Int_Array</span> <span class="p">(</span><span class="n">Index_To_Clear</span><span class="p">)</span> <span class="p">:=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kr">end</span> <span class="nf">Overflow_This_Buffer</span><span class="p">;</span>
-</pre></div>
-<p>
-	Attempting to prove the absence of runtime errors gives us the following warnings:
-</p>
+</pre>
+        </div>
+        <p>
+          Attempting to prove the absence of runtime errors gives us the
+          following warnings:
+        </p>
 
-<div class="code-block"><pre><span></span>buffer_overflow.adb:162:26: medium: unexpected exception might be raised
+        <div class="code-block">
+          <pre><span></span>buffer_overflow.adb:162:26: medium: unexpected exception might be raised
   162 |      Ada.Integer_Text_IO.Get (Index_To_Clear);
       |      ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
 
@@ -346,28 +477,30 @@ buffer_overflow.adb:164:18: medium: array index check might fail
   (for argument Index_To_Clear)
   162 |      Ada.Integer_Text_IO.Get (Index_To_Clear);
       |                         ^ here
-</pre></div>
-<p>
-	The SPARK prover correctly notices that there's nothing stopping us
-	from entering a value outside the array bounds. 
-	It also points out that the <code>Get</code> 
-	call we're using to read the integer from <code>stdin</code>
-	can raise an <i>unexpected</i> <code>Constraint_Error</code>
-	at runtime if you type in anything that can't be parsed as an integer.
-	To keep this example simple, we'll ignore this warning and push on.
-	We'll talk more about exceptions in SPARK 
-	<a href="#use_after_free">later</a>
-	in the article.
-</p>
-<p>
-	If we wrap the <code>Get</code> call in a loop, 
-	and <i>poll</i> the user continuously until we have a value within the array bounds,
-	SPARK can actually prove that a buffer overflow can't occur.
-	(Remember to initialise the <code>Index_To_Clear</code> 
-	variable to something outside this range!)
-</p>
+</pre>
+        </div>
+        <p>
+          The SPARK prover correctly notices that there's nothing stopping us
+          from entering a value outside the array bounds. It also points out
+          that the <code>Get</code> call we're using to read the integer from
+          <code>stdin</code> can raise an <i>unexpected</i>
+          <code>Constraint_Error</code>
+          at runtime if you type in anything that can't be parsed as an integer.
+          To keep this example simple, we'll ignore this warning and push on.
+          We'll talk more about exceptions in SPARK
+          <a href="#use_after_free">later</a>
+          in the article.
+        </p>
+        <p>
+          If we wrap the <code>Get</code> call in a loop, and <i>poll</i> the
+          user continuously until we have a value within the array bounds, SPARK
+          can actually prove that a buffer overflow can't occur. (Remember to
+          initialise the <code>Index_To_Clear</code>
+          variable to something outside this range!)
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Overflow_This_Buffer</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Overflow_This_Buffer</span>
    <span class="nf">with</span> <span class="nf">SPARK_Mode</span> <span class="p">=&gt;</span> <span class="nf">On</span>
 <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">Integer_Array</span> <span class="kr">is</span> <span class="kr">array</span> <span class="p">(</span><span class="kt">Positive</span> <span class="kr">range</span> <span class="p">&lt;&gt;)</span> <span class="kr">of</span> <span class="kt">Integer</span><span class="p">;</span>
@@ -382,54 +515,74 @@ buffer_overflow.adb:164:18: medium: array index check might fail
 
    <span class="n">Int_Array</span> <span class="p">(</span><span class="n">Index_To_Clear</span><span class="p">)</span> <span class="p">:=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kr">end</span> <span class="nf">Overflow_This_Buffer</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<h3 id="use_after_free">Use After Free <a class="permalink" href="#use_after_free">#</a></h3>
+        <h3 id="use_after_free">
+          Use After Free <a class="permalink" href="#use_after_free">#</a>
+        </h3>
 
-<p>
-	<a href="https://cwe.mitre.org/data/definitions/416.html" target="_blank"><i>CWE-416: Use After Free</i></a>
-	refers to 
-	<a href="https://stackoverflow.com/a/14224977/5931673" target="_blank"><i>dereferencing</i></a>
-	a pointer after the value it points to has been freed.
-	The C standard specifies that doing so is 
-	<a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank"><i>Undefined Behaviour</i></a>
-	(ISO/IEC 9899:2018, Section J.2), 
-	potentially leading to a variety of different stability and 
-	<a href="https://www.youtube.com/watch?v=PKqMsaKGdlM" target="_blank">security issues</a>. 
-	(ISO/IEC 9899:2018, Section 3.4.3).
-</p>
-<p>
-	Most of the time this just results in unpredictable behaviour because the pointer 
-	now points to memory reallocated to something else.
-	But occasionally <i>use-after-free's</i>
-	can be leveraged for <a href="https://en.wikipedia.org/wiki/BlueKeep" target="_blank">something more sinister</a>.
-</p>
-<p>
-	Rust's borrow checker automatically prevents you from using a value after it's been freed.
-	Calling <code>drop</code> to manually free a variable <i>moves</i> it,
-	meaning that any attempt to use it afterwards will raise a compile-time error.
-</p>
+        <p>
+          <a
+            href="https://cwe.mitre.org/data/definitions/416.html"
+            target="_blank"
+            ><i>CWE-416: Use After Free</i></a
+          >
+          refers to
+          <a href="https://stackoverflow.com/a/14224977/5931673" target="_blank"
+            ><i>dereferencing</i></a
+          >
+          a pointer after the value it points to has been freed. The C standard
+          specifies that doing so is
+          <a
+            href="https://en.wikipedia.org/wiki/Undefined_behavior"
+            target="_blank"
+            ><i>Undefined Behaviour</i></a
+          >
+          (ISO/IEC 9899:2018, Section J.2), potentially leading to a variety of
+          different stability and
+          <a href="https://www.youtube.com/watch?v=PKqMsaKGdlM" target="_blank"
+            >security issues</a
+          >. (ISO/IEC 9899:2018, Section 3.4.3).
+        </p>
+        <p>
+          Most of the time this just results in unpredictable behaviour because
+          the pointer now points to memory reallocated to something else. But
+          occasionally <i>use-after-free's</i> can be leveraged for
+          <a href="https://en.wikipedia.org/wiki/BlueKeep" target="_blank"
+            >something more sinister</a
+          >.
+        </p>
+        <p>
+          Rust's borrow checker automatically prevents you from using a value
+          after it's been freed. Calling <code>drop</code> to manually free a
+          variable <i>moves</i> it, meaning that any attempt to use it
+          afterwards will raise a compile-time error.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">use_after_free</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+        <div class="code-block">
+          <pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">use_after_free</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">greeting</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello, World!"</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
 <span class="w">    </span><span class="nb">drop</span><span class="p">(</span><span class="n">greeting</span><span class="p">);</span>
 <span class="w">    </span><span class="c1">// This will trigger an error at compile-time, because the variable</span>
 <span class="w">    </span><span class="c1">// `something` was moved by the first call to `std::mem::drop`.</span>
 <span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">"{}"</span><span class="p">,</span><span class="w"> </span><span class="n">greeting</span><span class="p">);</span>
 <span class="p">}</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Nothing prevents you from writing Ada code that dereferences an access type after it's been freed;
-	However any access dereference triggers a runtime check to ensure it's non-null.
-	Unlike in C,
-	freeing an access type in Ada automatically sets its value to <code>null</code>,
-	and any subsequent attempt to dereference it will raise a 
-	<code>Constraint_Error</code> exception,
-	which can be caught and handled.
-</p>
+        <p>
+          Nothing prevents you from writing Ada code that dereferences an access
+          type after it's been freed; However any access dereference triggers a
+          runtime check to ensure it's non-null. Unlike in C, freeing an access
+          type in Ada automatically sets its value to <code>null</code>, and any
+          subsequent attempt to dereference it will raise a
+          <code>Constraint_Error</code> exception, which can be caught and
+          handled.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Use_After_Free</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Use_After_Free</span> <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
    <span class="n">Example_String</span> <span class="p">:</span> <span class="n">String_Access</span> <span class="p">:=</span> <span class="kc">null</span><span class="p">;</span>
 
@@ -447,23 +600,30 @@ buffer_overflow.adb:164:18: medium: array index check might fail
    <span class="kr">when</span> <span class="n">Constraint_Error</span> <span class="p">=&gt;</span>
       <span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Used after freed!"</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Use_After_Free</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<div class="note">
-	The GNAT Ada compiler allows you to 
-	<a href="https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#run-time-checks" target="_blank">
-		disable runtime checking</a>
-	with the <code>-gnatp</code> compiler switch.
-	In this case, dereferencing a null access type will result in the same kind of undefined behaviour you'd get in C.
-</div>
+        <div class="note">
+          The GNAT Ada compiler allows you to
+          <a
+            href="https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#run-time-checks"
+            target="_blank"
+          >
+            disable runtime checking</a
+          >
+          with the <code>-gnatp</code> compiler switch. In this case,
+          dereferencing a null access type will result in the same kind of
+          undefined behaviour you'd get in C.
+        </div>
 
-<p>
-	Ada allows you to specify a <i>null-excluding</i> constraint on access types,
-	This restricts assignment to only non-null values,
-	and forbids any unchecked deallocation.
-</p>
+        <p>
+          Ada allows you to specify a <i>null-excluding</i> constraint on access
+          types, This restricts assignment to only non-null values, and forbids
+          any unchecked deallocation.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">type</span> <span class="kt">Non_Null_String_Access</span> <span class="kr">is</span> <span class="ow">not</span> <span class="kc">null</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">type</span> <span class="kt">Non_Null_String_Access</span> <span class="kr">is</span> <span class="ow">not</span> <span class="kc">null</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
 <span class="c1">--  Since this is a 'null-excluding' access type, it must be initialised,</span>
 <span class="c1">--  otherwise a Constraint_Error exception will occur immediately at runtime.</span>
 <span class="n">Example_String</span> <span class="p">:</span> <span class="n">Non_Null_String_Access</span> <span class="p">:=</span> <span class="kr">new</span> <span class="kt">String</span><span class="p">'(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
@@ -472,15 +632,19 @@ buffer_overflow.adb:164:18: medium: array index check might fail
 <span class="c1">--  null-excluding access type.</span>
 <span class="kd">procedure</span> <span class="nf">Free</span> <span class="kr">is</span>
   <span class="kr">new</span> <span class="n">Ada</span><span class="p">.</span><span class="n">Unchecked_Deallocation</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="n">Non_Null_String_Access</span><span class="p">);</span>
-</pre></div>
+</pre>
+        </div>
 
-<h4>SPARK</h4>
-<p>
-	GNATprove will detect the use-after-free error in the above code,
-	and issue a warning<sup><a href="#footnote_4" id="footnote_4_link">4</a></sup>:
-</p>
+        <h4>SPARK</h4>
+        <p>
+          GNATprove will detect the use-after-free error in the above code, and
+          issue a warning<sup
+            ><a href="#footnote_4" id="footnote_4_link">4</a></sup
+          >:
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Use_After_Free</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Use_After_Free</span>
    <span class="nf">with</span> <span class="nf">SPARK_Mode</span> <span class="p">=&gt;</span> <span class="nf">On</span>
 <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
@@ -494,83 +658,124 @@ buffer_overflow.adb:164:18: medium: array index check might fail
    <span class="c1">--  This line will raise a warning during static analysis.</span>
    <span class="n">Put_Line</span> <span class="p">(</span><span class="n">Example_String</span><span class="p">.</span><span class="kr">all</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Use_After_Free</span><span class="p">;</span>
-</pre></div>
-<div class="code-block"><pre><span></span>use_after_free.adb:13:32: medium: pointer dereference check might fail
+</pre>
+        </div>
+        <div class="code-block">
+          <pre><span></span>use_after_free.adb:13:32: medium: pointer dereference check might fail
   13  |      Put_Line (Example_String.all);
       |                ~~~~~~~~~~~~~~~^~~
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Note the removal of the exception handling block.
-	SPARK <em>does</em> technically allow run-time exception handling, 
-	but only exceptions that are <em>explicitly</em> raised in the code.
-	Exceptions in SPARK are
-	<a href="https://docs.adacore.com/spark2014-docs/html/lrm/exceptions.html" target="_blank">complicated</a>:
-	You <em>can</em> still explicitly raise exceptions with the <code>raise</code> statement,
-	but to be valid SPARK, the flow analyser will need to prove that the statement raising the exception can never actually be reached;
-	Making exceptions almost like a form of compile-time assertion.
-	This means that our <code>Constraint_Error</code> exception handler is unreachable,
-	and needs to be removed.
-</p>
+        <p>
+          Note the removal of the exception handling block. SPARK
+          <em>does</em> technically allow run-time exception handling, but only
+          exceptions that are <em>explicitly</em> raised in the code. Exceptions
+          in SPARK are
+          <a
+            href="https://docs.adacore.com/spark2014-docs/html/lrm/exceptions.html"
+            target="_blank"
+            >complicated</a
+          >: You <em>can</em> still explicitly raise exceptions with the
+          <code>raise</code> statement, but to be valid SPARK, the flow analyser
+          will need to prove that the statement raising the exception can never
+          actually be reached; Making exceptions almost like a form of
+          compile-time assertion. This means that our
+          <code>Constraint_Error</code> exception handler is unreachable, and
+          needs to be removed.
+        </p>
 
-<h3 id="double_free">Double Free <a class="permalink" href="#double_free">#</a></h3>
-<p>
-	<a href="https://cwe.mitre.org/data/definitions/415.html" target="_blank"><i>CWE-415: Double Free</i></a>
-	refers to freeing a heap allocated variable more than once.
-	The C standard (as usual) specifies that doing so is <i>Undefined Behaviour</i> (ISO/IEC 9899:2018, Section J.2).
-	Double frees can be exploited in
-	<a href="https://book.hacktricks.xyz/binary-exploitation/libc-heap/double-free" target="_blank">various</a>
-	<a href="https://heap-exploitation.dhavalkapil.com/attacks/double_free" target="_blank">ways</a>
-	to cause all kinds of nonsense.
-</p>
-<p>
-	On Linux,
-	<a href="https://sourceware.org/glibc/wiki/MallocInternals" target="_blank">glibc</a>
-	stores extra <i>metadata</i> about each allocated memory block right before the block's address,
-	such as its size, and a <i>magic number</i> to identify it as a valid allocation.
-	When you pass an address to <code>free</code>, 
-	glibc uses this metadata to determine the amount of memory being freed.
-	Freeing a small block of heap memory can place it in a <i>cache</i> of recently freed blocks,
-	known as a <i>fast bin</i>.
-	The next time you call <code>malloc</code> for a block of the same size,
-	glibc will give you the recently deallocated block from the fast bin,
-	rather than allocating new memory.
-	This process is much quicker than allocating a new block, hence the <em>fast</em> in the name.
-	Freeing the same address twice runs the risk of the same block being placed in the fast bin 
-	<em>multiple times</em>.
-	This could lead to multiple subsequent memory allocations pointing to the same address.
-</p>
-<p>
-	<a href="https://azeria-labs.com/heap-exploitation-part-1-understanding-the-glibc-heap-implementation/" target="_blank">This</a>
-	article contains a great in-depth look at glibc's heap implementation.
-</p>
-<p>
-	Rust's borrow checker effectively prevents you from freeing the same variable more than once.
-	As mentioned <a href="#use_after_free">earlier</a>,
-	calling <code>drop</code> to free a variable will <i>move</i> it out of scope forever.
-</p>
-<div class="code-block"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">double_free</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+        <h3 id="double_free">
+          Double Free <a class="permalink" href="#double_free">#</a>
+        </h3>
+        <p>
+          <a
+            href="https://cwe.mitre.org/data/definitions/415.html"
+            target="_blank"
+            ><i>CWE-415: Double Free</i></a
+          >
+          refers to freeing a heap allocated variable more than once. The C
+          standard (as usual) specifies that doing so is
+          <i>Undefined Behaviour</i> (ISO/IEC 9899:2018, Section J.2). Double
+          frees can be exploited in
+          <a
+            href="https://book.hacktricks.xyz/binary-exploitation/libc-heap/double-free"
+            target="_blank"
+            >various</a
+          >
+          <a
+            href="https://heap-exploitation.dhavalkapil.com/attacks/double_free"
+            target="_blank"
+            >ways</a
+          >
+          to cause all kinds of nonsense.
+        </p>
+        <p>
+          On Linux,
+          <a
+            href="https://sourceware.org/glibc/wiki/MallocInternals"
+            target="_blank"
+            >glibc</a
+          >
+          stores extra <i>metadata</i> about each allocated memory block right
+          before the block's address, such as its size, and a
+          <i>magic number</i> to identify it as a valid allocation. When you
+          pass an address to <code>free</code>, glibc uses this metadata to
+          determine the amount of memory being freed. Freeing a small block of
+          heap memory can place it in a <i>cache</i> of recently freed blocks,
+          known as a <i>fast bin</i>. The next time you call
+          <code>malloc</code> for a block of the same size, glibc will give you
+          the recently deallocated block from the fast bin, rather than
+          allocating new memory. This process is much quicker than allocating a
+          new block, hence the <em>fast</em> in the name. Freeing the same
+          address twice runs the risk of the same block being placed in the fast
+          bin <em>multiple times</em>. This could lead to multiple subsequent
+          memory allocations pointing to the same address.
+        </p>
+        <p>
+          <a
+            href="https://azeria-labs.com/heap-exploitation-part-1-understanding-the-glibc-heap-implementation/"
+            target="_blank"
+            >This</a
+          >
+          article contains a great in-depth look at glibc's heap implementation.
+        </p>
+        <p>
+          Rust's borrow checker effectively prevents you from freeing the same
+          variable more than once. As mentioned
+          <a href="#use_after_free">earlier</a>, calling <code>drop</code> to
+          free a variable will <i>move</i> it out of scope forever.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">double_free</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">something</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello, World!"</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
 <span class="w">    </span><span class="nb">drop</span><span class="p">(</span><span class="n">something</span><span class="p">);</span>
 <span class="w">    </span><span class="c1">// This will trigger an error at compile-time, because the variable</span>
 <span class="w">    </span><span class="c1">// `something` was moved by the first call to `std::mem::drop`.</span>
 <span class="w">    </span><span class="nb">drop</span><span class="p">(</span><span class="n">something</span><span class="p">);</span>
 <span class="p">}</span>
-</pre></div>
-<p>
-	According to
-	<a href="https://www.adaic.org/resources/add_content/standards/05rm/html/RM-13-11-2.html" target="_blank">section 13.11.2</a>
-	of the Ada Reference Manual, 
-	freeing an access type with a <code>null</code> value has no effect,
-	just like in C (ISO/IEC 9899:2018, Section 7.22.3.3).
-	That's a relief!
-	As mentioned earlier, freeing a pointer in Ada will automatically set its value to <code>null</code>,
-	preventing most accidental double free errors from causing any serious issues.
-</p>
-<p>
-	It's still possible to cause a double free in Ada by creating an alias to a pointer.
-</p>
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span> <span class="kr">is</span>
+</pre>
+        </div>
+        <p>
+          According to
+          <a
+            href="https://www.adaic.org/resources/add_content/standards/05rm/html/RM-13-11-2.html"
+            target="_blank"
+            >section 13.11.2</a
+          >
+          of the Ada Reference Manual, freeing an access type with a
+          <code>null</code> value has no effect, just like in C (ISO/IEC
+          9899:2018, Section 7.22.3.3). That's a relief! As mentioned earlier,
+          freeing a pointer in Ada will automatically set its value to
+          <code>null</code>, preventing most accidental double free errors from
+          causing any serious issues.
+        </p>
+        <p>
+          It's still possible to cause a double free in Ada by creating an alias
+          to a pointer.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span> <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
 
    <span class="n">Str_Acc</span>       <span class="p">:</span> <span class="n">String_Access</span><span class="p">;</span>
@@ -597,17 +802,22 @@ buffer_overflow.adb:164:18: medium: array index check might fail
 <span class="c1">--  $ Pointer Alias Address:  25715368</span>
 <span class="c1">--  $ free(): double free detected in tcache 2</span>
 <span class="c1">--  $ Program Error!</span>
-</pre></div>
-<p>
-	As you can see in the example above,
-	actually freeing the same memory location twice<sup><a href="#footnote_5" id="footnote_5_link">5</a></sup> will raise a 
-	<code>Program_Error</code> exception at runtime.
-	The below example shows how you can corrupt the heap by double freeing a pointer in Ada.
-	Again, Ada will raise a <code>Program_Error</code> exception when it gets the error signal from glibc,
-	which can be handled at runtime.
-</p>
+</pre>
+        </div>
+        <p>
+          As you can see in the example above, actually freeing the same memory
+          location twice<sup
+            ><a href="#footnote_5" id="footnote_5_link">5</a></sup
+          >
+          will raise a <code>Program_Error</code> exception at runtime. The
+          below example shows how you can corrupt the heap by double freeing a
+          pointer in Ada. Again, Ada will raise a
+          <code>Program_Error</code> exception when it gets the error signal
+          from glibc, which can be handled at runtime.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span> <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kt">String</span><span class="p">;</span>
    <span class="kd">type</span> <span class="kt">String_Access_Array</span> <span class="kr">is</span> <span class="kr">array</span> <span class="p">(</span><span class="mi">1</span> <span class="p">..</span> <span class="mi">16</span><span class="p">)</span> <span class="kr">of</span> <span class="n">String_Access</span><span class="p">;</span>
 
@@ -645,20 +855,27 @@ buffer_overflow.adb:164:18: medium: array index check might fail
 <span class="c1">--  $ alr run</span>
 <span class="c1">--  $ malloc(): unaligned fastbin chunk detected 3</span>
 <span class="c1">--  $ Program Error!</span>
-</pre></div>
+</pre>
+        </div>
 
-<h4>SPARK</h4>
-<p>
-	Like Rust, SPARK has its own concept of 
-	<a href="https://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#memory-ownership-policy" target="_blank"><i>'ownership'</i></a>.
-	Assignment between access objects creates a transfer of ownership, 
-	with the source object losing permission to read or write to the underlying allocated memory.
-</p>
-<p>
-	In this case, aliasing the string pointers in the examples above is not valid SPARK,
-	preventing us from causing this particular double free error.
-</p>
-<div class="code-block"><pre><span></span>alr gnatprove
+        <h4>SPARK</h4>
+        <p>
+          Like Rust, SPARK has its own concept of
+          <a
+            href="https://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#memory-ownership-policy"
+            target="_blank"
+            ><i>'ownership'</i></a
+          >. Assignment between access objects creates a transfer of ownership,
+          with the source object losing permission to read or write to the
+          underlying allocated memory.
+        </p>
+        <p>
+          In this case, aliasing the string pointers in the examples above is
+          not valid SPARK, preventing us from causing this particular double
+          free error.
+        </p>
+        <div class="code-block">
+          <pre><span></span>alr gnatprove
 Phase 1 of 3: generation of data representation information ...
 Phase 2 of 3: generation of Global contracts ...
 Phase 3 of 3: flow analysis and proof ...
@@ -670,14 +887,18 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    12 |      Str_Acc_Alias := Str_Acc;
       |                       ^ here
   launch "gnatprove --explain=E0010" for more information
-</pre></div>
-<p>
-	SPARK doesn't allow you to use <code>Unchecked_Deallocation</code>
-	with a <em>general</em> access type (which we'll discuss in more detail <a href="#freeing_stack_memory">later</a>),
-	so we can't try to sidestep SPARK's ownership system by doing something tricky like this:
-</p>
+</pre>
+        </div>
+        <p>
+          SPARK doesn't allow you to use
+          <code>Unchecked_Deallocation</code> with a <em>general</em> access
+          type (which we'll discuss in more detail
+          <a href="#freeing_stack_memory">later</a>), so we can't try to
+          sidestep SPARK's ownership system by doing something tricky like this:
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Double_Free</span>
    <span class="nf">with</span> <span class="nf">SPARK_Mode</span> <span class="p">=&gt;</span> <span class="nf">On</span>
 <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kr">all</span> <span class="kt">String</span><span class="p">;</span>
@@ -697,53 +918,72 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 
    <span class="n">Free</span> <span class="p">(</span><span class="n">Str_Acc_Alias</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Double_Free</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	SPARK sees what we're up to and stops us in our tracks:
-</p>
+        <p>SPARK sees what we're up to and stops us in our tracks:</p>
 
-<div class="code-block"><pre><span></span>double_free.adb:13:17: error: instance of Unchecked_Deallocation with a 
+        <div class="code-block">
+          <pre><span></span>double_free.adb:13:17: error: instance of Unchecked_Deallocation with a 
   general access type is not allowed in SPARK
    13 |      procedure Free is new Ada.Unchecked_Deallocation (String, String_Access);
       |                ^~~~
   violation of aspect SPARK_Mode at line 6
     6 |     with SPARK_Mode =&gt; On
       |          ^ here
-</pre></div>
+</pre>
+        </div>
 
-<h3 id="race_conditions">Race Conditions <a class="permalink" href="#race_conditions">#</a></h3>
-<p>
-	In a multi-threaded program, 
-	a <i>Race condition</i> is a situation where the outcome of the program depends on the order in which the threads execute.
-	Because an operating system can switch between threads at any time in any order,
-	it's impossible to guarantee when threads will access shared resources.
-	This really becomes a problem when two threads try to write to the same memory at the same time;
-	Leading to some of the most 
-	<a href="https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability)" target="_blank">infuriating</a>, 
-	<a href="https://en.wikipedia.org/wiki/Northeast_blackout_of_2003" target="_blank">time-consuming</a>, 
-	and 
-	<a href="https://en.wikipedia.org/wiki/Therac-25" target="_blank">hair-raising</a>
-	bugs in software development.
-</p>
-<p>
-	One common race condition is a
-	<a href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use" target="_blank"><i>Time-of-check to time-of-use</i></a>
-	error, or <i>TOC/TOU</i>;
-	In which a resource changes between the time it's checked for validity, and the time it's used.
-	Maybe one thread checks to see if a file already exists before creating it,
-	gets interrupted after the initial check, 
-	and then another thread creates the new file before the first thread can.
-	This has led to 
-	<a href="https://www.bleepingcomputer.com/news/security/windows-11-tesla-ubuntu-and-macos-hacked-at-pwn2own-2023/" target="_blank">real world vulnerabilities</a>
-	in the past.
-</p>
+        <h3 id="race_conditions">
+          Race Conditions <a class="permalink" href="#race_conditions">#</a>
+        </h3>
+        <p>
+          In a multi-threaded program, a <i>Race condition</i> is a situation
+          where the outcome of the program depends on the order in which the
+          threads execute. Because an operating system can switch between
+          threads at any time in any order, it's impossible to guarantee when
+          threads will access shared resources. This really becomes a problem
+          when two threads try to write to the same memory at the same time;
+          Leading to some of the most
+          <a
+            href="https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability)"
+            target="_blank"
+            >infuriating</a
+          >,
+          <a
+            href="https://en.wikipedia.org/wiki/Northeast_blackout_of_2003"
+            target="_blank"
+            >time-consuming</a
+          >, and
+          <a href="https://en.wikipedia.org/wiki/Therac-25" target="_blank"
+            >hair-raising</a
+          >
+          bugs in software development.
+        </p>
+        <p>
+          One common race condition is a
+          <a
+            href="https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use"
+            target="_blank"
+            ><i>Time-of-check to time-of-use</i></a
+          >
+          error, or <i>TOC/TOU</i>; In which a resource changes between the time
+          it's checked for validity, and the time it's used. Maybe one thread
+          checks to see if a file already exists before creating it, gets
+          interrupted after the initial check, and then another thread creates
+          the new file before the first thread can. This has led to
+          <a
+            href="https://www.bleepingcomputer.com/news/security/windows-11-tesla-ubuntu-and-macos-hacked-at-pwn2own-2023/"
+            target="_blank"
+            >real world vulnerabilities</a
+          >
+          in the past.
+        </p>
 
-<p>
-	Consider the following example:
-</p>
+        <p>Consider the following example:</p>
 
-<div class="code-block"><pre><span></span><span class="cp">#define THREAD_COUNT 2</span>
+        <div class="code-block">
+          <pre><span></span><span class="cp">#define THREAD_COUNT 2</span>
 <span class="cp">#define STARTING_BALANCE 10000</span>
 
 <span class="kt">int</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STARTING_BALANCE</span><span class="p">;</span>
@@ -804,33 +1044,45 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">// $ Thread 0 withdrew: 9700</span>
 <span class="c1">// $ Thread 1 withdrew: 7700</span>
 <span class="c1">// $ Total amount withdrawn: 17400</span>
-</pre></div>
-<p>
-	This example spawns two threads using the
-	<a href="https://en.wikipedia.org/wiki/Pthreads" target="_blank">POSIX threads</a> API.
-	Each thread withdraws money from a shared 'bank account' until there's nothing left.
-	I've introduced an artificial delay when 'saving' the new account balance to simulate real world conditions, 
-	like communicating over a network, or writing to a database.
-	Because of the delay between checking the available balance and updating it after a withdrawal,
-	over time each thread will consistently withdraw much more than the account's total balance.
-	This bank might have a hard time balancing its sheets.
-</p>
-<p>
-	The most common way to resolve this problem is to use a 
-	<a href="https://stackoverflow.com/a/34558/5931673" target="_blank"><i>mutex</i></a>.
-	A mutex (from <i><b>Mut</b>ual <b>Ex</b>clusion</i>) 
-	is a construct that restricts access to a certain section of code to only one thread at a time.
-	The first thread to <i>acquire</i> the mutex gets access,
-	other threads need to wait until the first thread <i>releases</i> it.
-	This area of code protected by the mutex is known as a
-	<a href="https://en.wikipedia.org/wiki/Critical_section" target="_blank"><i>critical section</i></a>
-</p>
-<p>
-	Wrapping the <code>withdraw</code> 
-	function in a mutex so that only one thread can withdraw at a time will prevent the race condition:
-</p>
+</pre>
+        </div>
+        <p>
+          This example spawns two threads using the
+          <a href="https://en.wikipedia.org/wiki/Pthreads" target="_blank"
+            >POSIX threads</a
+          >
+          API. Each thread withdraws money from a shared 'bank account' until
+          there's nothing left. I've introduced an artificial delay when
+          'saving' the new account balance to simulate real world conditions,
+          like communicating over a network, or writing to a database. Because
+          of the delay between checking the available balance and updating it
+          after a withdrawal, over time each thread will consistently withdraw
+          much more than the account's total balance. This bank might have a
+          hard time balancing its sheets.
+        </p>
+        <p>
+          The most common way to resolve this problem is to use a
+          <a href="https://stackoverflow.com/a/34558/5931673" target="_blank"
+            ><i>mutex</i></a
+          >. A mutex (from <i><b>Mut</b>ual <b>Ex</b>clusion</i>) is a construct
+          that restricts access to a certain section of code to only one thread
+          at a time. The first thread to <i>acquire</i> the mutex gets access,
+          other threads need to wait until the first thread <i>releases</i> it.
+          This area of code protected by the mutex is known as a
+          <a
+            href="https://en.wikipedia.org/wiki/Critical_section"
+            target="_blank"
+            ><i>critical section</i></a
+          >
+        </p>
+        <p>
+          Wrapping the <code>withdraw</code>
+          function in a mutex so that only one thread can withdraw at a time
+          will prevent the race condition:
+        </p>
 
-<div class="code-block"><pre><span></span><span class="c1">// ...</span>
+        <div class="code-block">
+          <pre><span></span><span class="c1">// ...</span>
 <span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">bank_account_mutex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
 <span class="c1">// ...</span>
 
@@ -857,30 +1109,41 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">// $ Thread 0 withdrew: 4700</span>
 <span class="c1">// $ Thread 1 withdrew: 5300</span>
 <span class="c1">// $ Total amount withdrawn: 10000</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Out of the box,
-	Rust supports two methods of synchronising threads:
-	shared-state concurrency using 
-	<a href="https://doc.rust-lang.org/book/ch16-03-shared-state.html" target="_blank"><i>Mutexes</i></a>,
-	and message-passing using 
-	<a href="https://doc.rust-lang.org/book/ch16-02-message-passing.html" target="_blank"><i>Channels</i></a>.
-</p>
-<p>
-	When spawning a new thread,
-	Rust's memory model guarantees that any memory it accesses lives at least as long as the thread itself,
-	and that the data can't be <i>moved</i> into two threads at the same time.
-	The Rust compiler prevents race conditions by enforcing that shared data access only takes place through Rust's concurrency primitives:
-	The only way to actually share memory between threads is to wrap it in a Mutex,
-	and access it using Rust's
-	<i>Atomic Reference Counted</i> smart pointer type (<code>Arc&lt;T&gt;</code>).
-</p>
+        <p>
+          Out of the box, Rust supports two methods of synchronising threads:
+          shared-state concurrency using
+          <a
+            href="https://doc.rust-lang.org/book/ch16-03-shared-state.html"
+            target="_blank"
+            ><i>Mutexes</i></a
+          >, and message-passing using
+          <a
+            href="https://doc.rust-lang.org/book/ch16-02-message-passing.html"
+            target="_blank"
+            ><i>Channels</i></a
+          >.
+        </p>
+        <p>
+          When spawning a new thread, Rust's memory model guarantees that any
+          memory it accesses lives at least as long as the thread itself, and
+          that the data can't be <i>moved</i> into two threads at the same time.
+          The Rust compiler prevents race conditions by enforcing that shared
+          data access only takes place through Rust's concurrency primitives:
+          The only way to actually share memory between threads is to wrap it in
+          a Mutex, and access it using Rust's
+          <i>Atomic Reference Counted</i> smart pointer type
+          (<code>Arc&lt;T&gt;</code>).
+        </p>
 
-<p>
-	The below example demonstrates a simplified version of our 'bank' program in Rust:
-</p>
-<div class="code-block"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">spending_safely</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+        <p>
+          The below example demonstrates a simplified version of our 'bank'
+          program in Rust:
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">spending_safely</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">account_balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arc</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="n">Mutex</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="n">STARTING_BALANCE</span><span class="p">));</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">withdrawn_amounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arc</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="n">Mutex</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="fm">vec!</span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">THREAD_COUNT</span><span class="p">]));</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">thread_handles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="fm">vec!</span><span class="p">[];</span>
@@ -922,20 +1185,23 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">// $ Thread 0 withdrew: 7500</span>
 <span class="c1">// $ Thread 1 withdrew: 2500</span>
 <span class="c1">// $ Total amount withdrawn: 10000</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Ada has its own nomenclature for multithreading: <i>Tasks</i>,
-	and provides its own built-in mechanism for preventing data races between them.
-	Ada's <i>Protected Objects</i> encapsulate data inside an implicit mutex,
-	allowing only one thread access at a time via a public interface.
-</p>
-<p>
-	The following example builds on the previous one,
-	showing two Ada 'tasks' sharing access to a single, 'protected' resource:
-</p>
+        <p>
+          Ada has its own nomenclature for multithreading: <i>Tasks</i>, and
+          provides its own built-in mechanism for preventing data races between
+          them. Ada's <i>Protected Objects</i> encapsulate data inside an
+          implicit mutex, allowing only one thread access at a time via a public
+          interface.
+        </p>
+        <p>
+          The following example builds on the previous one, showing two Ada
+          'tasks' sharing access to a single, 'protected' resource:
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Bank</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Bank</span> <span class="kr">is</span>
    <span class="n">Float_Generator</span> <span class="p">:</span> <span class="n">Ada</span><span class="p">.</span><span class="n">Numerics</span><span class="p">.</span><span class="n">Float_Random</span><span class="p">.</span><span class="kt">Generator</span><span class="p">;</span>
 
    <span class="kd">function</span> <span class="nf">Get_Random_Delay</span> <span class="nf">return</span> <span class="nf">Duration</span>
@@ -982,18 +1248,20 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="kr">begin</span>
    <span class="kc">null</span><span class="p">;</span>
 <span class="kr">end</span> <span class="nf">Bank</span><span class="p">;</span>
-</pre></div>
-<p>
-	Wrapping the <code>Balance</code> 
-	variable inside the protected <code>Bank_Account</code> 
-	object ensures that only the task holding the mutex can access it.
-</p>
+</pre>
+        </div>
+        <p>
+          Wrapping the <code>Balance</code> variable inside the protected
+          <code>Bank_Account</code>
+          object ensures that only the task holding the mutex can access it.
+        </p>
 
-<p>
-	Unfortunately, like in C,
-	nothing actually prevents you from writing code that accesses shared memory from multiple tasks.
-</p>
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Bank</span> <span class="kr">is</span>
+        <p>
+          Unfortunately, like in C, nothing actually prevents you from writing
+          code that accesses shared memory from multiple tasks.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Bank</span> <span class="kr">is</span>
    <span class="n">Float_Generator</span> <span class="p">:</span> <span class="n">Ada</span><span class="p">.</span><span class="n">Numerics</span><span class="p">.</span><span class="n">Float_Random</span><span class="p">.</span><span class="kt">Generator</span><span class="p">;</span>
 
    <span class="kd">function</span> <span class="nf">Get_Random_Delay</span> <span class="nf">return</span> <span class="nf">Duration</span>
@@ -1033,49 +1301,71 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">--  $ Spender 3 withdrew 3910</span>
 <span class="c1">--  $ Spender 1 withdrew 2269</span>
 <span class="c1">--  $ Spender 4 withdrew 2254</span>
-</pre></div>
+</pre>
+        </div>
 
-<h4>SPARK</h4>
-<p>
-	SPARK supports tasking when the
-	<a href="https://en.wikipedia.org/wiki/Ravenscar_profile" target="_blank">Ravenscar profile</a>
-	is used, 
-	and is able to prove the absence of race conditions and other concurrency-related errors.
-	Ravenscar is a build configuration designed for hard real-time, safety-critical systems.
-	It restricts language features unsuitable for safe multi-threaded programming.
-</p>
-<p>
-	Describing how to write formally verifiable concurrent code in SPARK would need an article all of its own.
-	For a good starting point,
-	check out AdaCore's 
-	<a href="https://docs.adacore.com/spark2014-docs/html/lrm/tasks-and-synchronization.html" target="_blank">SPARK Reference Manual</a>,
-	and their 
-	<a href="https://learn.adacore.com/courses/spark-introduction/chapters/tasking.html" target="_blank">Introduction To SPARK</a> 
-	course.
-</p>
+        <h4>SPARK</h4>
+        <p>
+          SPARK supports tasking when the
+          <a
+            href="https://en.wikipedia.org/wiki/Ravenscar_profile"
+            target="_blank"
+            >Ravenscar profile</a
+          >
+          is used, and is able to prove the absence of race conditions and other
+          concurrency-related errors. Ravenscar is a build configuration
+          designed for hard real-time, safety-critical systems. It restricts
+          language features unsuitable for safe multi-threaded programming.
+        </p>
+        <p>
+          Describing how to write formally verifiable concurrent code in SPARK
+          would need an article all of its own. For a good starting point, check
+          out AdaCore's
+          <a
+            href="https://docs.adacore.com/spark2014-docs/html/lrm/tasks-and-synchronization.html"
+            target="_blank"
+            >SPARK Reference Manual</a
+          >, and their
+          <a
+            href="https://learn.adacore.com/courses/spark-introduction/chapters/tasking.html"
+            target="_blank"
+            >Introduction To SPARK</a
+          >
+          course.
+        </p>
 
-<div class="note">
-	This article only scratches the surface of concurrent programming in Ada and Rust.
-	To learn more, check out the
-	<a href="https://doc.rust-lang.org/book/ch16-00-concurrency.html" target="_blank"><i>Fearless Concurrency</i></a>
-	chapter in the <i>Rust Book</i>,
-	and the 
-	<a href="https://learn.adacore.com/courses/intro-to-ada/chapters/tasking.html" target="_blank"><i>Tasking</i></a>
-	chapter in AdaCore's 
-	<i>Introduction to Ada</i> course.
-</div>
+        <div class="note">
+          This article only scratches the surface of concurrent programming in
+          Ada and Rust. To learn more, check out the
+          <a
+            href="https://doc.rust-lang.org/book/ch16-00-concurrency.html"
+            target="_blank"
+            ><i>Fearless Concurrency</i></a
+          >
+          chapter in the <i>Rust Book</i>, and the
+          <a
+            href="https://learn.adacore.com/courses/intro-to-ada/chapters/tasking.html"
+            target="_blank"
+            ><i>Tasking</i></a
+          >
+          chapter in AdaCore's
+          <i>Introduction to Ada</i> course.
+        </div>
 
-<h3 id="dangling_pointer">Dangling Pointer <a class="permalink" href="#dangling_pointer">#</a></h3>
-<p>
-	A pointer that still points to an object in memory after it's been deallocated is known as a <i>Dangling Pointer</i>.
-</p>
-<p>
-	Try as I might, 
-	I couldn't find a way to create a dangling pointer in <em>safe</em> Rust.
-	The borrow-checker was way ahead of me.
-</p>
+        <h3 id="dangling_pointer">
+          Dangling Pointer <a class="permalink" href="#dangling_pointer">#</a>
+        </h3>
+        <p>
+          A pointer that still points to an object in memory after it's been
+          deallocated is known as a <i>Dangling Pointer</i>.
+        </p>
+        <p>
+          Try as I might, I couldn't find a way to create a dangling pointer in
+          <em>safe</em> Rust. The borrow-checker was way ahead of me.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">create_dangling_pointer</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="kp">&amp;</span><span class="nb">String</span><span class="w"> </span><span class="p">{</span>
+        <div class="code-block">
+          <pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">create_dangling_pointer</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="kp">&amp;</span><span class="nb">String</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span><span class="p">::</span><span class="n">from</span><span class="p">(</span><span class="s">"hello"</span><span class="p">);</span>
 <span class="w">    </span><span class="o">&amp;</span><span class="n">s</span>
 <span class="p">}</span>
@@ -1091,28 +1381,32 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">// $    = help: this function's return type contains a borrowed value,</span>
 <span class="c1">// $ but there is no value for it to be borrowed from</span>
 <span class="c1">// $ ...</span>
-</pre></div>
-<p>
-	I had to heavily abridge the avalanche of warnings the Rust compiler generated from this example.
-</p>
+</pre>
+        </div>
+        <p>
+          I had to heavily abridge the avalanche of warnings the Rust compiler
+          generated from this example.
+        </p>
 
-<p>
-	Ada has a mechanism for preventing dangling pointers, 
-	called <i>accessibility levels</i>.
-	An object's accessibility level reflects the nesting of the scope it's defined in,
-	and determines what objects an access type is allowed to point to.
-	For example, if <code>Procedure_B</code> is nested within <code>Procedure_A</code>,
-	it's said to have a <i>deeper</i> accessibility level than its parent.
-	An access type in Ada can only point to an object at the same accessibility level, 
-	or <em>shallower</em>,
-	ensuring that an object lives at least as long as any access types pointing to it.
-	Every type has its own accessibility level, 
-	and objects have the same accessibility level as their type.
-</p>
-<p>
-	The following example illustrates how Ada's accessibility levels prevent dangling pointers.
-</p>
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Accessibility_Levels</span> <span class="kr">is</span>
+        <p>
+          Ada has a mechanism for preventing dangling pointers, called
+          <i>accessibility levels</i>. An object's accessibility level reflects
+          the nesting of the scope it's defined in, and determines what objects
+          an access type is allowed to point to. For example, if
+          <code>Procedure_B</code> is nested within <code>Procedure_A</code>,
+          it's said to have a <i>deeper</i> accessibility level than its parent.
+          An access type in Ada can only point to an object at the same
+          accessibility level, or <em>shallower</em>, ensuring that an object
+          lives at least as long as any access types pointing to it. Every type
+          has its own accessibility level, and objects have the same
+          accessibility level as their type.
+        </p>
+        <p>
+          The following example illustrates how Ada's accessibility levels
+          prevent dangling pointers.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Accessibility_Levels</span> <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">Level_0_Integer_Access_T</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kr">all</span> <span class="kt">Integer</span><span class="p">;</span>
 
    <span class="n">Level_0_Integer</span>        <span class="p">:</span> <span class="kr">aliased</span> <span class="kt">Integer</span>          <span class="p">:=</span> <span class="mi">0</span><span class="p">;</span>
@@ -1145,13 +1439,17 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    <span class="n">Level_1_Procedure</span><span class="p">;</span>
    <span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Value: "</span> <span class="o">&amp;</span> <span class="n">Level_0_Integer_Access</span><span class="p">.</span><span class="kr">all</span><span class="p">'</span><span class="na">Image</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Accessibility_Levels</span><span class="p">;</span>
-</pre></div>
-<p>
-	Ada allows developers to ignore the accessibility levels system with the
-	<code>Unchecked_Access</code> <i>aspect</i>.
-	The above code would compile without any errors if the failing line above was replaced with:
-</p>
-<div class="code-block"><pre><span></span><span class="c1">-- ...</span>
+</pre>
+        </div>
+        <p>
+          Ada allows developers to ignore the accessibility levels system with
+          the
+          <code>Unchecked_Access</code> <i>aspect</i>. The above code would
+          compile without any errors if the failing line above was replaced
+          with:
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="c1">-- ...</span>
       <span class="c1">--  LEGAL: No problem! The compiler figures you know what you're doing...</span>
       <span class="n">Level_0_Integer_Access</span> <span class="p">:=</span> <span class="n">Level_1_Integer</span><span class="p">'</span><span class="na">Unchecked_Access</span><span class="p">;</span>
    <span class="kr">end</span> <span class="nf">Level_1_Procedure</span><span class="p">;</span>
@@ -1160,22 +1458,33 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    <span class="c1">--  Uh oh...</span>
    <span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Value: "</span> <span class="o">&amp;</span> <span class="n">Level_0_Integer_Access</span><span class="p">.</span><span class="kr">all</span><span class="p">'</span><span class="na">Image</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Accessibility_Levels</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<h3 id="freeing_stack_memory">Freeing Stack Memory <a class="permalink" href="#freeing_stack_memory">#</a></h3>
-<p>
-	As mentioned earlier in the section on <a href="#double_free">double freeing</a> memory,
-	glibc stores metadata about each allocated memory block right before the block's address.
-	This lets it determine the amount of memory being freed,
-	and 
-	<a href="https://github.com/bminor/glibc/blob/3374de90386f1814cec58567248d43a4632b16f0/malloc/malloc-check.c#L211" target="_blank">check</a>
-	whether the address actually points to something allocated on the heap.
-</p>
-<p>
-	Attempting to free an object allocated on the stack will bring your program to a screeching halt once glibc figures out what you're upto.
-</p>
+        <h3 id="freeing_stack_memory">
+          Freeing Stack Memory
+          <a class="permalink" href="#freeing_stack_memory">#</a>
+        </h3>
+        <p>
+          As mentioned earlier in the section on
+          <a href="#double_free">double freeing</a> memory, glibc stores
+          metadata about each allocated memory block right before the block's
+          address. This lets it determine the amount of memory being freed, and
+          <a
+            href="https://github.com/bminor/glibc/blob/3374de90386f1814cec58567248d43a4632b16f0/malloc/malloc-check.c#L211"
+            target="_blank"
+            >check</a
+          >
+          whether the address actually points to something allocated on the
+          heap.
+        </p>
+        <p>
+          Attempting to free an object allocated on the stack will bring your
+          program to a screeching halt once glibc figures out what you're upto.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">free_stack_memory</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+        <div class="code-block">
+          <pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">free_stack_memory</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="c1">// Note that modern versions of gcc will issue a warning about this:</span>
 <span class="w">  </span><span class="c1">// warning: &#8216;free&#8217; called on unallocated object &#8216;x&#8217; [-Wfree-nonheap-object]</span>
 <span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
@@ -1187,31 +1496,35 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="c1">// $ ./free_stack_memory</span>
 <span class="c1">// $ free(): invalid pointer</span>
 <span class="c1">// $ Aborted</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	As mentioned earlier, Rust automatically deallocates variables when they go out of scope;
-	Calling their destructor when necessary.
-	Calling <code>std::mem::drop</code> 
-	on a stack allocated variable (that implements the <code>Drop</code> trait<sup><a href="#footnote_6" id="footnote_6_link">6</a></sup>) 
-	will explicitly call its destructor, and deallocate the object.
-	The fact that it was allocated in stack memory has no effect.
-</p>
-<p>
-	In Ada, access types ordinarily only point to heap-allocated memory;
-	However you can create a <i>general</i> access type by adding the 
-	<code>all</code> keyword to its type declaration,
-	which allows it to point to <em>any</em> object of its type, 
-	including objects allocated on the stack, 
-	provided they are <em>actually</em> addressable<sup><a href="#footnote_7" id="footnote_7_link">7</a></sup>.
-</p>
-<p>
-	Freeing a general access type pointing to stack memory will raise a 
-	<code>Program_Error</code> exception at runtime,
-	which can be caught and handled in the normal way.
-</p>
+        <p>
+          As mentioned earlier, Rust automatically deallocates variables when
+          they go out of scope; Calling their destructor when necessary. Calling
+          <code>std::mem::drop</code> on a stack allocated variable (that
+          implements the <code>Drop</code> trait<sup
+            ><a href="#footnote_6" id="footnote_6_link">6</a></sup
+          >) will explicitly call its destructor, and deallocate the object. The
+          fact that it was allocated in stack memory has no effect.
+        </p>
+        <p>
+          In Ada, access types ordinarily only point to heap-allocated memory;
+          However you can create a <i>general</i> access type by adding the
+          <code>all</code> keyword to its type declaration, which allows it to
+          point to <em>any</em> object of its type, including objects allocated
+          on the stack, provided they are <em>actually</em> addressable<sup
+            ><a href="#footnote_7" id="footnote_7_link">7</a></sup
+          >.
+        </p>
+        <p>
+          Freeing a general access type pointing to stack memory will raise a
+          <code>Program_Error</code> exception at runtime, which can be caught
+          and handled in the normal way.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Free_Stack_Memory</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Free_Stack_Memory</span> <span class="kr">is</span>
    <span class="c1">--  The 'all' specifier here indicates that this is a 'general access type',</span>
    <span class="c1">--  which can point to objects allocated on the heap OR the stack.</span>
    <span class="kd">type</span> <span class="kt">String_Access</span> <span class="kr">is</span> <span class="kr">access</span> <span class="kr">all</span> <span class="kt">String</span><span class="p">;</span>
@@ -1227,34 +1540,41 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    <span class="kr">when</span> <span class="n">E</span> <span class="p">:</span> <span class="n">Program_Error</span> <span class="p">=&gt;</span>
       <span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Program_Error: "</span> <span class="o">&amp;</span> <span class="n">Exception_Message</span> <span class="p">(</span><span class="n">E</span><span class="p">));</span>
 <span class="kr">end</span> <span class="nf">Free_Stack_Memory</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<h2 id="am_i_being_unfair">Am I Being Unfair to Ada? <a class="permalink" href="#am_i_being_unfair">#</a></h2>
-<p>
-	Am I being unfair to Ada?
-	Have I turned my back on the Ada community, betrayed my own kind?
-	Have I been converted from an Ada zealot into a born-again Rustacean? Not quite.
-</p>
-<p>
-	A comparison on memory safety might tilt slightly in Rust's favour,
-	but Ada's real strengths 
-	<a href="/blog/Giving_Ada_a_Chance.html" target="_blank">lie elsewhere</a>. 
-	Its strong typing, intuitive low-level programming semantics, 
-	and static analysis capability are still unmatched by other systems languages.
-</p>
-<p>
-	As I stated earlier you can do a lot in Ada without ever needing to use pointers,
-	or even using heap memory at all,
-	sparing yourself the risk of most of these problems.
-</p>
-<p>
-	Unlike Rust, Ada allows stack variables of statically unknown size.
-	The <code>Vec<t></t></code> type in Rust's standard library is great,
-	but it stores its contents on the heap, 
-	and won't be suitable for all use-cases.
-</p>
+        <h2 id="am_i_being_unfair">
+          Am I Being Unfair to Ada?
+          <a class="permalink" href="#am_i_being_unfair">#</a>
+        </h2>
+        <p>
+          Am I being unfair to Ada? Have I turned my back on the Ada community,
+          betrayed my own kind? Have I been converted from an Ada zealot into a
+          born-again Rustacean? Not quite.
+        </p>
+        <p>
+          A comparison on memory safety might tilt slightly in Rust's favour,
+          but Ada's real strengths
+          <a href="/blog/Giving_Ada_a_Chance.html" target="_blank"
+            >lie elsewhere</a
+          >. Its strong typing, intuitive low-level programming semantics, and
+          static analysis capability are still unmatched by other systems
+          languages.
+        </p>
+        <p>
+          As I stated earlier you can do a lot in Ada without ever needing to
+          use pointers, or even using heap memory at all, sparing yourself the
+          risk of most of these problems.
+        </p>
+        <p>
+          Unlike Rust, Ada allows stack variables of statically unknown size.
+          The <code>Vec<t></t></code> type in Rust's standard library is great,
+          but it stores its contents on the heap, and won't be suitable for all
+          use-cases.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Variable_Size_Stack_Array</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Variable_Size_Stack_Array</span> <span class="kr">is</span>
    <span class="n">Array_Size</span> <span class="p">:</span> <span class="kt">Integer</span><span class="p">;</span>
 <span class="kr">begin</span>
    <span class="n">Ada</span><span class="p">.</span><span class="n">Text_IO</span><span class="p">.</span><span class="n">Put</span> <span class="p">(</span><span class="s">"What array size would you like? "</span><span class="p">);</span>
@@ -1264,18 +1584,19 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    <span class="n">Integer_Array</span> <span class="p">:</span> <span class="kr">array</span> <span class="p">(</span><span class="mi">1</span> <span class="p">..</span> <span class="n">Array_Size</span><span class="p">)</span> <span class="kr">of</span> <span class="kt">Integer</span> <span class="p">:=</span> <span class="p">[</span><span class="kr">others</span> <span class="p">=&gt;</span> <span class="mi">0</span><span class="p">];</span>
    <span class="n">Ada</span><span class="p">.</span><span class="n">Text_IO</span><span class="p">.</span><span class="n">Put_Line</span> <span class="p">(</span><span class="s">"Array Size: "</span> <span class="o">&amp;</span> <span class="n">Integer_Array</span><span class="p">'</span><span class="na">Length</span><span class="p">'</span><span class="na">Image</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Variable_Size_Stack_Array</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	In Ada, stack-allocated, variable length arrays are first-class values.
-	You can return them from functions,
-	and accept them as function parameters.
-	They implicitly contain their bounds as part of their value.
-	The following example builds on the code above.
-	Note that everything here is happening on the stack.
-</p>
+        <p>
+          In Ada, stack-allocated, variable length arrays are first-class
+          values. You can return them from functions, and accept them as
+          function parameters. They implicitly contain their bounds as part of
+          their value. The following example builds on the code above. Note that
+          everything here is happening on the stack.
+        </p>
 
-<div class="code-block"><pre><span></span><span class="kd">procedure</span> <span class="nf">Stack_Allocated_Array_Examples</span> <span class="kr">is</span>
+        <div class="code-block">
+          <pre><span></span><span class="kd">procedure</span> <span class="nf">Stack_Allocated_Array_Examples</span> <span class="kr">is</span>
    <span class="kd">type</span> <span class="kt">Integer_Array</span> <span class="kr">is</span> <span class="kr">array</span> <span class="p">(</span><span class="kt">Positive</span> <span class="kr">range</span> <span class="p">&lt;&gt;)</span> <span class="kr">of</span> <span class="kt">Integer</span><span class="p">;</span>
 
    <span class="c1">--  Ada has no problem returning a variable length, stack-allocated</span>
@@ -1305,85 +1626,107 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
    <span class="no">Int_Array</span> <span class="p">:</span> <span class="kr">constant</span> <span class="n">Integer_Array</span> <span class="p">:=</span> <span class="n">Create_Variable_Size_Stack_Array</span><span class="p">;</span>
    <span class="n">Print_Variable_Length_Array</span> <span class="p">(</span><span class="n">Int_Array</span><span class="p">);</span>
 <span class="kr">end</span> <span class="nf">Stack_Allocated_Array_Examples</span><span class="p">;</span>
-</pre></div>
+</pre>
+        </div>
 
-<p>
-	Ada's aversion to dynamic memory allocation is reminiscent of a 
-	<a href="https://www.adahome.com/History/Steelman/intro.htm" target="_blank">different time</a>;
-	When embedded systems ran on 16-bit microcontrollers,
-	with no operating system, no heap memory,
-	and memory fragmentation could &#8212;quite literally&#8212;
-	send your program crashing down to earth.
-</p>
+        <p>
+          Ada's aversion to dynamic memory allocation is reminiscent of a
+          <a
+            href="https://www.adahome.com/History/Steelman/intro.htm"
+            target="_blank"
+            >different time</a
+          >; When embedded systems ran on 16-bit microcontrollers, with no
+          operating system, no heap memory, and memory fragmentation could
+          &#8212;quite literally&#8212; send your program crashing down to
+          earth.
+        </p>
 
-<p>
-	Despite this, 
-	the <i>systems programming language</i>
-	ecosystem is only just now catching up to where Ada has been since the 90s.
-	That's not to say Ada has stood still!
-	Under AdaCore's stewardship the language has moved forward in leaps and bounds,
-	and the 
-	<a href="https://alire.ada.dev/" target="_blank">Alire</a>
-	package manager has made Ada more accessible than ever.
-	Whether you're ever going to write Ada or not,
-	there's a lot you can learn from it.
-	If you're designing a modern systems language,
-	understanding what makes Ada good is <em>essential</em><sup><a href="#footnote_8" id="footnote_8_link">8</a></sup>.
-</p>
+        <p>
+          Despite this, the <i>systems programming language</i>
+          ecosystem is only just now catching up to where Ada has been since the
+          90s. That's not to say Ada has stood still! Under AdaCore's
+          stewardship the language has moved forward in leaps and bounds, and
+          the
+          <a href="https://alire.ada.dev/" target="_blank">Alire</a>
+          package manager has made Ada more accessible than ever. Whether you're
+          ever going to write Ada or not, there's a lot you can learn from it.
+          If you're designing a modern systems language, understanding what
+          makes Ada good is <em>essential</em
+          ><sup><a href="#footnote_8" id="footnote_8_link">8</a></sup
+          >.
+        </p>
 
-<h2 id="conclusions">Conclusions? <a class="permalink" href="#conclusions">#</a></h2>
-<p>
-	I actually came away from writing this article with more respect for Rust.
-	It does a great job of preventing lots of common bugs entirely at compile-time.
-	I still think Rust is clunky and frustrating at times,
-	but all in all it's an impressive language that really advances the state of the art.
-</p>
-<p>
-	A lot of people are put off by the excessive technicality of Rust's semantics. 
-	Myself included.
-	One thing Ada does really well is keeping a lot of its complicated machinery hidden. 
-	That might sound a bit dangerous for a low-level programming language, 
-	but Ada manages it perfectly,
-	and has been battle-tested by 
-	<a href="https://www.adacore.com/company/our-customers" target="_blank">decades of use</a>
-	in safety-critical systems.
-	You never miss worrying about whether a parameter is passed by value or reference,
-	or envy Rust's 
-	<a href="https://stackoverflow.com/questions/24158114/what-are-the-differences-between-rusts-string-and-str" target="_blank">confusing multitude</a>
-	of <i>string</i> types.
-</p>
-<p>
-	To give Rust its due, 
-	I think its designers had the right idea. 
-	For all its technicality,
-	Rust's design is forward-thinking and modern.
-	I hope the new programming languages of 2050 will look at 
-	<a href="https://github.com/johnperry-math/AoC2023/blob/master/More_Detailed_Comparison.md" target="_blank">both Ada and Rust</a>,
-	see what each of them did right, 
-	and be better than both of them.
-</p>
+        <h2 id="conclusions">
+          Conclusions? <a class="permalink" href="#conclusions">#</a>
+        </h2>
+        <p>
+          I actually came away from writing this article with more respect for
+          Rust. It does a great job of preventing lots of common bugs entirely
+          at compile-time. I still think Rust is clunky and frustrating at
+          times, but all in all it's an impressive language that really advances
+          the state of the art.
+        </p>
+        <p>
+          A lot of people are put off by the excessive technicality of Rust's
+          semantics. Myself included. One thing Ada does really well is keeping
+          a lot of its complicated machinery hidden. That might sound a bit
+          dangerous for a low-level programming language, but Ada manages it
+          perfectly, and has been battle-tested by
+          <a
+            href="https://www.adacore.com/company/our-customers"
+            target="_blank"
+            >decades of use</a
+          >
+          in safety-critical systems. You never miss worrying about whether a
+          parameter is passed by value or reference, or envy Rust's
+          <a
+            href="https://stackoverflow.com/questions/24158114/what-are-the-differences-between-rusts-string-and-str"
+            target="_blank"
+            >confusing multitude</a
+          >
+          of <i>string</i> types.
+        </p>
+        <p>
+          To give Rust its due, I think its designers had the right idea. For
+          all its technicality, Rust's design is forward-thinking and modern. I
+          hope the new programming languages of 2050 will look at
+          <a
+            href="https://github.com/johnperry-math/AoC2023/blob/master/More_Detailed_Comparison.md"
+            target="_blank"
+            >both Ada and Rust</a
+          >, see what each of them did right, and be better than both of them.
+        </p>
 
-<h2 id="references">References <a class="permalink" href="#references">#</a></h2>
-<ul id="references-list">
-	<li>
-		ISO/IEC 9899 (2018) <i>Information technology &#8212; Programming languages &#8212; C</i>
-	</li>
-</ul>
+        <h2 id="references">
+          References <a class="permalink" href="#references">#</a>
+        </h2>
+        <ul id="references-list">
+          <li>
+            ISO/IEC 9899 (2018)
+            <i
+              >Information technology &#8212; Programming languages &#8212; C</i
+            >
+          </li>
+        </ul>
 
-<hr>
-<ol class="footnotes">
-	<li id="footnote_1">
-		<p>
-			The Rust Handbook even
-			<a href="https://doc.rust-lang.org/book/ch15-06-reference-cycles.html" target="_blank">gives us a recipe</a>
-			for creating our very own memory leak! By creating a <i>reference cycle</i>,
-			where two smart pointers reference each other.
-			When this happens, 
-			the amount of references to each pointer will never reach zero,
-			and the objects will never be deallocated.
-		</p>
-		
-		<div class="code-block"><pre><span></span><span class="cp">#[derive(Debug)]</span>
+        <hr />
+        <ol class="footnotes">
+          <li id="footnote_1">
+            <p>
+              The Rust Handbook even
+              <a
+                href="https://doc.rust-lang.org/book/ch15-06-reference-cycles.html"
+                target="_blank"
+                >gives us a recipe</a
+              >
+              for creating our very own memory leak! By creating a
+              <i>reference cycle</i>, where two smart pointers reference each
+              other. When this happens, the amount of references to each pointer
+              will never reach zero, and the objects will never be deallocated.
+            </p>
+
+            <div class="code-block">
+              <pre><span></span><span class="cp">#[derive(Debug)]</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="kt">i32</span><span class="p">,</span>
 <span class="w">    </span><span class="n">next</span><span class="p">:</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">Rc</span><span class="o">&lt;</span><span class="n">RefCell</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;&gt;&gt;</span><span class="p">,</span>
@@ -1413,11 +1756,15 @@ double_free.adb:14:13: error: "Str_Acc" is not readable
 <span class="w">        </span><span class="n">Rc</span><span class="p">::</span><span class="n">strong_count</span><span class="p">(</span><span class="o">&amp;</span><span class="n">node2</span><span class="p">)</span>
 <span class="w">    </span><span class="p">);</span>
 <span class="p">}</span>
-</pre></div>
+</pre>
+            </div>
 
-		<p>Running the above code in Valgrind confirms there's a memory leak:</p>
-		
-		<div class="code-block"><pre><span></span>$ valgrind ./target/debug/reference_cycle_example
+            <p>
+              Running the above code in Valgrind confirms there's a memory leak:
+            </p>
+
+            <div class="code-block">
+              <pre><span></span>$ valgrind ./target/debug/reference_cycle_example
 ==60830== Memcheck, a memory error detector
 ==60830== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
 ==60830== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
@@ -1441,84 +1788,127 @@ Reference counts:
 ==60830==
 ==60830== For lists of detected and suppressed errors, rerun with: -s
 ==60830== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-</pre></div>
-		<p>
-			It's also interesting that printing the value of either of the nodes
-			in the above code will result in a stack overflow.
-		<a href="#footnote_1_link">&#8626;</a></p>
-	</li><li id="footnote_2">
-		<a href="https://www.adaic.org/resources/add_content/standards/22rm/html/RM-4-8.html" target="_blank">Section 4.8</a>
-		of the Ada Reference Manual 
-		states that an <i>implementation</i> is free, 
-		but not required, to implement a 
-		<a href="https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29" target="_blank"><i>garbage collector</i></a>.
+</pre>
+            </div>
+            <p>
+              It's also interesting that printing the value of either of the
+              nodes in the above code will result in a stack overflow.
+              <a href="#footnote_1_link">&#8626;</a>
+            </p>
+          </li>
+          <li id="footnote_2">
+            <a
+              href="https://www.adaic.org/resources/add_content/standards/22rm/html/RM-4-8.html"
+              target="_blank"
+              >Section 4.8</a
+            >
+            of the Ada Reference Manual states that an <i>implementation</i> is
+            free, but not required, to implement a
+            <a
+              href="https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29"
+              target="_blank"
+              ><i>garbage collector</i></a
+            >. Aside from one experimental
+            <a href="https://www.enyo.de/fw/software/gnat-gc/" target="_blank"
+              >patch</a
+            >
+            for GCC, I'm not aware of any <em>mainstream</em> Ada compiler that
+            uses a garbage collector. However at one point there were
+            <a
+              href="https://www.adahome.com/Resources/Ada_Java.html"
+              target="_blank"
+              >several</a
+            >
+            commercial Ada compilers that targeted the
+            <i>Java Virtual Machine</i>, which would have featured the JVM's
+            default garbage collector. <a href="#footnote_2_link">&#8626;</a>
+          </li>
+          <li id="footnote_3">
+            Ada's
+            <a
+              href="https://blog.adacore.com/header-storage-pools"
+              target="_blank"
+              ><i>storage pool</i></a
+            >
+            feature gives it native support for <i>arena allocators</i>, and
+            gives developers fine-grained control of how an access type is
+            allocated, and deallocated. This can be used to create custom
+            reference-counted types, or give a program control over its own
+            memory management at runtime. <a href="#footnote_3_link">&#8626;</a>
+          </li>
+          <li id="footnote_4">
+            Funnily enough, the static analyser can only prove the
+            <em>absence</em> of runtime errors. When it can't prove that a
+            runtime error <em>won't</em> occur, it'll give you a warning. Here,
+            the static analyser has identified a situation where it's
+            <em>possible</em>
+            that the pointer could be null when accessed.
+            <a href="#footnote_4_link">&#8626;</a>
+          </li>
+          <li id="footnote_5">
+            Note also that glibc will only detect freeing the same address
+            <em>consecutively</em>. Also note that dereferencing the already
+            freed aliased pointer to print its address <em>doesn't</em> raise a
+            <code>Constraint_Error</code> exception for some unknown reason.
+            <a href="#footnote_5_link">&#8626;</a>
+          </li>
+          <li id="footnote_6">
+            Explicitly calling <code>std::mem::drop</code> on a variable that
+            doesn't implement the <code>Drop</code>
+            trait does nothing, other than raising a compile-time warning.
+            <a href="#footnote_6_link">&#8626;</a>
+          </li>
+          <li id="footnote_7">
+            The C standard specifies that <em>objects</em> must be addressable,
+            unless they are declared with the
+            <code>register</code> storage-class specifier (ISO/IEC 9899:2018,
+            Section 6.5.3.2). The Ada standard does not impose this restriction,
+            and Ada compilers are free to allocate objects entirely within
+            registers. In Ada, the <code>aliased</code>
+            keyword is used to indicate that a particular object must be
+            addressable.
+            <a href="#footnote_7_link">&#8626;</a>
+          </li>
+          <li id="footnote_8">
+            For what it's worth, I'm led to believe the Rust designers
+            <a
+              href="https://news.ycombinator.com/item?id=7824570#7824948"
+              target="_blank"
+              ><em>did</em></a
+            >
+            study Ada to some extent. Discussions of Ada's features have
+            featured in Rust's
+            <a
+              href="https://github.com/rust-lang/rfcs/issues/671"
+              target="_blank"
+              >RFCs</a
+            >
+            in the past.
 
-		Aside from one experimental 
-		<a href="https://www.enyo.de/fw/software/gnat-gc/" target="_blank">patch</a>
-		for GCC,
-		I'm not aware of any <em>mainstream</em> Ada compiler that uses a garbage collector.
-		However at one point there were
-		<a href="https://www.adahome.com/Resources/Ada_Java.html" target="_blank">several</a>
-		commercial Ada compilers that targeted the <i>Java Virtual Machine</i>,
-		which would have featured the JVM's default garbage collector.
-	<a href="#footnote_2_link">&#8626;</a></li><li id="footnote_3">
-		Ada's <a href="https://blog.adacore.com/header-storage-pools" target="_blank"><i>storage pool</i></a>
-		feature gives it native support for <i>arena allocators</i>,
-		and gives developers fine-grained control of how an access type is allocated, and deallocated.
-		This can be used to create custom reference-counted types, 
-		or give a program control over its own memory management at runtime.
-	<a href="#footnote_3_link">&#8626;</a></li><li id="footnote_4">
-		Funnily enough, the static analyser can only prove the <em>absence</em> of runtime errors.
-		When it can't prove that a runtime error <em>won't</em> occur, it'll give you a warning.
-		Here, the static analyser has identified a situation where it's <em>possible</em> 
-		that the pointer could be null when accessed. 
-	<a href="#footnote_4_link">&#8626;</a></li><li id="footnote_5">
-		Note also that glibc will only detect freeing the same address <em>consecutively</em>.
-		Also note that dereferencing the already freed aliased pointer to print its address
-		<em>doesn't</em> raise a <code>Constraint_Error</code> exception for some unknown reason.
-	<a href="#footnote_5_link">&#8626;</a></li><li id="footnote_6">
-		Explicitly calling <code>std::mem::drop</code> 
-		on a variable that doesn't implement the <code>Drop</code> 
-		trait does nothing, other than raising a compile-time warning.
-	<a href="#footnote_6_link">&#8626;</a></li><li id="footnote_7">
-		The C standard specifies that <em>objects</em> must be addressable,
-		unless they are declared with the <code>register</code> storage-class specifier
-		(ISO/IEC 9899:2018, Section 6.5.3.2).
-		The Ada standard does not impose this restriction, 
-		and Ada compilers are free to allocate objects entirely within registers.
-		In Ada, the <code>aliased</code>
-		keyword is used to indicate that a particular object must be addressable.
-	<a href="#footnote_7_link">&#8626;</a></li><li id="footnote_8">
-		For what it's worth, I'm led to believe the Rust designers 
-		<a href="https://news.ycombinator.com/item?id=7824570#7824948" target="_blank"><em>did</em></a>
-		study Ada to some extent.
-		Discussions of Ada's features have featured in Rust's 
-		<a href="https://github.com/rust-lang/rfcs/issues/671" target="_blank">RFCs</a> in the past.
+            <a href="#footnote_8_link">&#8626;</a>
+          </li>
+        </ol>
+      </div>
+    </article>
 
-	<a href="#footnote_8_link">&#8626;</a></li></ol>
+    <footer>
+      <div class="links">
+        <nav>
+          <a href="/about.html">About Me</a>
+          <a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
+          <a href="https://github.com/ajxs" target="_blank">Github</a>
+          <a href="/donate.html">Donate</a>
+          <a href="/site.rss" target="_blank">RSS</a>
+        </nav>
+        <div>
+          Webring:
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
+          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
+        </div>
+      </div>
 
-	</div>
-</article>
-
-		<footer>
-			<div class="links">
-				<nav>
-					<a href="/about.html">About Me</a>
-					<a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
-					<a href="https://github.com/ajxs" target="_blank">Github</a>
-					<a href="/donate.html">Donate</a>
-					<a href="/site.rss" target="_blank">RSS</a>
-				</nav>
-				<div>
-					Webring:
-					<a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a> /
-					<a href="https://webri.ng/webring/ajxs/random">Random</a> /
-					<a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
-				</div>
-			</div>
-
-			© 2025 ajxs
-		</footer>
-	</body>
-
+      © 2025 ajxs
+    </footer>
+  </body>
 </html>

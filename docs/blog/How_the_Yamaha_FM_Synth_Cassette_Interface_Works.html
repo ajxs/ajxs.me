@@ -1,263 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="ajxs">
-		<meta name="description" content="A technical overview of how the cassette interface used in Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for external storage.">
-		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="ajxs,synthesisers,programming,DX7,Musical Equipment,Reverse Engineering,Synthesizers">
-		<meta name="reply-to" content="ajxs@panoptic.online">
-		<meta name="owner" content="ajxs">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/style.css">
-		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="ajxs" />
+    <meta
+      name="description"
+      content="A technical overview of how the cassette interface used in Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for external storage."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="keywords"
+      content="ajxs,synthesisers,programming,DX7,Musical Equipment,Reverse Engineering,Synthesizers"
+    />
+    <meta name="reply-to" content="ajxs@panoptic.online" />
+    <meta name="owner" content="ajxs" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog Posts"
+      href="/site.rss"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon-16x16.png"
+    />
 
-		<title>How the Yamaha FM Synth Cassette Interface Works - ajxs.me</title>
-	</head>
-	<body>
-		<header>
-			<a href="/">~ajxs</a>
-		</header>
-		<article class="blog-entry">
-	<header>
-		<h1>How the Yamaha FM Synth Cassette Interface Works</h1>
-		<div class="date">2022.09.28</div>
-		<div class="description">A technical overview of how the cassette interface used in Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for external storage.</div>
-				<div class="tags">
-					<span>Tagged as: </span>
-					<ul class="tag-list">
-							<li><a href="/blog/tag/DX7.html">DX7</a></li>
-							<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-							<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-							<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-					</ul>
-				</div>
-	</header>
-	<div class="entry-body">
-		<p>
-	Prior to the personal computer becoming the centrepiece of home music production, 
-	backing up and storing synthesiser patches was a non-trivial problem.
-	Synth manufacturers experimented with various interesting methods over the years, 
-	however none of these has aged more poorly than digital cassette storage.
-</p>
-<p>
-	This article discusses the particular technical implementation of the data cassette interface 
-	used in Yamaha's FM synthesisers, and the historical context in which it was developed.
-</p>
+    <title>How the Yamaha FM Synth Cassette Interface Works - ajxs.me</title>
+  </head>
+  <body>
+    <header>
+      <a href="/">~ajxs</a>
+    </header>
+    <article class="blog-entry">
+      <header>
+        <h1>How the Yamaha FM Synth Cassette Interface Works</h1>
+        <div class="date">2022.09.28</div>
+        <div class="description">
+          A technical overview of how the cassette interface used in
+          Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for
+          external storage.
+        </div>
+        <div class="tags">
+          <span>Tagged as: </span>
+          <ul class="tag-list">
+            <li><a href="/blog/tag/DX7.html">DX7</a></li>
+            <li>
+              <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+            </li>
+            <li>
+              <a href="/blog/tag/Reverse_Engineering.html"
+                >Reverse Engineering</a
+              >
+            </li>
+            <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+          </ul>
+        </div>
+      </header>
+      <div class="entry-body">
+        <p>
+          Prior to the personal computer becoming the centrepiece of home music
+          production, backing up and storing synthesiser patches was a
+          non-trivial problem. Synth manufacturers experimented with various
+          interesting methods over the years, however none of these has aged
+          more poorly than digital cassette storage.
+        </p>
+        <p>
+          This article discusses the particular technical implementation of the
+          data cassette interface used in Yamaha's FM synthesisers, and the
+          historical context in which it was developed.
+        </p>
 
-<h2 id="background">
-	Background
-	<a class="permalink" href="#background">#</a>
-</h2>
-<p>
-	The years leading up to the DX7's groundbreaking 1983 release were a period of rapid, exciting innovation.
-	The digital revolution had kicked into high gear, and technology was rapidly reshaping the world.
-	The personal computer was on the verge of going mainstream,
-	and the now ubiquitous 3.5"<sup><a href="#footnote_1" id="footnote_1_link">1</a></sup>
-	<a href="https://www.youtube.com/watch?v=djsyVgTGaRk" target="_blank">floppy disk</a>
-	was just <a href="https://archive.org/details/byte-magazine-1983-09/page/n167/mode/2up" target="_blank">beginning</a> 
-	to appear in consumer devices.
-	Electronic music production was about to take the world by storm,
-	and the 
-	<a href="https://reverb.com/news/history-of-ensoniq-samplers-mirage-eps-16-plus-asr-10" target="_blank">Ensoniq Mirage</a>
-	&#8212;which would bring affordable disk-based sampling to the masses&#8212; was only a year away<sup><a href="#footnote_2" id="footnote_2_link">2</a></sup>.
-</p>
-<p>
-	Despite the rapid pace technology was advancing, disk drives were still complicated, expensive devices.
-	Putting a disk drive into a synth required lots of extra circuitry,
-	driving up costs and introducing new modes of failure.
-	Considering this, it's not surprising that synth manufacturers opted for cheaper alternatives<sup><a href="#footnote_3" id="footnote_3_link">3</a></sup>.
-</p>
-<p>
-	Fortunately, the home computing world had already found a cheap and reliable solution for data storage: 
-	<i>Compact audio cassette tape</i>.
-	It's unclear where exactly this innovation 
-	<a href="http://www.retrotechnology.com/restore/cass_data.html" target="_blank">originated</a>,
-	but by the late-1970s the use of cassette interfaces in home computers had become commonplace;
-	with the first IBM <i>PC</i> &#8212;released in 1981&#8212; featuring one.
-	It shouldn't come as much of a surprise then, 
-	that as synthesisers started to become digital devices they would opt for the same solutions.
-	Many of the flagship synths of the 80s' would feature cassette interfaces,
-	such as the Oberheim OB-X, Sequential Circuits Prophet 5, and the Roland Jupiter 8.
-</p>
-<p>
-	The DX9, released together with the DX7 in 1983, 
-	would be the first of Yamaha's FM synthesisers to feature a cassette interface<sup><a href="#footnote_4" id="footnote_4_link">4</a></sup>.
-	This interface consisted of three 1/8" cable sockets to connect to the headphone, microphone, and
-	<a href="https://retrocomputing.stackexchange.com/q/8819" target="_blank">remote</a>
-	sockets of a consumer-grade cassette recorder.
-	Later synths in Yamaha's FM line &#8212;such as 1989's TX81Z&#8212; would use an
-	<a href="https://www.msx.org/wiki/Data_Recorder_connector" target="_blank">8-pin DIN socket</a> 
-	for the cassette interface,
-	coupled with a proprietary cable terminating in three 1/8" jacks;
-	This 8-pin DIN socket format was shared with the 
-	<a href="https://en.wikipedia.org/wiki/MSX" target="_blank">MSX</a>
-	computer cassette interface, 
-	which is not surprising given Yamaha's involvement in its development.
-</p>
-<p>
-	The ability to distribute patches over an electronic medium opened up new possibilities for talented programmers:
-	In the wake of the DX7, a new market emerged for patches for Yamaha's notoriously hard to program FM synths;
-	with companies selling their patches on cartridges and cassette tape.
-</p>
-<p>
-	Protecting this new form of intellectual property was serious business,
-	with professional DX7 patch authors reportedly going so far as embedding garbage 
-	information in their patch data to identify patch thieves after the fact,
-	such as unique key scaling in unused operators,
-	or invalid ASCII characters in a patch name<sup><a href="#footnote_5" id="footnote_5_link">5</a></sup> (Cox &amp; Warner, 2017).
-</p>
-<p>
-	While the glory days of the bands featured in
-	<a href="http://www.voicecrystal.com" target="_blank">voicecrystal.com</a>'s <a href="https://www.voicecrystal.com/gallery1.htm" target="_blank">artist gallery</a> may be behind them,
-	their testimonials speak to the enormous impact that professional patch programmers 
-	had on the entire music industry.
-</p>
+        <h2 id="background">
+          Background
+          <a class="permalink" href="#background">#</a>
+        </h2>
+        <p>
+          The years leading up to the DX7's groundbreaking 1983 release were a
+          period of rapid, exciting innovation. The digital revolution had
+          kicked into high gear, and technology was rapidly reshaping the world.
+          The personal computer was on the verge of going mainstream, and the
+          now ubiquitous 3.5"<sup
+            ><a href="#footnote_1" id="footnote_1_link">1</a></sup
+          >
+          <a href="https://www.youtube.com/watch?v=djsyVgTGaRk" target="_blank"
+            >floppy disk</a
+          >
+          was just
+          <a
+            href="https://archive.org/details/byte-magazine-1983-09/page/n167/mode/2up"
+            target="_blank"
+            >beginning</a
+          >
+          to appear in consumer devices. Electronic music production was about
+          to take the world by storm, and the
+          <a
+            href="https://reverb.com/news/history-of-ensoniq-samplers-mirage-eps-16-plus-asr-10"
+            target="_blank"
+            >Ensoniq Mirage</a
+          >
+          &#8212;which would bring affordable disk-based sampling to the
+          masses&#8212; was only a year away<sup
+            ><a href="#footnote_2" id="footnote_2_link">2</a></sup
+          >.
+        </p>
+        <p>
+          Despite the rapid pace technology was advancing, disk drives were
+          still complicated, expensive devices. Putting a disk drive into a
+          synth required lots of extra circuitry, driving up costs and
+          introducing new modes of failure. Considering this, it's not
+          surprising that synth manufacturers opted for cheaper alternatives<sup
+            ><a href="#footnote_3" id="footnote_3_link">3</a></sup
+          >.
+        </p>
+        <p>
+          Fortunately, the home computing world had already found a cheap and
+          reliable solution for data storage:
+          <i>Compact audio cassette tape</i>. It's unclear where exactly this
+          innovation
+          <a
+            href="http://www.retrotechnology.com/restore/cass_data.html"
+            target="_blank"
+            >originated</a
+          >, but by the late-1970s the use of cassette interfaces in home
+          computers had become commonplace; with the first IBM
+          <i>PC</i> &#8212;released in 1981&#8212; featuring one. It shouldn't
+          come as much of a surprise then, that as synthesisers started to
+          become digital devices they would opt for the same solutions. Many of
+          the flagship synths of the 80s' would feature cassette interfaces,
+          such as the Oberheim OB-X, Sequential Circuits Prophet 5, and the
+          Roland Jupiter 8.
+        </p>
+        <p>
+          The DX9, released together with the DX7 in 1983, would be the first of
+          Yamaha's FM synthesisers to feature a cassette interface<sup
+            ><a href="#footnote_4" id="footnote_4_link">4</a></sup
+          >. This interface consisted of three 1/8" cable sockets to connect to
+          the headphone, microphone, and
+          <a
+            href="https://retrocomputing.stackexchange.com/q/8819"
+            target="_blank"
+            >remote</a
+          >
+          sockets of a consumer-grade cassette recorder. Later synths in
+          Yamaha's FM line &#8212;such as 1989's TX81Z&#8212; would use an
+          <a
+            href="https://www.msx.org/wiki/Data_Recorder_connector"
+            target="_blank"
+            >8-pin DIN socket</a
+          >
+          for the cassette interface, coupled with a proprietary cable
+          terminating in three 1/8" jacks; This 8-pin DIN socket format was
+          shared with the
+          <a href="https://en.wikipedia.org/wiki/MSX" target="_blank">MSX</a>
+          computer cassette interface, which is not surprising given Yamaha's
+          involvement in its development.
+        </p>
+        <p>
+          The ability to distribute patches over an electronic medium opened up
+          new possibilities for talented programmers: In the wake of the DX7, a
+          new market emerged for patches for Yamaha's notoriously hard to
+          program FM synths; with companies selling their patches on cartridges
+          and cassette tape.
+        </p>
+        <p>
+          Protecting this new form of intellectual property was serious
+          business, with professional DX7 patch authors reportedly going so far
+          as embedding garbage information in their patch data to identify patch
+          thieves after the fact, such as unique key scaling in unused
+          operators, or invalid ASCII characters in a patch name<sup
+            ><a href="#footnote_5" id="footnote_5_link">5</a></sup
+          >
+          (Cox &amp; Warner, 2017).
+        </p>
+        <p>
+          While the glory days of the bands featured in
+          <a href="http://www.voicecrystal.com" target="_blank"
+            >voicecrystal.com</a
+          >'s
+          <a href="https://www.voicecrystal.com/gallery1.htm" target="_blank"
+            >artist gallery</a
+          >
+          may be behind them, their testimonials speak to the enormous impact
+          that professional patch programmers had on the entire music industry.
+        </p>
 
-<h2 id="encoding_format">
-	Encoding Format
-	<a class="permalink" href="#encoding_format">#</a>
-</h2>
-<p>
-	The encoding scheme used by the Yamaha FM synthesisers' cassette interface is a variation of the
-	<a href="https://en.wikipedia.org/wiki/Kansas_City_standard" target="_blank">
-		<i>'Kansas City standard'</i></a> format, known as <i>CUTS</i>.
-	This format uses <i>'frequency shift keying'</i> to encode digital data.
-	The CUTS format is shared with MSX computers, and allows for higher speed data 
-	transfer than the standard Kansas City
-	Standard format, allowing for a much faster 1200 baud<sup><a href="#footnote_6" id="footnote_6_link">6</a></sup>, 
-	as well as the original 300.
-</p>
-<p>
-	The audio signal begins with an extended 2400Hz 'pilot tone',
-	which can be used to calibrate the volume of the input source.
-	What follows is a sequence of data frames, each containing a single byte.
-	Multiple data items (such as multiple patches, performances, etc) can be encoded in a single recording,
-	separated by arbitrary lengths of the pilot tone.
-</p>
-<p>
-	A binary '1' bit (known as a <i>'mark'</i>) is encoded with two 'cycles' at 2400Hz.
-	A '0' (known as a <i>'space'</i>) is encoded as a single cycle at 1200hz.
-	A data packet, occupying roughly 9.1 milliseconds of tape, consists of a leading zero bit indicating the start of a data frame,
-	followed by the actual 8 data bits, LSB first.
-	Two trailing 'ones' indicate the end of the data frame.
-</p>
-<p>
-	The following diagram demonstrates the structure of an encoded data packet, the byte <code>0b10110101</code>:
-	<a href="/static/articles/yamaha_cassette_interface/yamaha_dx_kcs_data_frame.jpg" target="_blank">
-		<img src="/static/articles/yamaha_cassette_interface/yamaha_dx_kcs_data_frame.jpg" alt="Diagram of a byte encoded in KCS format">
-	</a>
-</p>
+        <h2 id="encoding_format">
+          Encoding Format
+          <a class="permalink" href="#encoding_format">#</a>
+        </h2>
+        <p>
+          The encoding scheme used by the Yamaha FM synthesisers' cassette
+          interface is a variation of the
+          <a
+            href="https://en.wikipedia.org/wiki/Kansas_City_standard"
+            target="_blank"
+          >
+            <i>'Kansas City standard'</i></a
+          >
+          format, known as <i>CUTS</i>. This format uses
+          <i>'frequency shift keying'</i> to encode digital data. The CUTS
+          format is shared with MSX computers, and allows for higher speed data
+          transfer than the standard Kansas City Standard format, allowing for a
+          much faster 1200 baud<sup
+            ><a href="#footnote_6" id="footnote_6_link">6</a></sup
+          >, as well as the original 300.
+        </p>
+        <p>
+          The audio signal begins with an extended 2400Hz 'pilot tone', which
+          can be used to calibrate the volume of the input source. What follows
+          is a sequence of data frames, each containing a single byte. Multiple
+          data items (such as multiple patches, performances, etc) can be
+          encoded in a single recording, separated by arbitrary lengths of the
+          pilot tone.
+        </p>
+        <p>
+          A binary '1' bit (known as a <i>'mark'</i>) is encoded with two
+          'cycles' at 2400Hz. A '0' (known as a <i>'space'</i>) is encoded as a
+          single cycle at 1200hz. A data packet, occupying roughly 9.1
+          milliseconds of tape, consists of a leading zero bit indicating the
+          start of a data frame, followed by the actual 8 data bits, LSB first.
+          Two trailing 'ones' indicate the end of the data frame.
+        </p>
+        <p>
+          The following diagram demonstrates the structure of an encoded data
+          packet, the byte <code>0b10110101</code>:
+          <a
+            href="/static/articles/yamaha_cassette_interface/yamaha_dx_kcs_data_frame.jpg"
+            target="_blank"
+          >
+            <img
+              src="/static/articles/yamaha_cassette_interface/yamaha_dx_kcs_data_frame.jpg"
+              alt="Diagram of a byte encoded in KCS format"
+            />
+          </a>
+        </p>
 
-<h2 id="implementation">
-	Implementation
-	<a class="permalink" href="#implementation">#</a>
-</h2>
-<p>
-	The technical implementation of the cassette interface in Yamaha's FM synthesisers is surprisingly simple:
-	The raw electrical audio signal played from the cassette can be interpreted as binary data by the CPU's I/O ports,
-	without requiring any analog to digital conversion.
-	Sampling the positive peak of the audio wave period from the I/O port will be perceived by the CPU as a binary one,
-	with a sample of negative voltage perceived as a zero.
-</p>
-<p>
-	Similarly, pulling an output I/O port's signal high, and low in quick succession will be recorded as a sinusoidal
-	oscillation when sampled as audio by a tape recorder.
-	By controlling the frequency of toggling the output voltage in the software,
-	it is possible to create the encoded data output directly from the CPU, without requiring any additional, specialised circuitry.
-</p>
-<p>
-	By periodically sampling the I/O pin connected to the cassette interface's input port,
-	it's possible to determine the frequency of the incoming audio by counting the number of times the polarity of the signal changes within an arbitrary period.
-</p>
-<p>
-	To accomplish this the synth firmware samples the cassette input I/O port at a set interval corresponding to the baud rate.
-	The firmware controls this interval using an arbitrary delay routine, called between each sampling of the input port.
-	Each successive sample is tested against the last using a XOR instruction,
-	incrementing the 'polarity change count' if the values differ.
-	The number of polarity changes within a period will indicate whether the period's frequency was 2400hz indicating a '1' bit, or 1200hz for '0'.
-	From this information it is possible to construct the full byte.
-</p>
-<p>
-	The Yamaha FM synths use an interesting trick to construct the final value using the Hitachi HD6303 architecture's logical rotate instructions:
-	Given that the number of polarity changes counted in a period will either be less than two in the case of a '0' bit,
-	or more than two in the case of a '1' (binary <code>0b10</code>, or above),
-	if the resulting pulse count is logically rotated twice rightwards the processor's carry flag will be set in the case that the input value is a '1'.
-	With the result of the last bit read stored in the processor's carry flag, the result is then rotated rightwards into the most-significant bit of the result byte.
-	Since each byte is encoded LSB first, after 8 iterations of this routine the final result byte will have been decoded.
-	This same method of constructing the final byte is used in the cassette interface code in the DX9, DX100, and TX81Z firmware, with only minor variations.
-</p>
+        <h2 id="implementation">
+          Implementation
+          <a class="permalink" href="#implementation">#</a>
+        </h2>
+        <p>
+          The technical implementation of the cassette interface in Yamaha's FM
+          synthesisers is surprisingly simple: The raw electrical audio signal
+          played from the cassette can be interpreted as binary data by the
+          CPU's I/O ports, without requiring any analog to digital conversion.
+          Sampling the positive peak of the audio wave period from the I/O port
+          will be perceived by the CPU as a binary one, with a sample of
+          negative voltage perceived as a zero.
+        </p>
+        <p>
+          Similarly, pulling an output I/O port's signal high, and low in quick
+          succession will be recorded as a sinusoidal oscillation when sampled
+          as audio by a tape recorder. By controlling the frequency of toggling
+          the output voltage in the software, it is possible to create the
+          encoded data output directly from the CPU, without requiring any
+          additional, specialised circuitry.
+        </p>
+        <p>
+          By periodically sampling the I/O pin connected to the cassette
+          interface's input port, it's possible to determine the frequency of
+          the incoming audio by counting the number of times the polarity of the
+          signal changes within an arbitrary period.
+        </p>
+        <p>
+          To accomplish this the synth firmware samples the cassette input I/O
+          port at a set interval corresponding to the baud rate. The firmware
+          controls this interval using an arbitrary delay routine, called
+          between each sampling of the input port. Each successive sample is
+          tested against the last using a XOR instruction, incrementing the
+          'polarity change count' if the values differ. The number of polarity
+          changes within a period will indicate whether the period's frequency
+          was 2400hz indicating a '1' bit, or 1200hz for '0'. From this
+          information it is possible to construct the full byte.
+        </p>
+        <p>
+          The Yamaha FM synths use an interesting trick to construct the final
+          value using the Hitachi HD6303 architecture's logical rotate
+          instructions: Given that the number of polarity changes counted in a
+          period will either be less than two in the case of a '0' bit, or more
+          than two in the case of a '1' (binary <code>0b10</code>, or above), if
+          the resulting pulse count is logically rotated twice rightwards the
+          processor's carry flag will be set in the case that the input value is
+          a '1'. With the result of the last bit read stored in the processor's
+          carry flag, the result is then rotated rightwards into the
+          most-significant bit of the result byte. Since each byte is encoded
+          LSB first, after 8 iterations of this routine the final result byte
+          will have been decoded. This same method of constructing the final
+          byte is used in the cassette interface code in the DX9, DX100, and
+          TX81Z firmware, with only minor variations.
+        </p>
 
-<h2 id="references">References <a class="permalink" href="#references">#</a></h2>
-<ul id="references-list">
-	<li>
-		Cox, C., &amp; Warner, D. (2017). <i>Audio culture readings in modern music</i>. New York Bloomsbury Academic.
-	</li>
-	<li>
-		<a href="https://www.polynominal.com/yamaha-dx-100/yamaha-dx100-manual.pdf" target="_blank">
-			Yamaha DX100 Service Manual
-		</a>
-	</li>
-</ul>
+        <h2 id="references">
+          References <a class="permalink" href="#references">#</a>
+        </h2>
+        <ul id="references-list">
+          <li>
+            Cox, C., &amp; Warner, D. (2017).
+            <i>Audio culture readings in modern music</i>. New York Bloomsbury
+            Academic.
+          </li>
+          <li>
+            <a
+              href="https://www.polynominal.com/yamaha-dx-100/yamaha-dx100-manual.pdf"
+              target="_blank"
+            >
+              Yamaha DX100 Service Manual
+            </a>
+          </li>
+        </ul>
 
-<hr>
-<ol class="footnotes">
-	<li id="footnote_1">
-		According to <a href="https://www.hpe.com/us/en/insights/articles/floppy-disk-history-the-evolution-of-personal-computing-1804.html" target="_blank">legend</a>,
-		its predecessor &#8212;the 5.25" floppy disk&#8212; 
-		was designed this particular size to discourage users from transporting them in their pockets, 
-		and subsequently damaging them by bending.
-	<a href="#footnote_1_link">&#8626;</a></li><li id="footnote_2">
-		Ensoniq certainly deserves some credit for putting a 3.5" disk drive into their groundbreaking sampler:
-		The Mirage was one of the first mass-produced consumer devices to incorporate this new standard for floppy disks.
-		In fact, the first manufactured Mirage models apparently featured one of the first production 3.5" disk drives: The Shugart SA300.
-	<a href="#footnote_2_link">&#8626;</a></li><li id="footnote_3">
-		History would ultimately vindicate this decision.
-		A roaring trade of replacement disk drives for vintage synths exists on Ebay, Reverb, and other trading sites.
-		The various encoding schemes used for these disks haven't stood the test of time either.
-		While proprietary cartridges for vintage synths might not be easy to come by,
-		the technology remains as reliable as it ever was.
-	<a href="#footnote_3_link">&#8626;</a></li><li id="footnote_4">
-		It's hard to say why Yamaha opted for a cassette interface over the voice cartridge system featured in the DX7.
-		Yamaha clearly didn't consider either medium technically superior to the other.
-		Both were used in their subsequent DX/TX series synthesisers.
-		The DX7II, and TX802 &#8212;released in 1986, and 1987 respectively&#8212; would both feature a cartridge interface,
-		whereas every other would have a cassette interface.
-	<a href="#footnote_4_link">&#8626;</a></li><li id="footnote_5">
-		Having <a href="https://github.com/ajxs/yamaha_dx7_rom_disassembly" target="_blank">disassembled the firmware</a>, 
-		and annotated all of the string subroutines, I can confirm that you could safely do this.
-		Invalid ASCII characters at the end of a patch name simply won't be printed.
-		If an ASCII character value outside of the valid <code>0-0x7F</code> range is encountered,
-		the string copy process will stop harmlessly.
-	<a href="#footnote_5_link">&#8626;</a></li><li id="footnote_6">
-		The <a href="https://www.polynominal.com/yamaha-dx-100/yamaha-dx100-manual.pdf" target="_blank">DX100 service manual</a>
-		helpfully confirms that the baud rate is indeed 1200.
-		Yamaha's service manuals never disappoint: They remain a font of oddly-specific, however generally vague technical trivia.
-	<a href="#footnote_6_link">&#8626;</a></li></ol>
-	</div>
-</article>
+        <hr />
+        <ol class="footnotes">
+          <li id="footnote_1">
+            According to
+            <a
+              href="https://www.hpe.com/us/en/insights/articles/floppy-disk-history-the-evolution-of-personal-computing-1804.html"
+              target="_blank"
+              >legend</a
+            >, its predecessor &#8212;the 5.25" floppy disk&#8212; was designed
+            this particular size to discourage users from transporting them in
+            their pockets, and subsequently damaging them by bending.
+            <a href="#footnote_1_link">&#8626;</a>
+          </li>
+          <li id="footnote_2">
+            Ensoniq certainly deserves some credit for putting a 3.5" disk drive
+            into their groundbreaking sampler: The Mirage was one of the first
+            mass-produced consumer devices to incorporate this new standard for
+            floppy disks. In fact, the first manufactured Mirage models
+            apparently featured one of the first production 3.5" disk drives:
+            The Shugart SA300.
+            <a href="#footnote_2_link">&#8626;</a>
+          </li>
+          <li id="footnote_3">
+            History would ultimately vindicate this decision. A roaring trade of
+            replacement disk drives for vintage synths exists on Ebay, Reverb,
+            and other trading sites. The various encoding schemes used for these
+            disks haven't stood the test of time either. While proprietary
+            cartridges for vintage synths might not be easy to come by, the
+            technology remains as reliable as it ever was.
+            <a href="#footnote_3_link">&#8626;</a>
+          </li>
+          <li id="footnote_4">
+            It's hard to say why Yamaha opted for a cassette interface over the
+            voice cartridge system featured in the DX7. Yamaha clearly didn't
+            consider either medium technically superior to the other. Both were
+            used in their subsequent DX/TX series synthesisers. The DX7II, and
+            TX802 &#8212;released in 1986, and 1987 respectively&#8212; would
+            both feature a cartridge interface, whereas every other would have a
+            cassette interface.
+            <a href="#footnote_4_link">&#8626;</a>
+          </li>
+          <li id="footnote_5">
+            Having
+            <a
+              href="https://github.com/ajxs/yamaha_dx7_rom_disassembly"
+              target="_blank"
+              >disassembled the firmware</a
+            >, and annotated all of the string subroutines, I can confirm that
+            you could safely do this. Invalid ASCII characters at the end of a
+            patch name simply won't be printed. If an ASCII character value
+            outside of the valid <code>0-0x7F</code> range is encountered, the
+            string copy process will stop harmlessly.
+            <a href="#footnote_5_link">&#8626;</a>
+          </li>
+          <li id="footnote_6">
+            The
+            <a
+              href="https://www.polynominal.com/yamaha-dx-100/yamaha-dx100-manual.pdf"
+              target="_blank"
+              >DX100 service manual</a
+            >
+            helpfully confirms that the baud rate is indeed 1200. Yamaha's
+            service manuals never disappoint: They remain a font of
+            oddly-specific, however generally vague technical trivia.
+            <a href="#footnote_6_link">&#8626;</a>
+          </li>
+        </ol>
+      </div>
+    </article>
 
-		<footer>
-			<div class="links">
-				<nav>
-					<a href="/about.html">About Me</a>
-					<a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
-					<a href="https://github.com/ajxs" target="_blank">Github</a>
-					<a href="/donate.html">Donate</a>
-					<a href="/site.rss" target="_blank">RSS</a>
-				</nav>
-				<div>
-					Webring:
-					<a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a> /
-					<a href="https://webri.ng/webring/ajxs/random">Random</a> /
-					<a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
-				</div>
-			</div>
+    <footer>
+      <div class="links">
+        <nav>
+          <a href="/about.html">About Me</a>
+          <a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
+          <a href="https://github.com/ajxs" target="_blank">Github</a>
+          <a href="/donate.html">Donate</a>
+          <a href="/site.rss" target="_blank">RSS</a>
+        </nav>
+        <div>
+          Webring:
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
+          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
+        </div>
+      </div>
 
-			© 2025 ajxs
-		</footer>
-	</body>
-
+      © 2025 ajxs
+    </footer>
+  </body>
 </html>

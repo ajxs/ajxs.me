@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import Handlebars from "handlebars";
+import prettier from "prettier";
 import { Article, PageRedirect, StaticPage, Tag } from "./models";
 import {
   convertNameToFilename,
@@ -37,6 +38,10 @@ const defaultMainPageTemplateInfo = {
   meta_author: "ajxs",
   meta_email: "ajxs@panoptic.online",
   meta_keywords: defaultPageKeywords.join(),
+};
+
+const prettierPageFormattingOptions: prettier.Options = {
+  parser: "html",
 };
 
 const transformTagToTemplateFormat = (tag: Tag) => ({
@@ -77,15 +82,20 @@ async function createRedirectPage(
     "If you are not redirected automatically please" +
     `<a href=\"${pageRedirect.addressTo}\">click here</a>.</p>`;
 
-  const staticPageHtml = mainPageTemplate({
+  const redirectPageHtml = mainPageTemplate({
     ...defaultMainPageTemplateInfo,
     page_body: pageBody,
     redirect: pageRedirect.addressTo,
   });
 
+  const formattedPageHtml = await prettier.format(
+    redirectPageHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${distFolder}/${pageRedirect.addressFrom}`;
 
-  await fs.writeFile(filePath, staticPageHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created redirect page: ${filePath}`);
 }
@@ -102,9 +112,14 @@ async function createStaticPage(
     contains_code_blocks: staticPage.containsCodeBlocks,
   });
 
+  const formattedPageHtml = await prettier.format(
+    staticPageHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${distFolder}/${staticPage.path}`;
 
-  await fs.writeFile(filePath, staticPageHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created static page: ${filePath}`);
 }
@@ -115,9 +130,9 @@ async function createTagIndexPage(
   mainPageTemplate: Handlebars.TemplateDelegate,
 ): Promise<void> {
   const taggedArticleIndexHtml = blogIndexTemplate({
-    articles: filterAndSortArticles(tag.taggedArticles ?? [])
-      .slice(0, mainIndexArticleCount)
-      .map(transformArticleToTemplateFormat),
+    articles: filterAndSortArticles(tag.taggedArticles ?? []).map(
+      transformArticleToTemplateFormat,
+    ),
     heading: `Entries tagged as '<span class="tag-index-name">${tag.name}</span>'`,
     show_entry_tags: false,
   });
@@ -130,9 +145,14 @@ async function createTagIndexPage(
     page_body: taggedArticleIndexHtml,
   });
 
+  const formattedPageHtml = await prettier.format(
+    tagIndexHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${blogDirectory}/tag/${convertNameToFilename(tag.name)}.html`;
 
-  await fs.writeFile(filePath, tagIndexHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created tag index page: ${filePath}`);
 }
@@ -167,9 +187,14 @@ async function createArticlePage(
     contains_code_blocks: article.containsCodeBlocks,
   });
 
+  const formattedPageHtml = await prettier.format(
+    articlePageHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${blogDirectory}/${convertNameToFilename(article.title)}.html`;
 
-  await fs.writeFile(filePath, articlePageHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created article page: ${filePath}`);
 }
@@ -234,9 +259,14 @@ async function createSiteIndex(
     page_body: siteIndexHtml,
   });
 
+  const formattedPageHtml = await prettier.format(
+    siteIndexPageHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${distFolder}/index.html`;
 
-  await fs.writeFile(filePath, siteIndexPageHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created site index page: ${filePath}`);
 }
@@ -261,9 +291,14 @@ async function createAllEntriesPage(
     page_body: allEntriesIndexHtml,
   });
 
+  const formattedPageHtml = await prettier.format(
+    allEntriesHtml,
+    prettierPageFormattingOptions,
+  );
+
   const filePath = `${blogDirectory}/all.html`;
 
-  await fs.writeFile(filePath, allEntriesHtml);
+  await fs.writeFile(filePath, formattedPageHtml);
 
   console.log(`Created all entries page: ${filePath}`);
 }

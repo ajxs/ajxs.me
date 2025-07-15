@@ -1,198 +1,318 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="author" content="ajxs">
-		<meta name="description" content="All Blog Entries">
-		<meta name="robots" content="index, follow">
-		<meta name="keywords" content="ajxs,synthesisers,programming">
-		<meta name="reply-to" content="ajxs@panoptic.online">
-		<meta name="owner" content="ajxs">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/style.css">
-		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
-		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="ajxs" />
+    <meta name="description" content="All Blog Entries" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="ajxs,synthesisers,programming" />
+    <meta name="reply-to" content="ajxs@panoptic.online" />
+    <meta name="owner" content="ajxs" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog Posts"
+      href="/site.rss"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon-16x16.png"
+    />
 
-		<title>All Blog Entries - ajxs.me</title>
-	</head>
-	<body>
-		<header>
-			<a href="/">~ajxs</a>
-		</header>
-		<div class="blog-index">
-	<h1>All Blog Entries</h1>
-	<ul id="blog-index-entries">
-			<li>
-				<a class="title" href="/blog/How_Does_Adas_Memory_Safety_Compare_Against_Rust.html">How Does Ada&#x27;s Memory Safety Compare Against Rust?</a>
-				<span class="date">2025.01.17</span>
-				<div class="description">A comparison of how well Rust and Ada prevent the most common memory-related software errors.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/Ada.html">Ada</a></li>
-								<li><a href="/blog/tag/Programming.html">Programming</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Introduction_to_Reverse-Engineering_Vintage_Synth_Firmware.html">Introduction to Reverse-Engineering Vintage Synth Firmware</a>
-				<span class="date">2024.03.18</span>
-				<div class="description">A gentle introduction to reverse-engineering vintage synthesiser ROMs using the Ghidra disassembler.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/The_Identity_of_The_Sanctimonious_Kid.html">The Identity of The Sanctimonious Kid</a>
-				<span class="date">2024.02.27</span>
-				<div class="description">Exploring the historic background of Jack Black&#x27;s &#x27;You Can&#x27;t Win&#x27;, and investigating the identity of The Sanctimonious Kid.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/Non-Technical.html">Non-Technical</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/How_Far_Back_in_Time_Can_I_Take_My_Websites_Design.html">How Far Back in Time Can I Take My Website&#x27;s Design</a>
-				<span class="date">2023.05.07</span>
-				<div class="description">A look back through web-browser history, as I test my site against the browsers of the past.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/Programming.html">Programming</a></li>
-								<li><a href="/blog/tag/The_Small_Web.html">The Small Web</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Hacking_the_Yamaha_DX9_To_Turn_It_Into_a_DX7.html">Hacking the Yamaha DX9 To Turn It Into a DX7</a>
-				<span class="date">2023.04.10</span>
-				<div class="description">A brief account of hacking the Yamaha DX9&#x27;s firmware ROM to make its functionality more closely match the DX7.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Programming.html">Programming</a></li>
-								<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/How_the_Yamaha_FM_Synth_Cassette_Interface_Works.html">How the Yamaha FM Synth Cassette Interface Works</a>
-				<span class="date">2022.09.28</span>
-				<div class="description">A technical overview of how the cassette interface used in Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for external storage.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Yamaha_DX7_Official_Technical_Analysis.html">Yamaha DX7 Official Technical Analysis</a>
-				<span class="date">2022.03.20</span>
-				<div class="description">A chance discovery on eBay has surfaced some of Yamaha&#x27;s original technical documentation for the DX7 synthesiser.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Yamaha_DX7_Firmware_ROM_Disassembly.html">Yamaha DX7 Firmware ROM Disassembly</a>
-				<span class="date">2021.12.25</span>
-				<div class="description">A brief update regarding the reverse-engineering of the Yamaha DX7&#x27;s firmware ROM.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Yamaha_DX7_Technical_Analysis.html">Yamaha DX7 Technical Analysis</a>
-				<span class="date">2021.04.23</span>
-				<div class="description">An introductory technical analysis of the Yamaha DX7, detailing some of the known information about the synthesiser’s engineering.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/DX7.html">DX7</a></li>
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Giving_Ada_a_Chance.html">Giving Ada a Chance</a>
-				<span class="date">2021.01.13</span>
-				<div class="description">An in-depth look at the Ada programming language, its history, and what it has to offer developers today. As well as a fistful of my humble opinions.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/Ada.html">Ada</a></li>
-								<li><a href="/blog/tag/Programming.html">Programming</a></li>
-						</ul>
-					</div>
-			</li>
-			<li>
-				<a class="title" href="/blog/Casio_CZ-101_Review.html">Casio CZ-101 Review</a>
-				<span class="date">2020.09.01</span>
-				<div class="description">A review of the Casio CZ-101 synthesizer, from the charitable perspective of someone with experience in ugly, digital
-noise: An industrial musician.</div>
-					<div class="tags">
-						<span>Tagged as: </span>
-						<ul class="tag-list">
-								<li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
-								<li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
-						</ul>
-					</div>
-			</li>
-	</ul>
+    <title>All Blog Entries - ajxs.me</title>
+  </head>
+  <body>
+    <header>
+      <a href="/">~ajxs</a>
+    </header>
+    <div class="blog-index">
+      <h1>All Blog Entries</h1>
+      <ul id="blog-index-entries">
+        <li>
+          <a
+            class="title"
+            href="/blog/How_Does_Adas_Memory_Safety_Compare_Against_Rust.html"
+            >How Does Ada&#x27;s Memory Safety Compare Against Rust?</a
+          >
+          <span class="date">2025.01.17</span>
+          <div class="description">
+            A comparison of how well Rust and Ada prevent the most common
+            memory-related software errors.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/Ada.html">Ada</a></li>
+              <li><a href="/blog/tag/Programming.html">Programming</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/Introduction_to_Reverse-Engineering_Vintage_Synth_Firmware.html"
+            >Introduction to Reverse-Engineering Vintage Synth Firmware</a
+          >
+          <span class="date">2024.03.18</span>
+          <div class="description">
+            A gentle introduction to reverse-engineering vintage synthesiser
+            ROMs using the Ghidra disassembler.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li>
+                <a href="/blog/tag/Reverse_Engineering.html"
+                  >Reverse Engineering</a
+                >
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/The_Identity_of_The_Sanctimonious_Kid.html"
+            >The Identity of The Sanctimonious Kid</a
+          >
+          <span class="date">2024.02.27</span>
+          <div class="description">
+            Exploring the historic background of Jack Black&#x27;s &#x27;You
+            Can&#x27;t Win&#x27;, and investigating the identity of The
+            Sanctimonious Kid.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/Non-Technical.html">Non-Technical</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/How_Far_Back_in_Time_Can_I_Take_My_Websites_Design.html"
+            >How Far Back in Time Can I Take My Website&#x27;s Design</a
+          >
+          <span class="date">2023.05.07</span>
+          <div class="description">
+            A look back through web-browser history, as I test my site against
+            the browsers of the past.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/Programming.html">Programming</a></li>
+              <li><a href="/blog/tag/The_Small_Web.html">The Small Web</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/Hacking_the_Yamaha_DX9_To_Turn_It_Into_a_DX7.html"
+            >Hacking the Yamaha DX9 To Turn It Into a DX7</a
+          >
+          <span class="date">2023.04.10</span>
+          <div class="description">
+            A brief account of hacking the Yamaha DX9&#x27;s firmware ROM to
+            make its functionality more closely match the DX7.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li><a href="/blog/tag/Programming.html">Programming</a></li>
+              <li>
+                <a href="/blog/tag/Reverse_Engineering.html"
+                  >Reverse Engineering</a
+                >
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/How_the_Yamaha_FM_Synth_Cassette_Interface_Works.html"
+            >How the Yamaha FM Synth Cassette Interface Works</a
+          >
+          <span class="date">2022.09.28</span>
+          <div class="description">
+            A technical overview of how the cassette interface used in
+            Yamaha&#x27;s FM synthesisers encodes, and decodes patch data for
+            external storage.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li>
+                <a href="/blog/tag/Reverse_Engineering.html"
+                  >Reverse Engineering</a
+                >
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a
+            class="title"
+            href="/blog/Yamaha_DX7_Official_Technical_Analysis.html"
+            >Yamaha DX7 Official Technical Analysis</a
+          >
+          <span class="date">2022.03.20</span>
+          <div class="description">
+            A chance discovery on eBay has surfaced some of Yamaha&#x27;s
+            original technical documentation for the DX7 synthesiser.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a class="title" href="/blog/Yamaha_DX7_Firmware_ROM_Disassembly.html"
+            >Yamaha DX7 Firmware ROM Disassembly</a
+          >
+          <span class="date">2021.12.25</span>
+          <div class="description">
+            A brief update regarding the reverse-engineering of the Yamaha
+            DX7&#x27;s firmware ROM.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li>
+                <a href="/blog/tag/Reverse_Engineering.html"
+                  >Reverse Engineering</a
+                >
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a class="title" href="/blog/Yamaha_DX7_Technical_Analysis.html"
+            >Yamaha DX7 Technical Analysis</a
+          >
+          <span class="date">2021.04.23</span>
+          <div class="description">
+            An introductory technical analysis of the Yamaha DX7, detailing some
+            of the known information about the synthesiser’s engineering.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/DX7.html">DX7</a></li>
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li>
+                <a href="/blog/tag/Reverse_Engineering.html"
+                  >Reverse Engineering</a
+                >
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a class="title" href="/blog/Giving_Ada_a_Chance.html"
+            >Giving Ada a Chance</a
+          >
+          <span class="date">2021.01.13</span>
+          <div class="description">
+            An in-depth look at the Ada programming language, its history, and
+            what it has to offer developers today. As well as a fistful of my
+            humble opinions.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li><a href="/blog/tag/Ada.html">Ada</a></li>
+              <li><a href="/blog/tag/Programming.html">Programming</a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a class="title" href="/blog/Casio_CZ-101_Review.html"
+            >Casio CZ-101 Review</a
+          >
+          <span class="date">2020.09.01</span>
+          <div class="description">
+            A review of the Casio CZ-101 synthesizer, from the charitable
+            perspective of someone with experience in ugly, digital noise: An
+            industrial musician.
+          </div>
+          <div class="tags">
+            <span>Tagged as: </span>
+            <ul class="tag-list">
+              <li>
+                <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+              </li>
+              <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
 
-	<div id="blog-view-all-entries">
-		<a href="/blog/all.html">View All Entries</a>
-	</div>
-</div>
+      <div id="blog-view-all-entries">
+        <a href="/blog/all.html">View All Entries</a>
+      </div>
+    </div>
 
-		<footer>
-			<div class="links">
-				<nav>
-					<a href="/about.html">About Me</a>
-					<a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
-					<a href="https://github.com/ajxs" target="_blank">Github</a>
-					<a href="/donate.html">Donate</a>
-					<a href="/site.rss" target="_blank">RSS</a>
-				</nav>
-				<div>
-					Webring:
-					<a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a> /
-					<a href="https://webri.ng/webring/ajxs/random">Random</a> /
-					<a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
-				</div>
-			</div>
+    <footer>
+      <div class="links">
+        <nav>
+          <a href="/about.html">About Me</a>
+          <a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
+          <a href="https://github.com/ajxs" target="_blank">Github</a>
+          <a href="/donate.html">Donate</a>
+          <a href="/site.rss" target="_blank">RSS</a>
+        </nav>
+        <div>
+          Webring:
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
+          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
+        </div>
+      </div>
 
-			© 2025 ajxs
-		</footer>
-	</body>
-
+      © 2025 ajxs
+    </footer>
+  </body>
 </html>
