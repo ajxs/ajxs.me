@@ -9,7 +9,7 @@
 			<a class="title" href="/blog/<%= article.filename %>.html"><%= article.title %></a>
 			<span class="date"><%= article.date %></span>
 			<div class="description"><%= article.description %></div>
-			<% if (it.show_entry_tags && article.tags.length) { %>
+			<% if (it.showArticleTags && article.tags.length) { %>
 				<%~ include("./tagList", {
 					tags: article.tags
 				}) %>

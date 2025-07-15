@@ -11,21 +11,21 @@
 		<meta name="owner" content="<%= it.meta_author %>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="/static/style.css">
-		<% if (it.contains_code_blocks) { %>
+		<% if (it.containsCodeBlocks) { %>
 		<link rel="stylesheet" type="text/css" href="/static/code.css">
 		<% } %>
 		<link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss">
 		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 
-		<title><%= it.page_title %></title>
+		<title><%= it.pageTitle %></title>
 		<% /* Set the redirect time to a reasonable amount due to the negative impact of short values on screen-reader software. */ %>
 		<% if (it.redirect) { %>
 		<meta http-equiv="refresh" content="3;url=<%= it.redirect %>" />
 		<% } %>
 	</head>
-<% if (it.body_class) { %>
-	<body class="<%= it.body_class %>">
+<% if (it.pageBodyClass) { %>
+	<body class="<%= it.pageBodyClass %>">
 <% } else { %>
 	<body>
 <% } %>
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 
-			<%= it.footer_text %>
+			<%= it.footerText %>
 		</footer>
 	</body>
 

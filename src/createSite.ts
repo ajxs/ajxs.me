@@ -35,8 +35,8 @@ const mainIndexArticleCount = 10;
  * and main page title.
  */
 const defaultMainPageTemplateInfo = {
-  page_title: mainPageTitle,
-  footer_text: `© ${dayjs().year()} ajxs`,
+  pageTitle: mainPageTitle,
+  footerText: `© ${dayjs().year()} ajxs`,
   meta_description: "ajxs personal site",
   meta_author: "ajxs",
   meta_email: "ajxs@panoptic.online",
@@ -104,9 +104,9 @@ async function createStaticPage(staticPage: StaticPage): Promise<void> {
   const staticPageHtml = eta.render("./layout", {
     ...defaultMainPageTemplateInfo,
     meta_description: staticPage.description,
-    page_title: `${staticPage.title} - ${mainPageTitle}`,
+    pageTitle: `${staticPage.title} - ${mainPageTitle}`,
     body: staticPage.body,
-    contains_code_blocks: staticPage.containsCodeBlocks,
+    containsCodeBlocks: staticPage.containsCodeBlocks,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -129,9 +129,9 @@ async function createTagIndexPage(tag: Tag): Promise<void> {
     ),
     meta_description: `Blog entries tagged as '${tag.name}'`,
     meta_keywords: [...defaultPageKeywords, tag.name].join(),
-    page_title: `${tag.name} - ${mainPageTitle}`,
+    pageTitle: `${tag.name} - ${mainPageTitle}`,
     heading: `Entries tagged as '<span class="tag-index-name">${tag.name}</span>'`,
-    show_entry_tags: false,
+    showArticleTags: false,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -148,7 +148,7 @@ async function createTagIndexPage(tag: Tag): Promise<void> {
 
 /**
  * Creates an individual blog entry HTML file from a parsed entry.
- * Note that the 'contains_code_blocks' field is used to conditionally add
+ * Note that the 'containsCodeBlocks' field is used to conditionally add
  * the 'code blocks' CSS stylesheet to the page. This isn't added to entries
  * by default due to its size.
  * @param article - The article entity to create the page for.
@@ -165,8 +165,8 @@ async function createArticlePage(article: Article): Promise<void> {
     tags: sortTagsByName(article.tags ?? []).map(transformTagToTemplateFormat),
     meta_keywords: pageKeywordString,
     meta_description: article.description,
-    page_title: `${article.title} - ${mainPageTitle}`,
-    contains_code_blocks: article.containsCodeBlocks,
+    pageTitle: `${article.title} - ${mainPageTitle}`,
+    containsCodeBlocks: article.containsCodeBlocks,
   });
 
   const formattedPageHtml = await prettier.format(
@@ -190,12 +190,15 @@ async function createSiteIndex(
     articles: filterAndSortArticles(articles)
       .slice(0, mainIndexArticleCount)
       .map(transformArticleToTemplateFormat),
-    body_class: "index-page",
+    pageBodyClass: "index-page",
     heading: "Blog",
     tags: sortTagsByName(tags).map(transformTagToTemplateFormat),
-    show_entry_tags: false,
+    showArticleTags: false,
   });
 
+  // All output from the static-site generator is formatted with Prettier.
+  // This is so that any changes to the output can be easily reviewed
+  // with git diff.
   const formattedPageHtml = await prettier.format(
     siteIndexPageHtml,
     prettierPageFormattingOptions,
@@ -216,8 +219,8 @@ async function createAllEntriesPage(articles: Article[]): Promise<void> {
     ),
     heading: "All Blog Entries",
     meta_description: "All Blog Entries",
-    page_title: `All Blog Entries - ${mainPageTitle}`,
-    show_entry_tags: true,
+    pageTitle: `All Blog Entries - ${mainPageTitle}`,
+    showArticleTags: true,
   });
 
   const formattedPageHtml = await prettier.format(
