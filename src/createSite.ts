@@ -43,10 +43,6 @@ const defaultMainPageTemplateInfo = {
   meta_keywords: defaultPageKeywords.join(),
 };
 
-const prettierPageFormattingOptions: prettier.Options = {
-  parser: "html",
-};
-
 const transformTagToTemplateFormat = (tag: Tag) => ({
   name: tag.name,
   filename: convertNameToFilename(tag.name),
@@ -60,6 +56,23 @@ const transformArticleToTemplateFormat = (article: Article) => ({
   title: article.title,
   tags: sortTagsByName(article.tags ?? []).map(transformTagToTemplateFormat),
 });
+
+/**
+ * All output from the static-site generator is formatted with Prettier.
+ * This is so that any changes to the output can be easily reviewed with git diff.
+ */
+async function formatAndWriteFile(
+  filePath: string,
+  content: string,
+): Promise<void> {
+  const formattedContent = await prettier.format(content, {
+    parser: "html",
+  });
+
+  await fs.writeFile(filePath, formattedContent);
+
+  console.log(`Created file: ${filePath}`);
+}
 
 /**
  * Creates a static redirect page file.
@@ -88,16 +101,10 @@ async function createRedirectPage(pageRedirect: PageRedirect): Promise<void> {
     redirect: pageRedirect.addressTo,
   });
 
-  const formattedPageHtml = await prettier.format(
+  await formatAndWriteFile(
+    `${distFolder}/${pageRedirect.addressFrom}`,
     redirectPageHtml,
-    prettierPageFormattingOptions,
   );
-
-  const filePath = `${distFolder}/${pageRedirect.addressFrom}`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created redirect page: ${filePath}`);
 }
 
 async function createStaticPage(staticPage: StaticPage): Promise<void> {
@@ -109,16 +116,7 @@ async function createStaticPage(staticPage: StaticPage): Promise<void> {
     containsCodeBlocks: staticPage.containsCodeBlocks,
   });
 
-  const formattedPageHtml = await prettier.format(
-    staticPageHtml,
-    prettierPageFormattingOptions,
-  );
-
-  const filePath = `${distFolder}/${staticPage.path}`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created static page: ${filePath}`);
+  await formatAndWriteFile(`${distFolder}/${staticPage.path}`, staticPageHtml);
 }
 
 async function createTagIndexPage(tag: Tag): Promise<void> {
@@ -134,16 +132,10 @@ async function createTagIndexPage(tag: Tag): Promise<void> {
     showArticleTags: false,
   });
 
-  const formattedPageHtml = await prettier.format(
+  await formatAndWriteFile(
+    `${blogDirectory}/tag/${convertNameToFilename(tag.name)}.html`,
     tagIndexHtml,
-    prettierPageFormattingOptions,
   );
-
-  const filePath = `${blogDirectory}/tag/${convertNameToFilename(tag.name)}.html`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created tag index page: ${filePath}`);
 }
 
 /**
@@ -169,16 +161,10 @@ async function createArticlePage(article: Article): Promise<void> {
     containsCodeBlocks: article.containsCodeBlocks,
   });
 
-  const formattedPageHtml = await prettier.format(
+  await formatAndWriteFile(
+    `${blogDirectory}/${convertNameToFilename(article.title)}.html`,
     articlePageHtml,
-    prettierPageFormattingOptions,
   );
-
-  const filePath = `${blogDirectory}/${convertNameToFilename(article.title)}.html`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created article page: ${filePath}`);
 }
 
 async function createSiteIndex(
@@ -196,19 +182,7 @@ async function createSiteIndex(
     showArticleTags: false,
   });
 
-  // All output from the static-site generator is formatted with Prettier.
-  // This is so that any changes to the output can be easily reviewed
-  // with git diff.
-  const formattedPageHtml = await prettier.format(
-    siteIndexPageHtml,
-    prettierPageFormattingOptions,
-  );
-
-  const filePath = `${distFolder}/index.html`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created site index page: ${filePath}`);
+  await formatAndWriteFile(`${distFolder}/index.html`, siteIndexPageHtml);
 }
 
 async function createAllEntriesPage(articles: Article[]): Promise<void> {
@@ -223,16 +197,7 @@ async function createAllEntriesPage(articles: Article[]): Promise<void> {
     showArticleTags: true,
   });
 
-  const formattedPageHtml = await prettier.format(
-    allEntriesHtml,
-    prettierPageFormattingOptions,
-  );
-
-  const filePath = `${blogDirectory}/all.html`;
-
-  await fs.writeFile(filePath, formattedPageHtml);
-
-  console.log(`Created all entries page: ${filePath}`);
+  await formatAndWriteFile(`${blogDirectory}/all.html`, allEntriesHtml);
 }
 
 export async function createSite() {

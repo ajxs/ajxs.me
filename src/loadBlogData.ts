@@ -58,6 +58,4 @@ export async function loadBlogData(): Promise<{
   console.log("Database closed");
 
   return { articles, pageRedirects, staticPages, tags };
-
-  // return { articles: [], pageRedirects: [], staticPages: [], tags: [] };
 }
