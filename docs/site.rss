@@ -5,13 +5,24 @@
     <link>https://ajxs.me</link>
     <description>Ajxs blog</description>
     <language>en</language>
-    <pubDate>Fri, 17 Jan 2025 16:12:51 +1100</pubDate>
-    <lastBuildDate>Mon, 27 Oct 2025 09:24:40 +1100</lastBuildDate>
+    <pubDate>Wed, 31 Dec 2025 14:50:06 +1100</pubDate>
+    <lastBuildDate>Wed, 31 Dec 2025 16:42:48 +1100</lastBuildDate>
     <webMaster>ajxs@panoptic.online (Anthony)</webMaster>
     <atom:link href="https://ajxs.me/site.rss" rel="self" type="application/rss+xml"/>
     <category>ajxs</category>
     <category>synthesisers</category>
     <category>programming</category>
+    <item>
+      <title>μCOM-87: The Strangest Architecture You've Never Worked With</title>
+      <link>https://ajxs.me/blog/uCOM-87_The_Strangest_Architecture_Youve_Never_Worked_With.html</link>
+      <description>A short article about NEC's strange and mostly forgotten μCOM-87 processor architecture, as well as the Casio CZ-101 synthesiser that it powers.</description>
+      <pubDate>Wed, 31 Dec 2025 14:50:06 +1100</pubDate>
+      <guid>https://ajxs.me/blog/uCOM-87_The_Strangest_Architecture_Youve_Never_Worked_With.html</guid>
+      <category>Musical Equipment</category>
+      <category>Programming</category>
+      <category>Reverse Engineering</category>
+      <category>Synthesizers</category>
+    </item>
     <item>
       <title>How Does Ada's Memory Safety Compare Against Rust?</title>
       <link>https://ajxs.me/blog/How_Does_Adas_Memory_Safety_Compare_Against_Rust.html</link>

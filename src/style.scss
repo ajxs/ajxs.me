@@ -550,3 +550,26 @@ article.blog-entry {
 		display: block;
 	}
 }
+
+.instruction-list {
+	border-collapse: collapse;
+	border: 2px solid theme.$text-colour-body-permalink;
+	font-family: sans-serif;
+	font-size: 0.8rem;
+	letter-spacing: 1px;
+	color: theme.$text-colour-light;
+}
+
+.instruction-list th,
+td {
+	border: 1px solid theme.$text-colour-body-permalink;
+	padding: 8px 10px;
+}
+
+.instruction-list th[scope="col"] {
+	background-color: theme.$background-colour-level-2;
+}
+
+.instruction-list tr:nth-of-type(odd) {
+	background-color: theme.$background-colour-body-highlight;
+}

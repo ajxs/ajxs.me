@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="ajxs" />
+    <meta
+      name="description"
+      content="A short article about NEC&#39;s strange and mostly forgotten μCOM-87 processor architecture, as well as the Casio CZ-101 synthesiser that it powers."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="keywords"
+      content="ajxs,synthesisers,programming,Musical Equipment,Programming,Reverse Engineering,Synthesizers"
+    />
+    <meta name="reply-to" content="ajxs@panoptic.online" />
+    <meta name="owner" content="ajxs" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/code.css" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog Posts"
+      href="/site.rss"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon-16x16.png"
+    />
+
+    <title>
+      μCOM-87: The Strangest Architecture You&#39;ve Never Worked With - ajxs.me
+    </title>
+  </head>
+  <body>
+    <header>
+      <a href="/">~ajxs</a>
+    </header>
+    <article class="blog-entry">
+      <header>
+        <h1>
+          μCOM-87: The Strangest Architecture You&#39;ve Never Worked With
+        </h1>
+        <div class="date">2025.12.31</div>
+        <div class="description">
+          A short article about NEC&#39;s strange and mostly forgotten μCOM-87
+          processor architecture, as well as the Casio CZ-101 synthesiser that
+          it powers.
+        </div>
+        <div class="tags">
+          <span>Tagged as: </span>
+          <ul class="tag-list">
+            <li>
+              <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
+            </li>
+            <li><a href="/blog/tag/Programming.html">Programming</a></li>
+            <li>
+              <a href="/blog/tag/Reverse_Engineering.html"
+                >Reverse Engineering</a
+              >
+            </li>
+            <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
+          </ul>
+        </div>
+      </header>
+      <div class="entry-body">
+        <div class="note">
+          If you've stumbled across this page looking for practical information
+          on how to work with NEC's &#956;COM-87 architecture
+          <em>today</em>, skip straight to <a href="#today">this section</a>.
+        </div>
+
+        <p>
+          With most of the
+          <a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank"
+            >DX7's</a
+          >
+          technical mysteries laid bare (for now), I've had some free time to
+          poke around inside another 80s digital synth icon: the
+          <a href="https://www.youtube.com/watch?v=QN1BWXRYBXg" target="_blank"
+            >Casio CZ-101</a
+          >.
+        </p>
+        <p>
+          In 1983, Yamaha changed the music world forever with the release of
+          the DX7. It used a new synthesis technique called
+          <i
+            ><a
+              href="https://musictech.com/guides/essential-guide/how-fm-synthesis-works/"
+              target="_blank"
+              >FM synthesis</a
+            ></i
+          >
+          to create a bold, futuristic sound that was radically different from
+          everything else available. It wasn't just a commercial success; The
+          DX7 was a <em>tectonic shift</em> that reshaped the entire landscape
+          of popular music, and left Yamaha's competitors scrambling to get in
+          on the action. The theory behind FM synthesis was simple, but Yamaha
+          held the patent and were fiercely protective of their advantage. It
+          would take Korg and Roland <em>years</em> to bring their own
+          competitors to market, but Casio &#8212;a comparatively small player
+          in the synth market&#8212; managed to thread the needle with the
+          CZ-101's
+          <i>
+            <a
+              href="https://electricdruid.net/phase-distortion-synthesis/"
+              target="_blank"
+              >Phase Distortion Synthesis</a
+            ></i
+          >. If you closed your eyes you could <em>almost</em> pretend someone
+          had shrunk a DX7. It had plucky basses, resonant bells, gritty
+          metallic percussion... All without running afoul of the notoriously
+          litigious Yamaha's FM patents. The CZ-101 was a lot of fun squeezed
+          into a small package. It
+          <a
+            href="https://reverb.com/news/the-strange-history-of-casios-80s-pro-line"
+            target="_blank"
+          >
+            sold well</a
+          >, and still enjoys a cult status today.
+        </p>
+
+        <p>
+          Under the hood, the CZ-101 uses several NEC chips: The proprietary
+          <i>&#956;PD933</i> tone generator
+          <sup><a href="#footnote_1" id="footnote_1_link">1</a></sup
+          >, and the <i>&#956;PD7811G</i> microcontroller. Unsurprisingly, no
+          public documentation exists for the &#956;PD933, and &#8212;despite
+          having once been a commercial product&#8212; the situation for the
+          &#956;PD7811G isn't much better. When I started
+          <a
+            href="/blog/Introduction_to_Reverse-Engineering_Vintage_Synth_Firmware.html"
+            target="_blank"
+            >poking around</a
+          >
+          in the firmware ROM, I struggled to find good resources online about
+          the
+          <i>&#956;COM-87</i> architecture used in the <i>&#956;PD7811G</i>...
+          Despite appearing in some really important places there's surprisingly
+          little written about it online. For that reason I decided to write my
+          own account of its more baroque features.
+        </p>
+
+        <div class="note">
+          In case anyone is interested, my (incomplete) disassembly of the
+          CZ-101's v2 firmware ROM can be found
+          <a
+            href="https://github.com/ajxs/casio_cz101_rom_disassembly"
+            target="_blank"
+            >here</a
+          >.
+        </div>
+
+        <h2 id="background">
+          Background <a class="permalink" href="#background">#</a>
+        </h2>
+
+        <figure>
+          <img
+            src="/static/articles/ucom-87/upd7810_chip.jpg"
+            alt="uPD7810 IC"
+          />
+          <figcaption>
+            The NEC &#956;PD7810G CPU. Image courtesy of
+            <a
+              href="https://happytrees.org/chips/NEC_-_%CE%BCPD7810G"
+              target="_blank"
+              >CPU Graveyard</a
+            >.
+          </figcaption>
+        </figure>
+
+        <p>
+          In 1978 Japanese mega-corporation NEC
+          <sup><a href="#footnote_2" id="footnote_2_link">2</a></sup> launched
+          their first <em>original</em> 8-bit processor architecture: The
+          <i>&#956;COM-87</i>. Until this point, NEC's
+          <a
+            href="https://en.wikipedia.org/wiki/NEC_%CE%BCCOM_series"
+            target="_blank"
+            >8-bit architectures</a
+          >
+          had all been based on existing designs, such as the
+          <a href="https://en.wikipedia.org/wiki/Intel_8080" target="_blank"
+            >Intel 8080</a
+          >-compatible <i>&#956;COM-8</i>, and
+          <a href="https://en.wikipedia.org/wiki/Zilog_Z80" target="_blank"
+            >Zilog Z80</a
+          >-compatible <i>&#956;COM-82</i>.
+        </p>
+
+        <p>
+          NEC had clearly learned a few things from their American counterparts:
+          The
+          <i>&#956;COM-87</i> architecture featured two parallel banks of
+          8080-like registers, which could be swapped between like in the
+          similar Z80. The 8-bit <span class="register-name">B</span> and
+          <span class="register-name">C</span> registers can also be
+          <i>'paired'</i> into a single 16-bit register (<span
+            class="register-name"
+            >BC</span
+          >). Same with <span class="register-name">DE</span>, and
+          <span class="register-name">HL</span>, similar to the 8080 and Z80
+          architectures.
+        </p>
+        <figure>
+          <img
+            src="/static/articles/ucom-87/registers.png"
+            alt="&#956;COM-87 Register Set"
+          />
+          <figcaption>NEC &#956;COM-87 Register Set.</figcaption>
+        </figure>
+        <p>
+          Now I know what you're thinking:
+          <i
+            >Yeah, yeah. 8080-compatible registers, register pairing, alternate
+            banks... This is all pretty normal 8-bit stuff.</i
+          >
+          Sure... But those are just about the only normal things about the
+          &#956;COM-87 architecture. Let's take a look at a few of its more
+          exotic features...
+        </p>
+
+        <h2 id="instruction_skipping">
+          Instruction Skipping
+          <a class="permalink" href="#instruction_skipping">#</a>
+        </h2>
+        <div class="note">
+          <span class="heading">Note:</span>
+          The assembly examples in this article follow
+          <a href="https://stackoverflow.com/a/11735095/5931673" target="_blank"
+            >Intel's</a
+          >
+          format for hexadecimal literals, which is also used by NEC in their
+          87AD series relocatable assembler (RA87).
+          <i>i.e. </i><code>0ABCDh</code>, rather than <code>0xABCD</code>.
+        </div>
+        <p>
+          Instead of conventional
+          <i>comparing and branching</i> instructions, <i>control flow</i> on
+          the <i>&#956;COM-87</i> works by conditionally
+          <em>skipping</em> instructions.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="c1">; Read a byte from the serial interface into A.</span>
+<span class="c1">; Clamp the value between 0xA - 0xF, then send back.</span>
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="n">RXB</span>
+
+<span class="c1">; Skip the next instruction if A &lt; 0x10.</span>
+<span class="w">    </span><span class="n">LTI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">010h</span>
+<span class="c1">; Clamp A at 0xF.</span>
+<span class="w">    </span><span class="n">MVI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Fh</span>
+
+<span class="c1">; Skip the next instruction if A &gt; 0xA.</span>
+<span class="w">    </span><span class="n">GTI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Ah</span>
+<span class="c1">; Clamp A at 0xA.</span>
+<span class="w">    </span><span class="n">MVI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Ah</span>
+
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">TXB</span><span class="p">,</span><span class="n">A</span>
+</pre>
+        </div>
+        <p>
+          The above example reads a value from the serial interface, and clamps
+          it between <code>0xA</code> and <code>0xF</code>. The
+          <span class="assembly-instruction">LTI</span> (Less Than Immediate)
+          instruction skips the next instruction if the register is less than
+          the immediate operand. Similarly, the
+          <span class="assembly-instruction">GTI</span> instruction skips if the
+          register is higher than the immediate operand.
+        </p>
+        <p>
+          Instruction skipping is practically unheard of in modern
+          architectures, but featured in a few other historic ones like the
+          <a href="https://en.wikipedia.org/wiki/PDP-8" target="_blank">PDP-8</a
+          >, and
+
+          <a
+            href="https://en.wikipedia.org/wiki/PIC_microcontrollers"
+            target="_blank"
+            >Microchip's PIC</a
+          >
+          architectures prior to <i>PIC18</i>.
+        </p>
+
+        <p>
+          The following table lists <em>most</em> of the &#956;COM-87's
+          instructions which can trigger the next instruction to be skipped.
+          Some nearly identical instructions have been omitted for brevity
+          <sup><a href="#footnote_3" id="footnote_3_link">3</a></sup
+          >.
+        </p>
+        <table class="instruction-list">
+          <caption>
+            &#956;COM-87's Skipping Instructions
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Instruction</th>
+              <th scope="col">Description</th>
+              <th scope="col">Skip Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>ADDNC r, A</th>
+              <td>Add A to Register. Skip if No Carry</td>
+              <td>No carry generated</td>
+            </tr>
+            <tr>
+              <th>ADDNCX rpa</th>
+              <td>
+                Add Memory addressed by Register Pair to A. Skip if No Carry
+              </td>
+              <td>No carry generated</td>
+            </tr>
+            <tr>
+              <th>BIT bit, wa</th>
+              <td>Bit Test Working Register</td>
+              <td>V.wa[bit] != 0</td>
+            </tr>
+            <tr>
+              <th>DADDNC EA, rp3</th>
+              <td>Add Register Pair to EA. Skip if no Carry</td>
+              <td>No carry generated</td>
+            </tr>
+            <tr>
+              <th>DEQ EA, rp3</th>
+              <td>Equal Register Pair with EA</td>
+              <td>EA == rp3</td>
+            </tr>
+            <tr>
+              <th>DGT EA, rp3</th>
+              <td>Greater Than Register Pair</td>
+              <td>EA &gt; rp3</td>
+            </tr>
+            <tr>
+              <th>EQA A, r</th>
+              <td>Equal Register with A</td>
+              <td>A == r</td>
+            </tr>
+            <tr>
+              <th>EQAW wa</th>
+              <td>Equal Working Register with A</td>
+              <td>A == (V.wa)</td>
+            </tr>
+            <tr>
+              <th>EQI r, byte</th>
+              <td>Equal Immediate with Register</td>
+              <td>r == byte</td>
+            </tr>
+            <tr>
+              <th>EQIW wa, byte</th>
+              <td>Equal Immediate with Working Register</td>
+              <td>(V.wa) == byte</td>
+            </tr>
+            <tr>
+              <th>GTI r, byte</th>
+              <td>Greater Than Immediate</td>
+              <td>r &gt; byte</td>
+            </tr>
+            <tr>
+              <th>GTIW wa, byte</th>
+              <td>Greater Than Immediate</td>
+              <td>(V.wa) &gt; byte</td>
+            </tr>
+            <tr>
+              <th>LTI r, byte</th>
+              <td>Less Than Immediate</td>
+              <td>r &lt; byte</td>
+            </tr>
+            <tr>
+              <th>NEA A, r</th>
+              <td>Not Equal Register with A</td>
+              <td>A &#8800; r</td>
+            </tr>
+            <tr>
+              <th>NEAW wa</th>
+              <td>Not Equal Working Register with A</td>
+              <td>A &#8800; (V.wa)</td>
+            </tr>
+            <tr>
+              <th>NEI r, byte</th>
+              <td>Not Equal Immediate with Register</td>
+              <td>r &#8800; byte</td>
+            </tr>
+            <tr>
+              <th>NEIW wa, byte</th>
+              <td>Not Equal Immediate with Working Register</td>
+              <td>(V.wa) &#8800; byte</td>
+            </tr>
+            <tr>
+              <th>OFFI r, byte</th>
+              <td>Off-Test Immediate with Register</td>
+              <td>A &amp; byte == 0</td>
+            </tr>
+            <tr>
+              <th>OFFIW wa, byte</th>
+              <td>Off-Test Immediate with Working Register</td>
+              <td>(V.wa) &amp; byte == 0</td>
+            </tr>
+            <tr>
+              <th>ONAX rpa</th>
+              <td>On-Test Memory addressed by Register Pair with A</td>
+              <td>A &amp; rpa != 0</td>
+            </tr>
+            <tr>
+              <th>ONI r, byte</th>
+              <td>On-Test Immediate with Register</td>
+              <td>r &amp; byte != 0</td>
+            </tr>
+            <tr>
+              <th>ONIW wa, byte</th>
+              <td>On-Test Immediate with Working Register</td>
+              <td>A &amp; (V.wa) != 0</td>
+            </tr>
+            <tr>
+              <th>SK f</th>
+              <td>Skip if Flag</td>
+              <td>f == 1</td>
+            </tr>
+            <tr>
+              <th>SKN f</th>
+              <td>Skip if No Flag</td>
+              <td>f == 0</td>
+            </tr>
+            <tr>
+              <th>SKIT irf</th>
+              <td>Skip if Interrupt</td>
+              <td>irf == 1</td>
+            </tr>
+            <tr>
+              <th>SKNIT irf</th>
+              <td>Skip if No Interrupt</td>
+              <td>irf == 0</td>
+            </tr>
+            <tr>
+              <th>SUINB r, byte</th>
+              <td>Subtract Immediate from Register. Skip if No Borrow</td>
+              <td>No borrow generated</td>
+            </tr>
+            <tr>
+              <th>SUBNB r, A</th>
+              <td>Subtract A from Register. Skip if No Borrow</td>
+              <td>No borrow generated</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="instruction_stacking">
+          Instruction Stacking
+          <a class="permalink" href="#instruction_stacking">#</a>
+        </h2>
+        <p>
+          If multiple <span class="assembly-instruction">MVI</span> (Move
+          Immediate to Register) instructions with the same destination register
+          are placed sequentially, only the first instruction will actually be
+          executed. The rest will be processed as
+          <span class="assembly-instruction">NOP</span> operations (however the
+          equivalent number of CPU cycles will still be used). The
+          <i>&#956;COM-87</i> architecture literature refers to this as
+          <i>'instruction stacking'</i>.
+        </p>
+        <p>
+          The following example takes advantage of instruction stacking to
+          create a table of values to load into the A register, and send over
+          the serial interface.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="c1">; Read a byte from the serial interface, and send a byte based on its contents.</span>
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="n">RXB</span>
+
+<span class="w">    </span><span class="n">NEI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="w">           </span><span class="c1">; Skip if A &#8800; 1.</span>
+<span class="w">    </span><span class="n">JR</span><span class="w">          </span><span class="n">received_1</span>
+
+<span class="w">    </span><span class="n">NEI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="w">           </span><span class="c1">; Skip if A &#8800; 2.</span>
+<span class="w">    </span><span class="n">JR</span><span class="w">          </span><span class="n">received_2</span>
+
+<span class="c1">; Received any value other than 1 or 2.</span>
+<span class="w">    </span><span class="n">MVI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Ah</span>
+<span class="nl">received_1:</span>
+<span class="w">    </span><span class="n">MVI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Bh</span>
+<span class="nl">received_2:</span>
+<span class="w">    </span><span class="n">MVI</span><span class="w">         </span><span class="n">A</span><span class="p">,</span><span class="mh">0Ch</span>
+
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">TXB</span><span class="p">,</span><span class="n">A</span>
+</pre>
+        </div>
+        <p>
+          Because the stacked
+          <span class="assembly-instruction">MVI</span> instructions aren't
+          executed, there's no need to jump to the final
+          <span class="assembly-instruction">MOV</span> instruction. By not
+          needing any branching instructions this saves a few extra bytes, at
+          the expense of a few processor cycles.
+        </p>
+
+        <h2 id="working_vector_register">
+          Working Vector Register
+          <a class="permalink" href="#working_vector_register">#</a>
+        </h2>
+        <p>
+          The <i>&#956;COM-87</i> architecture features an index register
+          mechanism similar to the <b><i>Direct Page</i></b> register in
+          Motorola's 6809 architecture. The
+          <b><i>Working register vector register (V)</i></b> allows a programmer
+          to specify a base address, to which an immediate 1 byte offset is
+          added to create a 16-bit address operand for certain instructions,
+          rather than needing the full 2 bytes.
+        </p>
+        <p>
+          Consider the following example: Setting the
+          <span class="register-name">V</span> register to
+          <span class="hex-address">0x40</span> lets us access the addresses
+          <span class="hex-address">0x4000</span> to
+          <span class="hex-address">0x40FF</span>
+          with only a single byte.
+        </p>
+        <div class="code-block">
+          <pre><span></span><span class="c1">; Loads the byte at 0x4001, decrements it, and stores it at 0x4001 again.</span>
+<span class="c1">; Total bytes = 9</span>
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">A</span><span class="p">,(</span><span class="mh">4001h</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DCR</span><span class="w">         </span><span class="n">A</span>
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">A</span><span class="p">,(</span><span class="mh">4001h</span><span class="p">)</span>
+
+
+<span class="c1">; Sets the vector pointer, then decrements the byte at 0x4000 + 0x1.</span>
+<span class="c1">; Total bytes = 4</span>
+<span class="w">    </span><span class="n">MOV</span><span class="w">         </span><span class="n">V</span><span class="p">,</span><span class="mh">40h</span>
+<span class="w">    </span><span class="n">DCRW</span><span class="w">        </span><span class="mi">1</span>
+</pre>
+        </div>
+
+        <p>
+          Most instructions have a <i>working register</i> equivalent, such as
+          the <span class="assembly-instruction">DCR</span>, and
+          <span class="assembly-instruction">DCRW</span> instructions shown in
+          the example above.
+        </p>
+
+        <h2 id="call_table">
+          Call Table <a class="permalink" href="#call_table">#</a>
+        </h2>
+        <p>
+          The <i>&#956;COM-87</i> architecture has a vector table of 32
+          user-defined function pointers (at address
+          <span class="hex-address">0x80</span>), which can be called with the
+          single byte
+          <span class="assembly-instruction">CALT</span> instruction, reducing
+          the amount of bytes needed to encode a common function call. E.g.,
+          <code>CALT 5</code> will store the return pointer on the stack, and
+          jump to the function pointer at index 5 (<span class="hex-address"
+            >0x80 + (5*2)</span
+          >) in the call table. Like many other <i>&#956;COM-87</i> features, it
+          prioritises code density over other concerns.
+        </p>
+
+        <h2 id="today">
+          Working With &#956;COM-87 Today
+          <a class="permalink" href="#today">#</a>
+        </h2>
+        <p>
+          Unfortunately there aren't a lot of tools available for working with
+          the
+          <i>&#956;COM-87</i> architecture today. For assembling programs I use
+          Alfred Arnold's
+          <a
+            href="https://john.ccac.rwth-aachen.de:8000/as/as_EN.html"
+            target="_blank"
+            >Macro Assembler AS</a
+          >, which is probably the best option available. Unfortunately I
+          haven't been able to
+          <a
+            href="https://retrocomputing.stackexchange.com/q/21709/20781"
+            target="_blank"
+          >
+            track down
+          </a>
+          a copy of NEC's own <i>RA87 Relocatable Assembler</i>, mentioned in
+          their official technical literature. A version for MS-DOS was
+          available, which could be run in an emulator if a copy was found.
+        </p>
+        <p>
+          For disassembling programs, I was fortunate that Github user
+          <a href="https://github.com/depili" target="_blank">depili</a>
+          had already put in the hard yards creating a Ghidra processor
+          specification. I've picked up the torch with this
+          <a
+            href="https://github.com/NationalSecurityAgency/ghidra/pull/7930"
+            target="_blank"
+            >Pull Request</a
+          >
+          on the Ghidra project github, which is still open as of December 2025.
+          Alternatively, there's
+          <a
+            href="https://docs.mamedev.org/tools/othertools.html"
+            target="_blank"
+            >MAME's Unidasm</a
+          >, and a few other bespoke disassemblers like
+          <a href="https://github.com/mamedev/playground" target="_blank"
+            >dasm7810</a
+          >, or
+          <a href="https://github.com/farouk-23/Nec78CDasm" target="_blank">
+            Nec78CDasm</a
+          >.
+        </p>
+        <p>
+          The best official reference material I've found for working with the
+          &#956;COM-87 architecture is the
+          <a
+            href="https://www.renesas.com/en/document/mah/87ad-series-upd78c18-users-manual"
+            target="_blank"
+            >&#956;PD78C18 datasheet</a
+          >
+          (A later member of the &#956;COM-87 family). It's available from
+          Renesas Electronics, who took over NEC's semiconductor business in
+          2010.
+        </p>
+        <p>
+          The upd781x-series are emulated in MAME, so it's possible to build an
+          emulator for debugging. The brilliant
+          <a href="https://tilde.town/~revenant/" target="_blank"
+            >Devin Acker</a
+          >
+          took advantage of this to build an amazing CZ-101 driver!
+        </p>
+
+        <p>
+          The information in this article was pieced together from a variety of
+          odd sources.
+          <a
+            href="https://iccollection.try.mydns.jp/nec/uPD78C10.html"
+            target="_blank"
+            >This page</a
+          >, in Japanese, was a huge help when I first started looking at the
+          architecture. The MAME source code also provided a few helpful hints,
+          like where to look for a modern datasheet. If you have any pointers,
+          or helpful hints of your own, please
+          <a href="mailto:ajxs@panoptic.online">get in touch!</a>
+        </p>
+
+        <hr />
+        <ol class="footnotes">
+          <li id="footnote_1">
+            The &#956;PD933 went on to appear in the rest of Casio's
+            <i>CZ</i> line of synthesizers, and other 'non-synthesizer'
+            products, such as the Casiotone CT-5000.
+            <a href="#footnote_1_link">&#8626;</a>
+          </li>
+          <li id="footnote_2">
+            <p>
+              By 1985 NEC had the highest annual revenue of any semiconductor
+              company, a position it would retain amidst stiff competition until
+              being overtaken in 1992 by Intel, who have held the title ever
+              since. (Dataquest Incorporated. (1994).
+              <i>Semiconductors Core Binder</i>, 483.
+              <a
+                href="https://www.computerhistory.org/collections/catalog/102723289"
+                target="_blank"
+                >[Link]</a
+              >)
+            </p>
+            <p>
+              Over time the semiconductor industry shifted towards American
+              suppliers like Intel/Motorola, as the previously unstoppable
+              Japanese economy began to decline, and the Japanese industry's
+              less risk-averse Silicon Valley counterparts made great advances
+              in processor design.
+              <a href="#footnote_2_link">&#8626;</a>
+            </p>
+          </li>
+          <li id="footnote_3">
+            The &#956;COM-87's instruction set has a lot of near-identical
+            instructions, with different versions operating only on the
+            <span class="register-name">A</span> register, such as
+            <span class="assembly-instruction">OFFI A, byte</span> and
+            <span class="assembly-instruction">OFFI r, byte</span>. The
+            variations of these instructions for the
+            <span class="register-name">A</span> register require less bytes to
+            encode, and less CPU cycles to execute.
+            <a href="#footnote_3_link">&#8626;</a>
+          </li>
+        </ol>
+      </div>
+    </article>
+
+    <footer>
+      <div class="links">
+        <nav>
+          <a href="/about.html">About Me</a>
+          <a href="mailto:ajxs@panoptic.online" target="_blank">Email Me</a>
+          <a href="https://github.com/ajxs" target="_blank">Github</a>
+          <a href="/donate.html">Donate</a>
+          <a href="/site.rss" target="_blank">RSS</a>
+        </nav>
+        <div>
+          Webring:
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
+          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
+        </div>
+      </div>
+
+      © 2025 ajxs
+    </footer>
+  </body>
+</html>
