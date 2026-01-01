@@ -67,6 +67,11 @@ async function formatAndWriteFile(
 ): Promise<void> {
   const formattedContent = await prettier.format(content, {
     parser: "html",
+    bracketSameLine: true,
+    // This is set arbitrarily high to avoid unwanted line breaks in the
+    // generated HTML. This causes cosmetic defects like extra spaces between
+    // comma-separated items.
+    printWidth: 200,
   });
 
   await fs.writeFile(filePath, formattedContent);

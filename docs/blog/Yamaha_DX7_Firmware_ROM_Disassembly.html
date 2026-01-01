@@ -3,37 +3,16 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="author" content="ajxs" />
-    <meta
-      name="description"
-      content="A brief update regarding the reverse-engineering of the Yamaha DX7&#39;s firmware ROM."
-    />
+    <meta name="description" content="A brief update regarding the reverse-engineering of the Yamaha DX7&#39;s firmware ROM." />
     <meta name="robots" content="index, follow" />
-    <meta
-      name="keywords"
-      content="ajxs,synthesisers,programming,DX7,Musical Equipment,Reverse Engineering,Synthesizers"
-    />
+    <meta name="keywords" content="ajxs,synthesisers,programming,DX7,Musical Equipment,Reverse Engineering,Synthesizers" />
     <meta name="reply-to" content="ajxs@panoptic.online" />
     <meta name="owner" content="ajxs" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="Blog Posts"
-      href="/site.rss"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/static/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/static/favicon-16x16.png"
-    />
+    <link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/site.rss" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
 
     <title>Yamaha DX7 Firmware ROM Disassembly - ajxs.me</title>
   </head>
@@ -45,239 +24,112 @@
       <header>
         <h1>Yamaha DX7 Firmware ROM Disassembly</h1>
         <div class="date">2021.12.25</div>
-        <div class="description">
-          A brief update regarding the reverse-engineering of the Yamaha
-          DX7&#39;s firmware ROM.
-        </div>
+        <div class="description">A brief update regarding the reverse-engineering of the Yamaha DX7&#39;s firmware ROM.</div>
         <div class="tags">
           <span>Tagged as: </span>
           <ul class="tag-list">
             <li><a href="/blog/tag/DX7.html">DX7</a></li>
-            <li>
-              <a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a>
-            </li>
-            <li>
-              <a href="/blog/tag/Reverse_Engineering.html"
-                >Reverse Engineering</a
-              >
-            </li>
+            <li><a href="/blog/tag/Musical_Equipment.html">Musical Equipment</a></li>
+            <li><a href="/blog/tag/Reverse_Engineering.html">Reverse Engineering</a></li>
             <li><a href="/blog/tag/Synthesizers.html">Synthesizers</a></li>
           </ul>
         </div>
       </header>
       <div class="entry-body">
         <p>
-          It's been an exciting year for the DX7: Veteran audio plugin
-          developers Plogue released their amazing
-          <a
-            href="https://www.plogue.com/products/chipsynth-ops7.html"
-            target="_blank"
-            >Chipsynth OPS7</a
-          >; Ken Shirriff
-          <a
-            href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html"
-            target="_blank"
-            >decapsulated</a
-          >
-          the YM21280 OPS chip; and coming just in time for Christmas, I have
-          released an annotated disassembly of the Yamaha DX7's v.18 firmware
-          ROM.
+          It's been an exciting year for the DX7: Veteran audio plugin developers Plogue released their amazing
+          <a href="https://www.plogue.com/products/chipsynth-ops7.html" target="_blank">Chipsynth OPS7</a>; Ken Shirriff
+          <a href="https://www.righto.com/2021/11/reverse-engineering-yamaha-dx7.html" target="_blank">decapsulated</a>
+          the YM21280 OPS chip; and coming just in time for Christmas, I have released an annotated disassembly of the Yamaha DX7's v.18 firmware ROM.
         </p>
         <p>
-          Few synths can claim to be the subject of quite as much conjecture, or
-          controversy as Yamaha's groundbreaking FM synthesiser. For a synth
-          rapidly approaching it's 40th birthday, the DX7 continues to cultivate
-          as much fascination, curiosity, and obsession in its fourth decade as
-          it did in its first. The last few years have even seen a new
-          generation of FM synthesisers released by the major synth
-          manufacturers, introducing the DX7's trademark FM synthesis to a new,
-          younger audience.
+          Few synths can claim to be the subject of quite as much conjecture, or controversy as Yamaha's groundbreaking FM synthesiser. For a synth rapidly approaching it's 40th birthday, the DX7
+          continues to cultivate as much fascination, curiosity, and obsession in its fourth decade as it did in its first. The last few years have even seen a new generation of FM synthesisers
+          released by the major synth manufacturers, introducing the DX7's trademark FM synthesis to a new, younger audience.
         </p>
         <p>
-          The dust had barely settled from the DX7's revolutionary arrival on
-          the scene before the synth community at large began poking around
-          under the hood in search of its secrets. Even Roland, having found
-          themselves caught in the wake of the DX7's cultural impact, invested
-          significant time and resources into understanding the technology
-          underpinning Yamaha's new innovation (Reiffenstein, 2004, pp.
-          275-276). Since then numerous emulations have been released, ranging
-          from the faithful to the adventurous.
+          The dust had barely settled from the DX7's revolutionary arrival on the scene before the synth community at large began poking around under the hood in search of its secrets. Even Roland,
+          having found themselves caught in the wake of the DX7's cultural impact, invested significant time and resources into understanding the technology underpinning Yamaha's new innovation
+          (Reiffenstein, 2004, pp. 275-276). Since then numerous emulations have been released, ranging from the faithful to the adventurous.
         </p>
         <p>
-          It's clear that in the process of researching the synth's
-          functionality its firmware has been pored over by numerous engineers.
-          However no one had published any documentation of the synth's
+          It's clear that in the process of researching the synth's functionality its firmware has been pored over by numerous engineers. However no one had published any documentation of the synth's
           firmware, until now.
         </p>
         <p>
-          When I first began researching the technical details of the DX7, it
-          was clear that
-          <a
-            href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/897756-only-reason-people-prefer-sound-dx7-fm8.html"
-            target="_blank"
-            >much</a
-          >
-          <a
-            href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/970692-whats-inside-yamaha-dx7.html"
-            target="_blank"
-            >is</a
-          >
-          <a
-            href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/826280-taxonomy-early-digital-synthesizers.html"
-            target="_blank"
-            >understood</a
-          >
-          about the synth's functionality by the community at large, however so
-          little had been collated, and published. Over the course of the last
-          few months I have been working on an ambitious project to
-          reverse-engineering the Yamaha DX7's v1.8 firmware ROM, with the aim
-          to create an annotated assembly listing suitable for interested
-          parties to read, and understand.
+          When I first began researching the technical details of the DX7, it was clear that
+          <a href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/897756-only-reason-people-prefer-sound-dx7-fm8.html" target="_blank">much</a>
+          <a href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/970692-whats-inside-yamaha-dx7.html" target="_blank">is</a>
+          <a href="https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/826280-taxonomy-early-digital-synthesizers.html" target="_blank">understood</a>
+          about the synth's functionality by the community at large, however so little had been collated, and published. Over the course of the last few months I have been working on an ambitious
+          project to reverse-engineering the Yamaha DX7's v1.8 firmware ROM, with the aim to create an annotated assembly listing suitable for interested parties to read, and understand.
         </p>
         <p>
           At long last, the annotated disassembly is available
-          <a
-            href="https://github.com/ajxs/yamaha_dx7_rom_disassembly"
-            target="_blank"
-            >here</a
-          >. All contributions, corrections, and questions are welcome!<br />
-          Rather than overflow this brief article with technical minutiae, I
-          will let interested readers explore the repository, and associated
-          information, for themselves. If anyone has any specific questions,
-          feel free to email me directly.
+          <a href="https://github.com/ajxs/yamaha_dx7_rom_disassembly" target="_blank">here</a>. All contributions, corrections, and questions are welcome!<br />
+          Rather than overflow this brief article with technical minutiae, I will let interested readers explore the repository, and associated information, for themselves. If anyone has any specific
+          questions, feel free to email me directly.
         </p>
         <p>
-          My initial motivation for documenting the DX7's technical
-          implementation was to understand how a digital synthesiser is
-          engineered. The Yamaha DX7 has long held a special place in my heart,
-          and my studio. Being nearly entirely digital, it seemed a great
-          starting point for my research. This research culminated in my
-          <a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank"
-            >Yamaha DX7 Technical Analysis</a
-          >
-          article. My intention is not to become an obsessive custodian of DX7
-          minutiae. I take great satisfaction in the idea that I can contribute
-          my own small amount to the collective research, and preservation of
-          this synthesiser's amazing technology. I hope that this work will
-          prove useful for those working to emulate, and preserve the magic of
-          the DX7.
+          My initial motivation for documenting the DX7's technical implementation was to understand how a digital synthesiser is engineered. The Yamaha DX7 has long held a special place in my heart,
+          and my studio. Being nearly entirely digital, it seemed a great starting point for my research. This research culminated in my
+          <a href="/blog/Yamaha_DX7_Technical_Analysis.html" target="_blank">Yamaha DX7 Technical Analysis</a> article. My intention is not to become an obsessive custodian of DX7 minutiae. I take
+          great satisfaction in the idea that I can contribute my own small amount to the collective research, and preservation of this synthesiser's amazing technology. I hope that this work will
+          prove useful for those working to emulate, and preserve the magic of the DX7.
         </p>
 
         <h2>What Mysteries Remain?</h2>
         <p>
-          One particular remaining mystery is how the
-          <i>frequency number</i> passed between the CPU and the EGS, used to
-          signify the pitch of an individual note, is converted into the phase
-          increment value used by the OPS chip. Interestingly, this frequency
-          value is computed by applying a simple transformation to the MIDI note
-          number received from either the keyboard, or external MIDI input. This
-          conversion is performed by the subroutine located at offset
-          <code>0xD7DF</code> in the synth's memory, (offset
-          <code>0x17DF</code> relative to the start of the ROM file itself).
-          This subroutine is labeled as
-          <code>VOICE_CONVERT_NOTE_TO_PITCH</code> in the annotated disassembly.
+          One particular remaining mystery is how the <i>frequency number</i> passed between the CPU and the EGS, used to signify the pitch of an individual note, is converted into the phase increment
+          value used by the OPS chip. Interestingly, this frequency value is computed by applying a simple transformation to the MIDI note number received from either the keyboard, or external MIDI
+          input. This conversion is performed by the subroutine located at offset <code>0xD7DF</code> in the synth's memory, (offset <code>0x17DF</code> relative to the start of the ROM file itself).
+          This subroutine is labeled as <code>VOICE_CONVERT_NOTE_TO_PITCH</code> in the annotated disassembly.
           <br />
           This value is referenced in patent US4554857:
         </p>
-        <blockquote>
-          'It is known in the art that a frequency number expressed in logarithm
-          can be obtained by frequently adding data of two low bits of the key
-          code KC to lower bits...'
-        </blockquote>
+        <blockquote>'It is known in the art that a frequency number expressed in logarithm can be obtained by frequently adding data of two low bits of the key code KC to lower bits...'</blockquote>
         <p>
-          As the above description indicates, the resulting value is a frequency
-          expressed in logarithmic form, with each octave being 1024 'units'
-          apart. The synth's pitch EG values, and master tune setting are stored
-          internally in this same logarithmic format, and are combined together
-          with the aforementioned key frequency value to yield the final pitch
-          value transmitted to the EGS.
+          As the above description indicates, the resulting value is a frequency expressed in logarithmic form, with each octave being 1024 'units' apart. The synth's pitch EG values, and master tune
+          setting are stored internally in this same logarithmic format, and are combined together with the aforementioned key frequency value to yield the final pitch value transmitted to the EGS.
         </p>
 
-        <h2 id="where_to">
-          Where Can We Go From Here? <a class="permalink" href="#where_to">#</a>
-        </h2>
+        <h2 id="where_to">Where Can We Go From Here? <a class="permalink" href="#where_to">#</a></h2>
         <p>
-          Having now laid bare (some of) the secrets contained within the DX7's
-          firmware ROM, the question arises
-          <i>"What additional functionality is possible?"</i>. What
-          modifications could be made to the synth's firmware to enhance its
-          operation, or add new functionality entirely?
+          Having now laid bare (some of) the secrets contained within the DX7's firmware ROM, the question arises
+          <i>"What additional functionality is possible?"</i>. What modifications could be made to the synth's firmware to enhance its operation, or add new functionality entirely?
         </p>
         <p>
-          The bulk of the DX7's sound synthesis is performed by two proprietary
-          LSI chips: The <i>YM21290 EGS</i>, responsible for envelope
-          generation; and the <i>YM21280 OPS</i>, responsible for synthesising
-          the actual tones. The fundamental role of the DX7's firmware ROM is to
-          interface with these two chips.
+          The bulk of the DX7's sound synthesis is performed by two proprietary LSI chips: The <i>YM21290 EGS</i>, responsible for envelope generation; and the <i>YM21280 OPS</i>, responsible for
+          synthesising the actual tones. The fundamental role of the DX7's firmware ROM is to interface with these two chips.
         </p>
         <p>
-          A common question asked on mailing lists is whether the DX7 could
-          potentially support multitimbrality. Unfortunately, the majority of
-          the parameters managed by these two chips are <i>global</i>. As far as
-          we know, the OPS chip only has a single register specifying the
-          algorithm, and oscillator sync settings for all 16 of the synth's
-          voices. The only <i>per-voice</i> setting the EGS chip supports is
-          operator volume. The ability to alter the operator pitch on a
-          per-voice basis would be required for any kind of useful
-          multitimbrality.
+          A common question asked on mailing lists is whether the DX7 could potentially support multitimbrality. Unfortunately, the majority of the parameters managed by these two chips are
+          <i>global</i>. As far as we know, the OPS chip only has a single register specifying the algorithm, and oscillator sync settings for all 16 of the synth's voices. The only
+          <i>per-voice</i> setting the EGS chip supports is operator volume. The ability to alter the operator pitch on a per-voice basis would be required for any kind of useful multitimbrality.
         </p>
         <p>
-          It's potentially possible to expanding the synth's functionality by
-          creating an operator pitch EG in the software. It's already known that
-          the EGS supports arbitrary operator frequency values via the
-          <i>fixed operator frequency</i> parameters, and that the synth's main
-          pitch EG is processed within the software. The very real possibility
-          exists however that there could be timing, and latency issues related
-          to loading the individual operator pitches to the EGS, however the
-          possibility is worth investigating.
+          It's potentially possible to expanding the synth's functionality by creating an operator pitch EG in the software. It's already known that the EGS supports arbitrary operator frequency
+          values via the
+          <i>fixed operator frequency</i> parameters, and that the synth's main pitch EG is processed within the software. The very real possibility exists however that there could be timing, and
+          latency issues related to loading the individual operator pitches to the EGS, however the possibility is worth investigating.
         </p>
+        <p>If you have a better imagination than I do for what improvements to make to the firmware, please create something new and amazing!</p>
         <p>
-          If you have a better imagination than I do for what improvements to
-          make to the firmware, please create something new and amazing!
-        </p>
-        <p>
-          Various talented engineers have been able to create ingenious firmware
-          modifications for popular synths over the years. One particularly
-          interesting modification is Frederic Vecoven's
-          <a href="http://www.vecoven.com/superjx/superjx.html" target="_blank"
-            >Super JX</a
-          >
-          project, for Roland's
-          <a href="https://www.youtube.com/watch?v=0pfzEcwNVh4" target="_blank"
-            >JX10</a
-          >. Another amazing custom firmware project is
-          <a
-            href="https://www.matrixsynth.com/2020/01/ensoniq-mirage-soundprocess-forgotten-os.html"
-            target="_blank"
-            >Soundprocess OS</a
-          >
+          Various talented engineers have been able to create ingenious firmware modifications for popular synths over the years. One particularly interesting modification is Frederic Vecoven's
+          <a href="http://www.vecoven.com/superjx/superjx.html" target="_blank">Super JX</a> project, for Roland's <a href="https://www.youtube.com/watch?v=0pfzEcwNVh4" target="_blank">JX10</a>.
+          Another amazing custom firmware project is
+          <a href="https://www.matrixsynth.com/2020/01/ensoniq-mirage-soundprocess-forgotten-os.html" target="_blank">Soundprocess OS</a>
           for the Ensoniq Mirage, developed by
-          <a
-            href="http://www.buchty.net/~buchty/ensoniq/transoniq_hacker/PDF/039.pdf"
-            target="_blank"
-            >Mark Cecys</a
-          >.
+          <a href="http://www.buchty.net/~buchty/ensoniq/transoniq_hacker/PDF/039.pdf" target="_blank">Mark Cecys</a>.
         </p>
         <p>
-          In addition to the more imaginative, and adventurous modifications,
-          this project makes possible much simpler improvements. It's possible
-          to add support for more modern peripherals, such as replacing the
-          LEDs, or LCD screen with more modern components. I look forward to
-          seeing how the DX7 community at large makes use of this work.
+          In addition to the more imaginative, and adventurous modifications, this project makes possible much simpler improvements. It's possible to add support for more modern peripherals, such as
+          replacing the LEDs, or LCD screen with more modern components. I look forward to seeing how the DX7 community at large makes use of this work.
         </p>
 
-        <h2 id="references">
-          References <a class="permalink" href="#references">#</a>
-        </h2>
+        <h2 id="references">References <a class="permalink" href="#references">#</a></h2>
         <ul id="references-list">
-          <li>
-            Reiffenstein, T. W. (2004).
-            <i
-              >Transectorial innovation, location dynamics and knowledge
-              formation in the Japanese electronic musical instrument
-              industry</i
-            >.
-          </li>
+          <li>Reiffenstein, T. W. (2004). <i>Transectorial innovation, location dynamics and knowledge formation in the Japanese electronic musical instrument industry</i>.</li>
         </ul>
       </div>
     </article>
@@ -293,13 +145,12 @@
         </nav>
         <div>
           Webring:
-          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a>
-          / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
+          <a href="https://webri.ng/webring/ajxs/previous?index=0">Previous</a> / <a href="https://webri.ng/webring/ajxs/random">Random</a> /
           <a href="https://webri.ng/webring/ajxs/next?index=0">Next</a>
         </div>
       </div>
 
-      © 2025 ajxs
+      © 2026 ajxs
     </footer>
   </body>
 </html>
