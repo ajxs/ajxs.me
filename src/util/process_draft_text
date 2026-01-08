@@ -27,6 +27,86 @@ __status__ = "Production"
 INPUT_FILE = None
 OUTPUT_FILE = None
 
+def create_table_of_contents(file_text):
+    """
+    Generate a table of contents for the article.
+    """
+
+    # The root HTML element.
+    root = html.document_fromstring(file_text)
+
+    # Search for the table_of_contents marker element.
+    # If it's not found, return the original text without any modifications.
+    table_of_contents_marker = root.xpath("//table_of_contents")
+    if not table_of_contents_marker:
+        return html.tostring(root)
+
+    table_of_contents_element = html.Element("div")
+    table_of_contents_element.set("class", "table-of-contents")
+
+    table_of_contents_title_element = html.Element("div")
+    table_of_contents_title_element.text = "Table of Contents"
+    table_of_contents_title_element.set("class", "table-of-contents-title")
+
+    table_of_contents_element.append(table_of_contents_title_element)
+
+    table_of_contents_ol_element = html.Element("ol")
+    table_of_contents_element.append(table_of_contents_ol_element)
+
+    heading_elements = root.xpath('//h2 | //h3')
+
+    current_index = 1
+    parent_index = 1
+    current_level = 2
+    prev_parent = None
+    current_parent = table_of_contents_ol_element
+
+    for heading_element in heading_elements:
+        if heading_element.get("no_index") != None:
+            heading_element.attrib.pop("no_index", None)
+            continue
+
+        tag = heading_element.tag.lower()
+        next_level = int(tag[1])
+
+        index_text = f"{current_index}."
+        if current_level == 3:
+            index_text = f"{parent_index}.{current_index}"
+
+        if next_level > current_level:
+            parent_index = current_index
+            current_index = 1
+
+            sublist_ol_element = html.Element("ol")
+            current_parent.append(sublist_ol_element)
+            prev_parent = current_parent
+            current_parent = sublist_ol_element
+
+        elif next_level < current_level:
+            current_parent = prev_parent
+            prev_parent = current_parent.getparent()
+            current_index = parent_index + 1
+
+        else:
+            current_index += 1
+
+        current_level = next_level
+
+        list_element = html.Element("li")
+        link_element = html.Element("a")
+        link_element.set("href", f"#{heading_element.get('id')}")
+
+        link_element.text = f"{index_text} {heading_element.text_content()}"
+        list_element.append(link_element)
+
+        current_parent.append(list_element)
+
+    table_of_contents_marker[0].addnext(table_of_contents_element)
+    table_of_contents_marker_parent = table_of_contents_marker[0].getparent()
+    table_of_contents_marker_parent.remove(table_of_contents_marker[0])
+
+    return html.tostring(root)
+
 
 def parse_footnotes(file_text):
     """
@@ -202,6 +282,7 @@ def main():
         transformed_html = parse_code_snippets(file_text)
         transformed_html = parse_footnotes(transformed_html)
         transformed_html = parse_links(transformed_html)
+        transformed_html = create_table_of_contents(transformed_html)
 
         if OUTPUT_FILE is None:
             print(transformed_html.decode("utf-8"))
